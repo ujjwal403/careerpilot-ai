@@ -14,19 +14,20 @@ import {
   LucideIcon,
 } from 'lucide-react'
 
-interface NavItem {
+export interface NavItem {
   href: string
   label: string
+  shortLabel?: string
   icon: LucideIcon
   badge?: string
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/jobs', label: 'Job Radar', icon: Briefcase, badge: 'Live' },
-  { href: '/resume', label: 'Resume Scorer', icon: FileText },
-  { href: '/applications', label: 'Applications', icon: Layers },
-  { href: '/profile', label: 'Career Profile', icon: User },
+export const NAV_ITEMS: NavItem[] = [
+  { href: '/dashboard', label: 'Dashboard', shortLabel: 'Home', icon: LayoutDashboard },
+  { href: '/jobs', label: 'Job Radar', shortLabel: 'Jobs', icon: Briefcase, badge: 'Live' },
+  { href: '/resume', label: 'Resume Scorer', shortLabel: 'Resume', icon: FileText },
+  { href: '/applications', label: 'Applications', shortLabel: 'Tracker', icon: Layers },
+  { href: '/profile', label: 'Career Profile', shortLabel: 'Profile', icon: User },
 ]
 
 export function DashboardSidebar() {
@@ -113,5 +114,46 @@ export function DashboardSidebar() {
         <LogoutButton className="w-full justify-start px-3 py-2 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-50" />
       </div>
     </aside>
+  )
+}
+
+/**
+ * Mobile Bottom Navigation Bar:
+ * Appears ONLY on mobile devices (hidden md:hidden).
+ * Allows users on smartphones to seamlessly switch between all pages with thumb reach.
+ */
+export function DashboardMobileBottomNav() {
+  const pathname = usePathname()
+
+  return (
+    <nav
+      aria-label="Mobile Navigation"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#fffaf3] border-t border-[#eadcc9] px-2 py-2 flex items-center justify-around shadow-md"
+    >
+      {NAV_ITEMS.map(({ href, shortLabel, label, icon: Icon, badge }) => {
+        const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(`${href}/`))
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={`flex flex-col items-center justify-center min-w-[56px] py-1 px-1.5 rounded-xl transition-all relative ${
+              isActive
+                ? 'text-[#d97706] font-extrabold bg-[#fff3df] border border-[#eadcc9]'
+                : 'text-[#78716c] hover:text-[#572d12]'
+            }`}
+          >
+            <div className="relative">
+              <Icon className={`w-5 h-5 ${isActive ? 'text-[#d97706]' : 'text-[#78716c]'}`} />
+              {badge && (
+                <span className="absolute -top-1 -right-2.5 w-2 h-2 rounded-full bg-[#d97706]" />
+              )}
+            </div>
+            <span className="text-[10px] mt-0.5 tracking-tight font-medium leading-none">
+              {shortLabel || label}
+            </span>
+          </Link>
+        )
+      })}
+    </nav>
   )
 }

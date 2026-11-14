@@ -35,7 +35,7 @@ export function Navbar() {
           </div>
         </Link>
 
-        {/* Center Navigation (Desktop) */}
+        {/* Center Navigation (Desktop Only) */}
         <nav className="hidden md:flex items-center gap-7 text-sm font-semibold text-[#572d12]">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
@@ -48,49 +48,44 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop Action Buttons & Mobile Hamburger */}
+        {/* Right Side Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {user ? (
-            <div className="hidden sm:flex items-center gap-2">
-              <Link
-                href="/dashboard"
-                className="pavitra-btn pavitra-btn-sm"
-              >
-                Dashboard
-              </Link>
-              <LogoutButton className="px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-600 hover:bg-rose-50" />
-            </div>
-          ) : (
-            <div className="hidden sm:flex items-center gap-2">
-              <Link
-                href="/login"
-                className="px-3 py-1.5 text-xs font-bold text-[#572d12] hover:text-[#d97706] transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/signup"
-                className="pavitra-btn pavitra-btn-sm"
-              >
-                Audit Resume Free
-              </Link>
-            </div>
-          )}
+          {/* Desktop Actions (md:flex) */}
+          <div className="hidden md:flex items-center gap-2.5">
+            {user ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="pavitra-btn pavitra-btn-sm"
+                >
+                  Dashboard
+                </Link>
+                <LogoutButton className="px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-600 hover:bg-rose-50" />
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="px-3 py-1.5 text-xs font-bold text-[#572d12] hover:text-[#d97706] transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="pavitra-btn pavitra-btn-sm"
+                >
+                  Audit Resume Free
+                </Link>
+              </>
+            )}
+          </div>
 
-          {/* Quick CTA on Mobile */}
-          <Link
-            href={user ? '/dashboard' : '/signup'}
-            className="sm:hidden pavitra-btn pavitra-btn-sm text-xs px-3 py-1.5 font-bold"
-          >
-            {user ? 'Dashboard' : 'Free Audit'}
-          </Link>
-
-          {/* Mobile Menu Hamburger Button */}
+          {/* Mobile Hamburger Toggle Only (md:hidden) - Prevents duplicate buttons */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label="Toggle Navigation Menu"
-            className="md:hidden p-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-[#572d12] hover:bg-[#fff3df] transition-colors"
+            className="md:hidden p-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-[#572d12] hover:bg-[#fff3df] transition-colors cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -121,7 +116,7 @@ export function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="pavitra-btn w-full text-center text-xs font-bold py-2.5"
                 >
-                  Go to Dashboard
+                  Dashboard
                 </Link>
                 <LogoutButton className="w-full text-center py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg" />
               </>

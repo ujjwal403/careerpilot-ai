@@ -90,12 +90,6 @@ export function LoginForm() {
     await executeAuth(form.email, form.password)
   }
 
-  const handleInstantDemoLogin = async () => {
-    setForm({ email: 'ujjwal@gmail.com', password: 'CareerPilot123!' })
-    setErrors({})
-    await executeAuth('ujjwal@gmail.com', 'CareerPilot123!')
-  }
-
   return (
     <div className="w-full space-y-6">
       <div className="text-center">
@@ -133,7 +127,7 @@ export function LoginForm() {
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
                 <input
                   type="email"
-                  placeholder="ujjwal@gmail.com"
+                  placeholder="name@example.com"
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                   disabled={loading}
@@ -197,42 +191,6 @@ export function LoginForm() {
               )}
             </button>
           </form>
-
-          {/* 1-Click Instant Sign In Box */}
-          <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 font-bold text-[#572d12] text-xs">
-                <Sparkles className="w-4 h-4 text-[#d97706]" />
-                Fast Track Demo Access
-              </span>
-              <span className="text-[10px] font-mono text-[#166534] px-2 py-0.5 rounded-full bg-[#f0fdf4] border border-[#bbf7d0] font-bold">
-                Verified
-              </span>
-            </div>
-
-            <p className="text-[11px] text-[#635b52] leading-relaxed">
-              Skip typing! Click below to sign in instantly with test credentials and access your profile.
-            </p>
-
-            <button
-              type="button"
-              onClick={handleInstantDemoLogin}
-              disabled={loading}
-              className="pavitra-btn pavitra-btn-sm w-full flex items-center justify-center gap-2 text-xs font-bold cursor-pointer disabled:opacity-50"
-            >
-              {loading ? (
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
-              ) : (
-                <Sparkles className="w-3.5 h-3.5" />
-              )}
-              <span>1-Click Sign In as Ujjwal</span>
-            </button>
-
-            <div className="pt-2 text-[10px] font-mono text-[#78716c] flex items-center justify-between border-t border-[#eadcc9]">
-              <span>Login: <strong className="text-[#572d12]">ujjwal@gmail.com</strong></span>
-              <span>Pass: <strong className="text-[#572d12]">CareerPilot123!</strong></span>
-            </div>
-          </div>
         </>
       )}
 

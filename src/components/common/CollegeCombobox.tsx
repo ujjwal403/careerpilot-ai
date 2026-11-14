@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useMemo } from 'react'
-import { BookOpen, Search, Check, ChevronDown, Plus, School, X } from 'lucide-react'
+import { BookOpen, Search, Check, ChevronDown, Plus, School, X, Lock } from 'lucide-react'
 
 interface CollegeComboboxProps {
   value: string
@@ -10,6 +10,7 @@ interface CollegeComboboxProps {
   selectedState?: string
   placeholder?: string
   className?: string
+  disabled?: boolean
 }
 
 export function CollegeCombobox({
@@ -19,6 +20,7 @@ export function CollegeCombobox({
   selectedState,
   placeholder = 'Select or search your college...',
   className = '',
+  disabled = false,
 }: CollegeComboboxProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -34,6 +36,7 @@ export function CollegeCombobox({
 
   // Close on outside click
   useEffect(() => {
+    if (disabled) return
     const handleOutsideClick = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false)
@@ -48,7 +51,7 @@ export function CollegeCombobox({
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick)
     }
-  }, [searchQuery, value, onChange])
+  }, [searchQuery, value, onChange, disabled])
 
   // Filter colleges based on search query
   const filteredColleges = useMemo(() => {
@@ -60,12 +63,14 @@ export function CollegeCombobox({
   }, [colleges, searchQuery])
 
   const handleSelect = (collegeName: string) => {
+    if (disabled) return
     onChange(collegeName)
     setSearchQuery(collegeName)
     setIsOpen(false)
   }
 
   const handleUseCustom = () => {
+    if (disabled) return
     if (searchQuery.trim()) {
       onChange(searchQuery.trim())
       setIsOpen(false)
@@ -73,6 +78,7 @@ export function CollegeCombobox({
   }
 
   const handleClear = (e: React.MouseEvent) => {
+    if (disabled) return
     e.stopPropagation()
     onChange('')
     setSearchQuery('')
@@ -93,108 +99,112 @@ export function CollegeCombobox({
           ref={inputRef}
           type="text"
           value={searchQuery}
+          disabled={disabled}
+          readOnly={disabled}
           onChange={(e) => {
+            if (disabled) return
             setSearchQuery(e.target.value)
             onChange(e.target.value)
             if (!isOpen) setIsOpen(true)
           }}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => {
+            if (!disabled) setIsOpen(true)
+          }}
           placeholder={placeholder}
-          className="w-full pl-10 pr-20 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706] transition-colors"
+          className={`w-full pl-10 pr-20 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+            disabled
+              ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+              : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+          }`}
         />
 
         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={handleClear}
-              className="p-1 text-[#78716c] hover:text-[#572d12] rounded-lg hover:bg-[#fff3df] transition-colors cursor-pointer"
-              title="Clear input"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          )}
+          {disabled ? (
+            <span className="flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+              <Lock className="w-3 h-3 text-[#78716c]" />
+              Locked
+            </span>
+          ) : (
+            <>
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="p-1 text-[#78716c] hover:text-[#572d12] rounded-lg hover:bg-[#fff3df] transition-colors cursor-pointer"
+                  title="Clear input"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
 
-          <button
-            type="button"
-            onClick={() => {
-              setIsOpen(!isOpen)
-              if (!isOpen) inputRef.current?.focus()
-            }}
-            className="p-1 text-[#78716c] hover:text-[#d97706] rounded-lg transition-colors cursor-pointer"
-            title="Toggle college list"
-          >
-            <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#d97706]' : ''}`} />
-          </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsOpen(!isOpen)
+                  if (!isOpen) inputRef.current?.focus()
+                }}
+                className="p-1 text-[#78716c] hover:text-[#d97706] rounded-lg transition-colors cursor-pointer"
+                title="Toggle college list"
+              >
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#d97706]' : ''}`} />
+              </button>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Dropdown Menu Popover */}
-      {isOpen && (
-        <div className="absolute z-50 left-0 right-0 mt-1.5 max-h-80 overflow-y-auto rounded-2xl border border-[#eadcc9] bg-white shadow-xl shadow-[#572d12]/10 p-2 space-y-1 text-left animate-in fade-in-50 zoom-in-95 duration-100">
-          {/* Header indicator */}
-          <div className="px-3 py-1.5 flex items-center justify-between text-[11px] font-bold text-[#78716c] border-b border-[#f3e8d8] mb-1">
+      {/* Popover Dropdown */}
+      {!disabled && isOpen && (
+        <div className="absolute z-50 left-0 right-0 mt-2 bg-white border border-[#eadcc9] rounded-2xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150">
+          {/* Header count info */}
+          <div className="px-4 py-2 bg-[#fffaf3] border-b border-[#eadcc9] flex items-center justify-between text-[11px] font-bold text-[#78716c]">
             <span className="flex items-center gap-1.5">
               <School className="w-3.5 h-3.5 text-[#d97706]" />
-              {selectedState ? `Colleges in ${selectedState}` : 'All Premier Indian Institutions'}
+              {selectedState ? `${selectedState} Institutions` : 'All Accredited Colleges'}
             </span>
-            <span className="text-[#d97706] font-extrabold bg-[#fff3df] px-2 py-0.5 rounded-md border border-[#eadcc9]">
+            <span className="bg-[#fff3df] text-[#d97706] px-2 py-0.5 rounded-full border border-[#eadcc9]">
               {filteredColleges.length} listed
             </span>
           </div>
 
-          {/* If user typed custom text that isn't exact match */}
-          {searchQuery.trim() && !exactMatch && (
-            <button
-              type="button"
-              onClick={handleUseCustom}
-              className="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-[#d97706] bg-[#fff3df] border border-[#eadcc9] hover:bg-[#ffedd5] transition-colors flex items-center justify-between cursor-pointer mb-1.5"
-            >
-              <span className="flex items-center gap-2 truncate">
-                <Plus className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate">Use custom: &quot;{searchQuery.trim()}&quot;</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold text-[#b45309] shrink-0 pl-2">Select</span>
-            </button>
-          )}
-
-          {/* List items */}
-          {filteredColleges.length > 0 ? (
-            <div className="space-y-0.5">
-              {filteredColleges.map((college) => {
-                const isSelected = value === college
+          {/* College Options List */}
+          <div className="max-h-64 overflow-y-auto p-1 divide-y divide-[#f5ede3]/60">
+            {filteredColleges.length > 0 ? (
+              filteredColleges.map((college) => {
+                const isSelected = value.toLowerCase() === college.toLowerCase()
                 return (
                   <button
                     key={college}
                     type="button"
                     onClick={() => handleSelect(college)}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center justify-between gap-2 cursor-pointer ${
+                    className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-colors flex items-center justify-between gap-3 cursor-pointer ${
                       isSelected
-                        ? 'bg-[#fff3df] text-[#d97706] font-bold border border-[#eadcc9]'
+                        ? 'bg-[#fff3df] text-[#d97706] font-bold'
                         : 'text-[#29231e] hover:bg-[#fffaf3] hover:text-[#572d12]'
                     }`}
                   >
                     <span className="truncate">{college}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-[#d97706] shrink-0" />}
+                    {isSelected && <Check className="w-4 h-4 text-[#d97706] shrink-0" />}
                   </button>
                 )
-              })}
-            </div>
-          ) : (
-            <div className="py-6 px-4 text-center">
-              <p className="text-xs font-bold text-[#572d12] mb-1">
-                No matching college found for &quot;{searchQuery}&quot;
-              </p>
-              <p className="text-[11px] text-[#78716c] mb-3">
-                You can still add and use your exact college name below:
-              </p>
+              })
+            ) : (
+              <div className="p-4 text-center">
+                <p className="text-xs text-[#78716c] mb-2">No institution matching &ldquo;{searchQuery}&rdquo;</p>
+              </div>
+            )}
+          </div>
+
+          {/* Add Custom College Footer Option */}
+          {searchQuery.trim() && !exactMatch && (
+            <div className="p-2 border-t border-[#eadcc9] bg-[#fffaf3]">
               <button
                 type="button"
                 onClick={handleUseCustom}
-                className="pavitra-btn pavitra-btn-primary pavitra-btn-sm font-bold text-xs inline-flex items-center gap-1.5 cursor-pointer mx-auto"
+                className="w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold text-[#d97706] hover:bg-[#fff3df] border border-dashed border-[#d97706]/40 flex items-center gap-2 cursor-pointer transition-colors"
               >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Use &quot;{searchQuery.trim()}&quot; as my College</span>
+                <Plus className="w-4 h-4 text-[#d97706] shrink-0" />
+                <span className="truncate">Use custom: &ldquo;{searchQuery.trim()}&rdquo;</span>
               </button>
             </div>
           )}
@@ -203,4 +213,3 @@ export function CollegeCombobox({
     </div>
   )
 }
-

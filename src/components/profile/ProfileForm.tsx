@@ -27,6 +27,7 @@ import {
   RefreshCw,
   Loader2,
   Landmark,
+  Lock,
 } from 'lucide-react'
 import {
   COUNTRIES,
@@ -92,6 +93,10 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
   const [passingYear, setPassingYear] = useState(
     initialProfile?.passing_year ? initialProfile.passing_year.toString() : ''
   )
+
+  // Institutional Placement Locks: Basic identity and college/degree records cannot be changed once established
+  const isIdentityLocked = Boolean(initialUser?.full_name && initialUser.full_name.trim().length > 0)
+  const isAcademicsLocked = Boolean(initialProfile?.college_name && initialProfile.college_name.trim().length > 0)
 
   // Resume Synchronization State
   const [syncWithResume, setSyncWithResume] = useState(true)
@@ -409,19 +414,40 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
 
       {/* 1. Personal & Contact Information */}
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-6 sm:p-8 shadow-xs space-y-5">
-        <h3 className="text-base font-bold text-[#572d12] flex items-center gap-2">
-          <UserIcon className="w-4 h-4 text-[#d97706]" />
-          <span>Basic Information</span>
-        </h3>
+        <div className="flex items-center justify-between border-b border-[#eadcc9] pb-3">
+          <h3 className="text-base font-bold text-[#572d12] flex items-center gap-2">
+            <UserIcon className="w-4 h-4 text-[#d97706]" />
+            <span>Basic Information</span>
+          </h3>
+          {isIdentityLocked && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#ede3d7] border border-[#eadcc9] text-[#572d12]">
+              <Lock className="w-3 h-3 text-[#d97706]" />
+              Identity Record Locked
+            </span>
+          )}
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">Full Name</label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">Full Name</label>
+              {isIdentityLocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+                  <Lock className="w-2.5 h-2.5 text-[#78716c]" /> Permanent
+                </span>
+              )}
+            </div>
             <input
               type="text"
               value={fullName}
+              disabled={isIdentityLocked}
+              readOnly={isIdentityLocked}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+                isIdentityLocked
+                  ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+              }`}
               placeholder="e.g. Rahul Sharma"
             />
           </div>
@@ -452,11 +478,23 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">Country</label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">Country</label>
+              {isIdentityLocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+                  <Lock className="w-2.5 h-2.5 text-[#78716c]" /> Permanent
+                </span>
+              )}
+            </div>
             <select
               value={country}
+              disabled={isIdentityLocked}
               onChange={(e) => setCountry(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+                isIdentityLocked
+                  ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+              }`}
             >
               {COUNTRIES.map((c) => (
                 <option key={c} value={c}>
@@ -467,14 +505,26 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-              State / Union Territory {country === 'India' && <span className="text-[#d97706]">*</span>}
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
+                State / Union Territory {country === 'India' && <span className="text-[#d97706]">*</span>}
+              </label>
+              {isIdentityLocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+                  <Lock className="w-2.5 h-2.5 text-[#78716c]" /> Permanent
+                </span>
+              )}
+            </div>
             {country === 'India' ? (
               <select
                 value={state}
+                disabled={isIdentityLocked}
                 onChange={(e) => handleStateChange(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+                  isIdentityLocked
+                    ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                }`}
               >
                 <option value="">-- Select Your State / UT --</option>
                 {INDIAN_STATES_AND_UTS.map((s) => (
@@ -487,25 +537,44 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               <input
                 type="text"
                 value={state}
+                disabled={isIdentityLocked}
+                readOnly={isIdentityLocked}
                 onChange={(e) => setState(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+                  isIdentityLocked
+                    ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                }`}
                 placeholder="State or Province"
               />
             )}
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-              City / Tech Hub {country === 'India' && <span className="text-[#d97706]">*</span>}
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
+                City / Tech Hub {country === 'India' && <span className="text-[#d97706]">*</span>}
+              </label>
+              {isIdentityLocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+                  <Lock className="w-2.5 h-2.5 text-[#78716c]" /> Permanent
+                </span>
+              )}
+            </div>
             <div className="relative">
               <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
               <input
                 type="text"
                 list="indian-cities-list"
                 value={city}
+                disabled={isIdentityLocked}
+                readOnly={isIdentityLocked}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className={`w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+                  isIdentityLocked
+                    ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                }`}
                 placeholder={state ? `e.g. ${availableCities[0] || 'City'}` : 'Select state or type city'}
               />
               <datalist id="indian-cities-list">
@@ -514,7 +583,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 ))}
               </datalist>
             </div>
-            {state && availableCities.length > 0 && (
+            {state && availableCities.length > 0 && !isIdentityLocked && (
               <p className="text-[11px] text-[#78716c] mt-1">
                 Popular hubs in {state}: {availableCities.slice(0, 4).join(', ')}
               </p>
@@ -543,25 +612,57 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               <span>Education & Academics (India Placement Standard)</span>
             </h3>
             <p className="text-xs text-[#78716c] mt-0.5">
-              Select your college state to automatically see premier universities, colleges, and accredited course streams.
+              Accredited degree, college, branch, CGPA, and passing year matching campus recruitment drives.
             </p>
           </div>
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-[#fff3df] border border-[#eadcc9] text-[#d97706] self-start sm:self-auto">
-            <Landmark className="w-3.5 h-3.5" />
-            AICTE & Campus Filter Ready
-          </span>
+          {isAcademicsLocked ? (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#ede3d7] border border-[#eadcc9] text-[#572d12] self-start sm:self-auto">
+              <Lock className="w-3.5 h-3.5 text-[#d97706]" />
+              Academic Record Verified
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-[#fff3df] border border-[#eadcc9] text-[#d97706] self-start sm:self-auto">
+              <Landmark className="w-3.5 h-3.5" />
+              AICTE & Campus Filter Ready
+            </span>
+          )}
         </div>
+
+        {/* Lock Notice Banner */}
+        {isAcademicsLocked && (
+          <div className="flex items-start gap-3 p-3.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#572d12]">
+            <Lock className="w-4 h-4 text-[#d97706] shrink-0 mt-0.5" />
+            <div className="leading-relaxed">
+              <strong>Institutional Record Fixed:</strong> In accordance with Indian university placement standards, your registered college, degree, and specialization cannot be changed once established.
+              <span className="text-[#166534] font-semibold block mt-1">
+                ✓ You can freely update your latest CGPA/SGPA and graduation year as new semester scorecards arrive.
+              </span>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* College State Filter */}
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-              College Location / State <span className="text-[#d97706]">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
+                College Location / State <span className="text-[#d97706]">*</span>
+              </label>
+              {isAcademicsLocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+                  <Lock className="w-2.5 h-2.5 text-[#78716c]" /> Locked
+                </span>
+              )}
+            </div>
             <select
               value={effectiveCollegeState}
+              disabled={isAcademicsLocked}
               onChange={(e) => setCollegeState(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+                isAcademicsLocked
+                  ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+              }`}
             >
               <option value="">-- Select College State --</option>
               {INDIAN_STATES_AND_UTS.map((s) => (
@@ -577,11 +678,19 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
 
           {/* College / University Name with Interactive Combobox */}
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-              College / University Name <span className="text-[#d97706]">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
+                College / University Name <span className="text-[#d97706]">*</span>
+              </label>
+              {isAcademicsLocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+                  <Lock className="w-2.5 h-2.5 text-[#78716c]" /> Permanent
+                </span>
+              )}
+            </div>
             <CollegeCombobox
               value={collegeName}
+              disabled={isAcademicsLocked}
               onChange={(val) => setCollegeName(val)}
               colleges={availableUniversities}
               selectedState={effectiveCollegeState}
@@ -598,11 +707,19 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
 
           {/* Degree / Course Selection */}
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-              Degree / Program <span className="text-[#d97706]">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
+                Degree / Program <span className="text-[#d97706]">*</span>
+              </label>
+              {isAcademicsLocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+                  <Lock className="w-2.5 h-2.5 text-[#78716c]" /> Locked
+                </span>
+              )}
+            </div>
             <select
               value={degree}
+              disabled={isAcademicsLocked}
               onChange={(e) => {
                 setDegree(e.target.value)
                 const specs = getSpecializationsForDegree(e.target.value)
@@ -610,7 +727,11 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                   setFieldOfStudy(specs[0])
                 }
               }}
-              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+                isAcademicsLocked
+                  ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+              }`}
             >
               {INDIAN_DEGREES.map((deg) => (
                 <option key={deg} value={deg}>
@@ -622,16 +743,29 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
 
           {/* Branch / Specialization (Cascaded from Degree) */}
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-              Branch / Specialization <span className="text-[#d97706]">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
+                Branch / Specialization <span className="text-[#d97706]">*</span>
+              </label>
+              {isAcademicsLocked && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
+                  <Lock className="w-2.5 h-2.5 text-[#78716c]" /> Permanent
+                </span>
+              )}
+            </div>
             <div className="relative">
               <input
                 type="text"
                 list="branch-specializations-list"
                 value={fieldOfStudy}
+                disabled={isAcademicsLocked}
+                readOnly={isAcademicsLocked}
                 onChange={(e) => setFieldOfStudy(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
+                  isAcademicsLocked
+                    ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
+                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                }`}
                 placeholder="e.g. Computer Science & Engineering (CSE)"
               />
               <datalist id="branch-specializations-list">
@@ -645,11 +779,16 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
             </p>
           </div>
 
-          {/* CGPA / Percentage */}
+          {/* CGPA / Percentage (FREELY EDITABLE) */}
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-              CGPA / SGPA / Percentage <span className="text-[#d97706]">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
+                CGPA / SGPA / Percentage <span className="text-[#d97706]">*</span>
+              </label>
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#166534] bg-[#f0fdf4] border border-[#bbf7d0] px-2 py-0.5 rounded-md">
+                <Sparkles className="w-3 h-3 text-[#166534]" /> Editable Every Semester
+              </span>
+            </div>
             <div className="relative">
               <Award className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
               <input
@@ -665,11 +804,16 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
             </p>
           </div>
 
-          {/* Passing / Graduation Year */}
+          {/* Passing / Graduation Year (FREELY EDITABLE) */}
           <div>
-            <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-              Graduation / Passing Year <span className="text-[#d97706]">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
+                Graduation / Passing Year <span className="text-[#d97706]">*</span>
+              </label>
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#166534] bg-[#f0fdf4] border border-[#bbf7d0] px-2 py-0.5 rounded-md">
+                <Calendar className="w-3 h-3 text-[#166534]" /> Editable
+              </span>
+            </div>
             <div className="relative">
               <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
               <input

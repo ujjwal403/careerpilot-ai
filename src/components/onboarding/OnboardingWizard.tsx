@@ -24,6 +24,7 @@ import {
   Award,
   Calendar,
   Landmark,
+  Lock,
 } from 'lucide-react'
 import {
   COUNTRIES,
@@ -350,6 +351,16 @@ export function OnboardingWizard() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2 flex items-start gap-2.5 p-3 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#572d12]">
+              <Lock className="w-4 h-4 text-[#d97706] shrink-0 mt-0.5" />
+              <div className="leading-relaxed">
+                <strong>Placement Integrity Standard:</strong> Your registered college, degree, and specialization will be permanently verified and locked to your profile once submitted.
+                <span className="text-[#166534] font-semibold block mt-1">
+                  ✓ Your CGPA/SGPA and passing year can still be freely updated anytime as new semester scorecards arrive.
+                </span>
+              </div>
+            </div>
+
             {/* Country */}
             <div>
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">

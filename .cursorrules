@@ -1,0 +1,24 @@
+# CareerPilot AI – Project Coding Guidelines
+
+## Tech Stack
+- Next.js 16 (App Router, Turbopack, Tailwind CSS v4)
+- Supabase (@supabase/ssr, PostgreSQL, Storage, Auth)
+- Lucide React for iconography
+- Clean enterprise theme (Tesla-inspired): White & Royal Blue accents, neutral slates, dual light/dark mode support
+
+## Rules & Quality Checklist
+1. Zero dead code: Remove unused imports, variables, types, and unreferenced components.
+2. Strict Typing: Never use `any`; use strongly-typed Supabase types from `@/types`.
+3. Server vs Client Boundaries:
+   - Server Components for SSR data fetching (`createClient` from `@/lib/supabase/server`).
+   - Client Components marked with `'use client'` for interactive UI (`createClient` from `@/lib/supabase/client`).
+4. Always verify before completing work:
+   - `npm run lint` must pass with 0 errors and 0 warnings.
+   - `npx tsc --noEmit` must pass with 0 errors.
+
+## Karpathy Behavioral Directives
+1. **Think Before Coding:** Don't assume; don't hide confusion; surface tradeoffs.
+2. **Simplicity First:** Minimum code that solves the problem. Nothing speculative.
+3. **Surgical Changes:** Touch only what you must. Clean up only your own mess. Every changed line traces directly to the request.
+4. **Goal-Driven Execution:** Define clear success criteria and loop until verified.
+

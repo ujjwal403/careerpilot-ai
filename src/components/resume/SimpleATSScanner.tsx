@@ -22,6 +22,7 @@ import {
   Copy,
   Layers,
   Award,
+  RefreshCw,
 } from 'lucide-react'
 import { evaluateATSCompatibility, type ATSScorerResult } from '@/lib/ats-scorer'
 import { evaluateJobProfileMatches, type JobProfileMatchResult } from '@/lib/job-profile-matcher'
@@ -64,13 +65,8 @@ export function SimpleATSScanner({
   const [selectedJobCategory, setSelectedJobCategory] = useState<string>('all')
   const [expandedMissingItem, setExpandedMissingItem] = useState<string | null>(null)
 
-  // Direct evaluation results
-  const [customReport, setCustomReport] = useState<ATSScorerResult | null>(() => {
-    if (initialResumeText && initialResumeText.length > 50) {
-      return evaluateATSCompatibility(initialResumeText, createStubExtractedData(initialSkills))
-    }
-    return null
-  })
+  // Only show ATS score report after user actively uploads a file or clicks Calculate ATS Score
+  const [customReport, setCustomReport] = useState<ATSScorerResult | null>(null)
 
   // Evaluate Job Profile Matches based on current text & skills
   const jobMatches: JobProfileMatchResult[] = useMemo(() => {
@@ -321,6 +317,28 @@ export function SimpleATSScanner({
           </div>
         )}
 
+        {/* Saved Resume Shortcut if exists */}
+        {!customReport && initialResumeText && initialResumeText.length > 50 && (
+          <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="text-xs">
+              <span className="font-bold text-[#572d12] block">Saved Profile Resume Available</span>
+              <span className="text-[#78716c]">You have a saved CV in your profile. Click to calculate its ATS score.</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const report = evaluateATSCompatibility(initialResumeText, createStubExtractedData(initialSkills))
+                setResumeText(initialResumeText)
+                setCustomReport(report)
+              }}
+              className="pavitra-btn pavitra-btn-sm font-bold text-xs shrink-0 inline-flex items-center gap-1.5 cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Calculate Score for Saved Resume</span>
+            </button>
+          </div>
+        )}
+
         {error && (
           <div className="flex items-start gap-2.5 p-4 rounded-2xl border border-rose-200 bg-rose-50 text-rose-700 text-xs">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
@@ -329,9 +347,45 @@ export function SimpleATSScanner({
         )}
       </div>
 
-      {/* RESULTS DISPLAY: ATS Score + Missing Elements + Job Profile Match */}
+      {/* Empty State when no resume uploaded yet */}
+      {!customReport && (
+        <div className="rounded-3xl border border-dashed border-[#eadcc9] bg-white p-8 sm:p-12 text-center shadow-xs space-y-3">
+          <div className="w-14 h-14 rounded-2xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center mx-auto">
+            <FileText className="w-7 h-7" />
+          </div>
+          <h3 className="text-lg font-bold text-[#572d12]">
+            Upload Your Resume to See Your ATS Score
+          </h3>
+          <p className="text-xs sm:text-sm text-[#78716c] max-w-md mx-auto leading-relaxed">
+            Upload your CV in PDF or DOCX format above, or paste your text to calculate your real-time ATS score, see what critical gaps are missing, and view matching job profiles.
+          </p>
+        </div>
+      )}
+
+      {/* RESULTS DISPLAY: Only Shown After User Uploads or Analyzes */}
       {customReport && (
         <div className="space-y-8 animate-in fade-in duration-300">
+          {/* Header Action Bar */}
+          <div className="flex items-center justify-between p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3]">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#572d12]">
+              <CheckCircle2 className="w-4 h-4 text-[#166534]" />
+              <span>Resume Evaluated Successfully</span>
+              {file && <span className="text-[#78716c] font-normal">• {file.name}</span>}
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setCustomReport(null)
+                setFile(null)
+                setResumeText('')
+              }}
+              className="text-xs font-bold text-[#d97706] hover:text-[#b45309] hover:underline cursor-pointer flex items-center gap-1.5"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Upload Another Resume</span>
+            </button>
+          </div>
+
           {/* SECTION 1: BIG ATS SCORE CARD */}
           <div className="rounded-3xl border border-[#eadcc9] bg-white p-6 sm:p-8 shadow-xs">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-[#eadcc9]">

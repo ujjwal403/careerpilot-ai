@@ -7,6 +7,7 @@ import { useUser } from '@/hooks/useUser'
 import { LogoutButton } from '@/components/auth/LogoutButton'
 
 const NAV_LINKS = [
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '#collection', label: 'ATS Benchmark' },
   { href: '#about', label: 'Who We Are' },
   { href: '#initiatives', label: 'Our Capabilities' },

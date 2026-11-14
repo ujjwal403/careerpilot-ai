@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
     if (!data.session) {
       return NextResponse.json(
-        { error: 'Email not confirmed. Please check your inbox or use the demo login.' },
+        { error: 'Email not confirmed. Please check your inbox to confirm your account.' },
         { status: 401 }
       )
     }

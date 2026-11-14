@@ -128,7 +128,7 @@ export function DashboardMobileBottomNav() {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#fffaf3] border-t border-[#eadcc9] px-2 py-2 flex items-center justify-around shadow-md"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#fffaf3]/95 backdrop-blur-md border-t border-[#eadcc9] px-2 pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))] flex items-center justify-around shadow-md"
     >
       {NAV_ITEMS.map(({ href, shortLabel, label, icon: Icon, badge }) => {
         const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(`${href}/`))
@@ -136,7 +136,7 @@ export function DashboardMobileBottomNav() {
           <Link
             key={href}
             href={href}
-            className={`flex flex-col items-center justify-center min-w-[56px] py-1 px-1.5 rounded-xl transition-all relative ${
+            className={`flex flex-col items-center justify-center min-w-[56px] py-1 px-1.5 rounded-xl transition-all duration-150 active:scale-95 relative ${
               isActive
                 ? 'text-[#d97706] font-extrabold bg-[#fff3df] border border-[#eadcc9]'
                 : 'text-[#78716c] hover:text-[#572d12]'

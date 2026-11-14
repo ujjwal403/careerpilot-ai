@@ -5,8 +5,8 @@ import { ResumeManager } from '@/components/resume/ResumeManager'
 import { Loader2 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Resume Builder & ATS Audit – CareerPilot AI',
-  description: 'AI-driven resume optimization and ATS scoring',
+  title: 'Resume Benchmark & ATS Audit – CareerPilot',
+  description: 'Deterministic 10-rule resume optimization and ATS scoring benchmarked against Workday and MNC applicant tracking systems',
 }
 
 async function ResumeData() {
@@ -36,8 +36,8 @@ export default function ResumePage() {
       <Suspense
         fallback={
           <div className="flex flex-col items-center justify-center py-24 text-zinc-500">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500 mb-3" />
-            <p className="text-xs">Loading resume intelligence...</p>
+            <Loader2 className="w-6 h-6 animate-spin text-amber-500 mb-3" />
+            <p className="text-xs">Loading resume audit...</p>
           </div>
         }
       >

@@ -107,8 +107,8 @@ export function SimpleATSScanner({
 
       setResumeText(extractedContent)
 
-      // Generate ATS report
-      const report = evaluateATSCompatibility(extractedContent, data.extractedData)
+      // Generate ATS report (prefer server-parsed deterministic audit)
+      const report = data.atsReport || evaluateATSCompatibility(extractedContent, data.extractedData)
       setCustomReport(report)
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to analyze uploaded CV.'

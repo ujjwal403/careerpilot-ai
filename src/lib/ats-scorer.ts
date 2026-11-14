@@ -23,6 +23,17 @@ export interface ATSScorerResult {
   scannedAt: string
 }
 
+const COMMON_TECH_SKILLS = [
+  'React', 'Next.js', 'NextJS', 'Vue', 'Vue.js', 'Angular', 'TypeScript', 'JavaScript', 'HTML5', 'HTML', 'CSS3', 'CSS',
+  'Tailwind CSS', 'Tailwind', 'Redux', 'Zustand', 'Node.js', 'Express', 'Express.js', 'NestJS', 'FastAPI', 'Flask', 'Django',
+  'Python', 'Java', 'Spring Boot', 'Spring', 'C++', 'C#', '.NET', 'Go', 'Golang', 'Rust', 'PHP', 'Laravel',
+  'SQL', 'PostgreSQL', 'Postgres', 'MySQL', 'MongoDB', 'Redis', 'Supabase', 'Firebase', 'SQLite', 'GraphQL',
+  'REST APIs', 'REST API', 'AWS', 'Google Cloud', 'GCP', 'Azure', 'Docker', 'Kubernetes', 'CI/CD',
+  'GitHub Actions', 'Git', 'GitHub', 'Linux', 'Microservices', 'System Design',
+  'Data Structures', 'DSA', 'Algorithms', 'Machine Learning', 'Deep Learning', 'PyTorch', 'TensorFlow',
+  'Pandas', 'NumPy', 'Scikit-learn', 'Kafka', 'RabbitMQ', 'Flutter', 'Dart', 'Android', 'iOS', 'Kotlin'
+]
+
 const STRONG_ACTION_VERBS = [
   'engineered',
   'developed',
@@ -164,10 +175,23 @@ export function evaluateATSCompatibility(
   }
 
   // -------------------------------------------------------------
-  // Rule 3: Skill Density (10 pts)
-  // At least 5+ verified in-demand skills
+  // Rule 3: Skill Density & Keyword Matching (10 pts)
+  // Scans both extracted skills and the resume text for verified tech skills
   // -------------------------------------------------------------
-  const hardSkillsCount = skills?.hard_skills?.length || 0
+  const textMatchedSkills = COMMON_TECH_SKILLS.filter((skill) =>
+    new RegExp(`\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text)
+  )
+
+  const combinedSkillsSet = new Set<string>()
+  for (const s of skills?.hard_skills || []) {
+    if (s && s.trim()) combinedSkillsSet.add(s.trim())
+  }
+  for (const s of textMatchedSkills) {
+    combinedSkillsSet.add(s)
+  }
+  const detectedSkills = Array.from(combinedSkillsSet)
+  const hardSkillsCount = detectedSkills.length
+
   let skillScore = 0
   if (hardSkillsCount >= 8) skillScore = 10
   else if (hardSkillsCount >= 5) skillScore = 8
@@ -176,21 +200,21 @@ export function evaluateATSCompatibility(
 
   rules.push({
     id: 'skill_density',
-    name: 'Skill Density & Tagging',
+    name: 'Skill Density & Keyword Matching',
     category: 'skills',
     score: skillScore,
     maxScore: 10,
     status: skillScore >= 8 ? 'passed' : skillScore >= 5 ? 'warning' : 'failed',
-    description: 'Requires at least 5+ verified in-demand technical skills for keyword matching.',
-    details: `${hardSkillsCount} technical skill${hardSkillsCount === 1 ? '' : 's'} identified (${(skills?.hard_skills || []).slice(0, 5).join(', ')}${hardSkillsCount > 5 ? '...' : ''})`,
+    description: 'Requires at least 5-8 verified in-demand technical skills for keyword matching.',
+    details: `${hardSkillsCount} technical skill${hardSkillsCount === 1 ? '' : 's'} identified (${detectedSkills.slice(0, 6).join(', ')}${hardSkillsCount > 6 ? ` +${hardSkillsCount - 6} more` : ''})`,
     suggestion:
       skillScore < 10
-        ? 'Include at least 5-8 verified technical skills (e.g., React, TypeScript, Python, SQL, Docker) to match keyword filters.'
+        ? 'Include at least 5-8 verified technical skills (e.g., React, TypeScript, Python, SQL, Docker, AWS) to match keyword filters.'
         : undefined,
   })
 
   if (skillScore >= 8) {
-    strengths.push(`Strong technical skill density (${hardSkillsCount} indexed skills).`)
+    strengths.push(`Strong technical skill density (${hardSkillsCount} indexed skills: ${detectedSkills.slice(0, 4).join(', ')}).`)
   } else {
     improvements.push('Expand your skills section with specific modern frameworks and tools.')
   }
@@ -199,14 +223,17 @@ export function evaluateATSCompatibility(
   // Rule 4: Academic Metrics (CGPA / Percentage) (10 pts)
   // Critical for Indian tech recruitment & campus cutoffs
   // -------------------------------------------------------------
+  const cgpaRegex = /\b([6-9]\.\d{1,2}|10\.0)\s*(\/\s*10|cgpa|cpi|gpa)?\b/i
+  const percentRegex = /\b(\d{2}(\.\d{1,2})?)\s*%/i
   const firstEdu = education?.[0]
-  const hasExtractedScore = Boolean(firstEdu?.score && firstEdu.score.trim() !== '')
-  const hasTextCGPA =
-    /\b(cgpa|cpi|gpa|percentage|percent)\b/i.test(text) ||
-    /\b[6-9]\.\d{1,2}\s*(\/\s*10|cgpa|cpi)?\b/i.test(text) ||
-    /\b\d{2}(\.\d{1,2})?\s*%/i.test(text)
+  const extractedScore = firstEdu?.score?.trim()
+  const matchedCgpa =
+    extractedScore ||
+    text.match(cgpaRegex)?.[0] ||
+    text.match(percentRegex)?.[0] ||
+    (/\b(cgpa|cpi|gpa|percentage|percent)\b/i.test(text) ? 'CGPA mentioned' : null)
 
-  const academicScore = hasExtractedScore || hasTextCGPA ? 10 : 3
+  const academicScore = matchedCgpa ? 10 : 3
 
   rules.push({
     id: 'academic_metrics',
@@ -218,7 +245,7 @@ export function evaluateATSCompatibility(
     description: 'Verifies CGPA or percentage for Indian recruiters (TCS, Infosys, and startups).',
     details:
       academicScore === 10
-        ? `Academic score verified (${firstEdu?.score || 'CGPA / % found in text'})`
+        ? `Academic score verified (${matchedCgpa})`
         : 'No explicit CGPA or percentage score detected in education.',
     suggestion:
       academicScore < 10
@@ -227,7 +254,7 @@ export function evaluateATSCompatibility(
   })
 
   if (academicScore === 10) {
-    strengths.push('Academic performance metric (CGPA/%) is clearly listed.')
+    strengths.push(`Academic performance metric is clearly listed (${matchedCgpa}).`)
   } else {
     improvements.push('Add your CGPA or graduation percentage to prevent automated college-cutoff rejections.')
   }

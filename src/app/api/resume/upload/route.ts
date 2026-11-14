@@ -6,18 +6,6 @@ import type { Json } from '@/types/database'
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'You must be signed in to upload a resume. Please sign in and try again.' },
-        { status: 401 }
-      )
-    }
-
     const formData = await request.formData()
     const file = formData.get('file') as File | null
 
@@ -53,26 +41,8 @@ export async function POST(request: Request) {
 
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
-    const storagePath = `${user.id}/${Date.now()}.${fileExt}`
 
-    // Upload to Supabase Storage bucket 'resumes'
-    const { error: uploadError } = await supabase.storage
-      .from('resumes')
-      .upload(storagePath, buffer, {
-        contentType: mimeType,
-        upsert: true,
-      })
-
-    if (uploadError) {
-      return NextResponse.json(
-        { error: `Cloud storage error: ${uploadError.message || 'Failed to save file.'}` },
-        { status: 500 }
-      )
-    }
-
-    const { data: urlData } = supabase.storage.from('resumes').getPublicUrl(storagePath)
-
-    // Extract text and analyze with AI
+    // Extract raw text from file
     let rawText = ''
     try {
       rawText = await extractRawTextFromBuffer(buffer, mimeType, file.name)
@@ -80,17 +50,53 @@ export async function POST(request: Request) {
       rawText = ''
     }
 
+    // Extract structured entities and calculate real ATS score
     const extractedData = await extractResumeInformation(rawText, file.name)
+    const atsReport = evaluateATSCompatibility(rawText, extractedData)
 
-    // Demote any existing primary resumes to satisfy idx_resumes_one_primary_per_user
+    // Check if user is authenticated to save to Supabase
+    const supabase = await createClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    // If guest / unauthenticated, return the real ATS analysis immediately
+    if (!user) {
+      return NextResponse.json({
+        success: true,
+        isGuest: true,
+        resume: {
+          content: rawText.replace(/\0/g, ''),
+          file_name: file.name,
+          title: file.name.replace(/\.[^/.]+$/, ''),
+        },
+        extractedData,
+        atsReport,
+      })
+    }
+
+    // Authenticated user: save to cloud storage and database
+    const storagePath = `${user.id}/${Date.now()}.${fileExt}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('resumes')
+      .upload(storagePath, buffer, {
+        contentType: mimeType,
+        upsert: true,
+      })
+
+    let publicUrl = ''
+    if (!uploadError) {
+      const { data: urlData } = supabase.storage.from('resumes').getPublicUrl(storagePath)
+      publicUrl = urlData.publicUrl
+    }
+
+    // Demote any existing primary resumes
     await supabase
       .from('resumes')
       .update({ is_primary: false })
       .eq('user_id', user.id)
       .eq('is_primary', true)
-
-    // Calculate real 10-rule ATS Compatibility score
-    const atsReport = evaluateATSCompatibility(rawText, extractedData)
 
     // Insert new resume record
     const { data: newResume, error: insertError } = await supabase
@@ -101,7 +107,7 @@ export async function POST(request: Request) {
         file_name: file.name,
         file_size: file.size,
         mime_type: mimeType,
-        file_url: urlData.publicUrl,
+        file_url: publicUrl || null,
         content: rawText.replace(/\0/g, '').slice(0, 50000) || null,
         is_primary: true,
         ai_score: atsReport.totalScore,
@@ -116,17 +122,15 @@ export async function POST(request: Request) {
       .select()
       .single()
 
-    if (insertError) {
-      return NextResponse.json(
-        { error: `Database error: ${insertError.message || 'Could not save resume record.'}` },
-        { status: 500 }
-      )
-    }
-
     return NextResponse.json({
       success: true,
-      resume: newResume,
+      resume: newResume || {
+        content: rawText.replace(/\0/g, ''),
+        file_name: file.name,
+        title: file.name.replace(/\.[^/.]+$/, ''),
+      },
       extractedData,
+      atsReport,
     })
   } catch (error) {
     return NextResponse.json(

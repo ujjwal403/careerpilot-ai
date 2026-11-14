@@ -150,7 +150,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
             },
           })
         }
-        setMessage({ type: 'success', text: 'AI Information Extraction completed!' })
+        setMessage({ type: 'success', text: 'Resume details extracted and verified!' })
       }
     } catch {
       // Quietly ignore background re-extract failure

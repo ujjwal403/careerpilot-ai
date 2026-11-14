@@ -33,10 +33,10 @@ export function GoogleAuthButton({ label = 'Continue with Google' }: { label?: s
         type="button"
         onClick={handleGoogleSignIn}
         disabled={loading}
-        className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-white/10 bg-zinc-900/60 hover:bg-zinc-800/80 text-zinc-200 text-sm font-medium transition-all shadow-sm hover:border-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer"
+        className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-[#eadcc9] bg-white hover:bg-[#fffaf3] text-[#572d12] text-sm font-semibold transition-all shadow-sm hover:border-[#d97706]/50 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer"
       >
         {loading ? (
-          <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
+          <Loader2 className="w-4 h-4 animate-spin text-[#d97706]" />
         ) : (
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -61,7 +61,7 @@ export function GoogleAuthButton({ label = 'Continue with Google' }: { label?: s
       </button>
 
       {error && (
-        <p className="mt-2 text-xs text-rose-400 text-center font-medium">{error}</p>
+        <p className="mt-2 text-xs text-rose-600 text-center font-semibold">{error}</p>
       )}
     </div>
   )

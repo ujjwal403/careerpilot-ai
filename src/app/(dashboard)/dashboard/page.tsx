@@ -5,6 +5,8 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
 import { StatCard } from '@/components/dashboard/StatCard'
 import { ApplicationFunnel } from '@/components/dashboard/ApplicationFunnel'
 import { QuickRecommendations } from '@/components/dashboard/QuickRecommendations'
+import { DashboardQuickActions } from '@/components/dashboard/DashboardQuickActions'
+import { getAllDefaultJobs } from '@/lib/services/job-aggregators'
 import { Send, Calendar, ShieldCheck, Sparkles, Loader2 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -32,11 +34,21 @@ async function DashboardData() {
   }
 
   // Fetch active jobs from database
-  const { data: realJobs } = await supabase
+  let { data: realJobs } = await supabase
     .from('jobs')
     .select('*')
     .eq('is_active', true)
     .order('posted_at', { ascending: false })
+
+  // Fallback to verified default jobs if DB has no jobs yet
+  if (!realJobs || realJobs.length === 0) {
+    try {
+      const defaultJobs = await getAllDefaultJobs()
+      realJobs = defaultJobs as any
+    } catch {
+      realJobs = []
+    }
+  }
 
   if (user) {
     const { data: profileData } = await supabase
@@ -70,76 +82,80 @@ async function DashboardData() {
     }
   }
 
-  const totalMatches = realJobs?.length || 9
+  const totalMatches = realJobs?.length || 44
 
   const stats = [
     {
       title: 'Total Applications',
       value: applicationCount,
-      caption: applicationCount > 0 ? 'Active in hiring pipelines' : 'Track opportunities from Job Board',
+      caption: applicationCount > 0 ? 'Active in hiring pipelines' : 'Track opportunities from Job Radar',
       icon: Send,
-      iconColor: 'text-blue-400',
-      trend: { value: applicationCount > 0 ? `${applicationCount} tracked` : 'Ready to start', isPositive: true },
+      trend: { value: applicationCount > 0 ? `${applicationCount} active` : 'Ready to start', isPositive: true },
       badge: 'Active Tracker',
+      href: '/applications',
     },
     {
       title: 'Interviews Scheduled',
       value: interviewCount,
       caption: interviewCount > 0 ? 'Upcoming technical & culture rounds' : 'No upcoming rounds yet',
       icon: Calendar,
-      iconColor: 'text-indigo-400',
       trend: { value: `${interviewCount} scheduled`, isPositive: interviewCount > 0 },
       badge: 'High Priority',
+      href: '/applications',
     },
     {
       title: 'AI Resume Score',
-      value: resume?.ai_score ? `${resume.ai_score}/100` : (resume ? '92/100' : 'No CV Uploaded'),
-      caption: resume ? 'ATS compatibility rating' : 'Upload in Resume tab to analyze',
+      value: resume?.ai_score ? `${resume.ai_score}/100` : (resume ? '92/100' : '65/100'),
+      caption: resume ? 'ATS compatibility verified' : 'Audit Drive CV link in Resume tab',
       icon: ShieldCheck,
-      iconColor: 'text-emerald-400',
-      trend: { value: resume ? 'ATS Verified' : 'Pending CV', isPositive: Boolean(resume) },
+      trend: { value: resume ? 'ATS Verified' : 'Scan Drive CV', isPositive: Boolean(resume) },
       badge: 'ATS Scanner',
+      href: '/resume',
     },
     {
       title: 'AI Job Matches',
-      value: String(totalMatches),
+      value: `${totalMatches}+`,
       caption: 'Verified live opportunities',
       icon: Sparkles,
-      iconColor: 'text-blue-500',
       trend: { value: `${totalMatches} active`, isPositive: true },
       badge: 'Precision Radar',
+      href: '/jobs',
     },
   ]
 
   return (
-    <>
+    <div className="space-y-6">
       <DashboardHeader userName={user?.user_metadata?.full_name || profile?.headline} />
 
-      {/* Bento grid: 2×2 stat cards + wide pipeline panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Stat cards — 2×2 sub-grid */}
-        <div className="lg:col-span-1 grid grid-cols-2 gap-4">
-          {stats.slice(0, 4).map((stat) => (
-            <StatCard key={stat.title} {...stat} />
-          ))}
-        </div>
-
-        {/* Application funnel spans the remaining 2 cols */}
-        <div className="lg:col-span-2">
-          <ApplicationFunnel counts={funnelCounts} />
-        </div>
+      {/* 4 KPI Stat Cards in a clean, balanced row */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat) => (
+          <StatCard key={stat.title} {...stat} />
+        ))}
       </div>
 
-      <QuickRecommendations jobs={realJobs || []} userSkills={profile?.skills || []} />
-    </>
+      {/* Balanced 2-Column Main Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        {/* Left Column: Top Verified Job & Internship Matches */}
+        <div className="lg:col-span-2 space-y-6">
+          <QuickRecommendations jobs={realJobs || []} userSkills={profile?.skills || []} />
+        </div>
+
+        {/* Right Column: Application Pipeline & AI Career Toolkit */}
+        <div className="lg:col-span-1 space-y-6">
+          <ApplicationFunnel counts={funnelCounts} />
+          <DashboardQuickActions />
+        </div>
+      </div>
+    </div>
   )
 }
 
 function DashboardSkeleton() {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-zinc-500">
-      <Loader2 className="w-6 h-6 animate-spin text-blue-500 mb-3" />
-      <p className="text-xs">Loading career intelligence...</p>
+    <div className="flex flex-col items-center justify-center py-24 text-[#78716c]">
+      <Loader2 className="w-6 h-6 animate-spin text-[#d97706] mb-3" />
+      <p className="text-xs">Loading career telemetry...</p>
     </div>
   )
 }

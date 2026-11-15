@@ -71,9 +71,8 @@ export function JobsBoard({
   const [syncing, setSyncing] = useState(false)
   const [syncMessage, setSyncMessage] = useState<string | null>(null)
 
-  // Drive Apply Modal state
+  // Apply Modal state
   const [selectedJobForApply, setSelectedJobForApply] = useState<Job | null>(null)
-  const [driveResumeUrl, setDriveResumeUrl] = useState('')
   const [applying, setApplying] = useState(false)
   const [applySuccess, setApplySuccess] = useState(false)
   const [applyError, setApplyError] = useState<string | null>(null)
@@ -136,13 +135,8 @@ export function JobsBoard({
     setApplyError(null)
   }
 
-  const handleConfirmDriveApply = async () => {
+  const handleConfirmApply = async () => {
     if (!selectedJobForApply) return
-
-    if (!driveResumeUrl.trim() || !driveResumeUrl.includes('drive.google.com')) {
-      setApplyError('Please enter a valid Google Drive link for your resume.')
-      return
-    }
 
     try {
       setApplying(true)
@@ -174,15 +168,21 @@ export function JobsBoard({
       setAppliedIds((prev) => [...prev, selectedJobForApply.id])
       setApplySuccess(true)
 
-      // Open company portal after 1 second
+      // Open company portal after short feedback
       setTimeout(() => {
         const dest =
           selectedJobForApply.source_url ||
           `https://www.google.com/search?q=${encodeURIComponent(`${selectedJobForApply.company} ${selectedJobForApply.title} careers apply`)}`
         window.open(dest, '_blank', 'noopener,noreferrer')
-      }, 1000)
+        setSelectedJobForApply(null)
+      }, 700)
     } catch {
-      setApplyError('Failed to record application. Redirecting to job portal...')
+      // Direct user even if background tracking has issue
+      const dest =
+        selectedJobForApply.source_url ||
+        `https://www.google.com/search?q=${encodeURIComponent(`${selectedJobForApply.company} ${selectedJobForApply.title} careers apply`)}`
+      window.open(dest, '_blank', 'noopener,noreferrer')
+      setSelectedJobForApply(null)
     } finally {
       setApplying(false)
     }
@@ -612,7 +612,7 @@ export function JobsBoard({
                     className="pavitra-btn pavitra-btn-sm inline-flex items-center gap-1.5 font-bold !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer"
                     style={{ backgroundColor: '#d97706', color: '#ffffff' }}
                   >
-                    <span>{isApplied ? 'Applied ✓' : 'Apply with Drive Resume'}</span>
+                    <span>{isApplied ? 'Applied ✓' : 'Apply Now'}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -622,7 +622,7 @@ export function JobsBoard({
         )}
       </div>
 
-      {/* 1-Click Apply with Google Drive Resume Modal */}
+      {/* 1-Click Apply Confirmation Modal */}
       {selectedJobForApply && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl border border-[#eadcc9] max-w-lg w-full p-6 sm:p-7 shadow-xl space-y-5 text-[#29231e]">
@@ -630,7 +630,7 @@ export function JobsBoard({
             <div className="flex items-start justify-between border-b border-[#eadcc9] pb-4">
               <div>
                 <span className="text-[10px] font-bold text-[#d97706] uppercase tracking-wider">
-                  Internshala Application Flow
+                  Verified Application Flow
                 </span>
                 <h3 className="text-lg font-extrabold text-[#572d12] mt-0.5">
                   Apply for {selectedJobForApply.title}
@@ -657,25 +657,14 @@ export function JobsBoard({
               <span>{getMatchScore(selectedJobForApply.skills_required)}% ATS Score</span>
             </div>
 
-            {/* Drive Link Input */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-[#572d12]">
-                Your Google Drive Resume Link <span className="text-[#d97706]">*</span>
-              </label>
-              <div className="relative">
-                <Link2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
-                <input
-                  type="url"
-                  placeholder="https://drive.google.com/file/d/.../view"
-                  value={driveResumeUrl}
-                  onChange={(e) => setDriveResumeUrl(e.target.value)}
-                  disabled={applying || applySuccess}
-                  style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-white text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706]"
-                />
-              </div>
-              <p className="text-[11px] text-[#78716c]">
-                Ensure your Google Drive file is set to <strong className="text-[#572d12]">&quot;Anyone with the link&quot;</strong> (Viewer).
+            {/* Application Overview Note */}
+            <div className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-4 space-y-1.5 text-xs text-[#635b52]">
+              <p className="font-bold text-[#572d12] flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-[#d97706]" />
+                Direct Application &amp; Pipeline Tracking
+              </p>
+              <p className="leading-relaxed">
+                Clicking <strong>&quot;Confirm &amp; Apply&quot;</strong> will log this role to your Applications dashboard and redirect you straight to the official posting portal.
               </p>
             </div>
 
@@ -690,7 +679,7 @@ export function JobsBoard({
             {applySuccess && (
               <div className="flex items-center gap-2 p-3 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-800">
                 <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                <span>Application logged with your Drive Resume! Redirecting to posting...</span>
+                <span>Application logged! Redirecting to official posting...</span>
               </div>
             )}
 
@@ -705,7 +694,7 @@ export function JobsBoard({
               </button>
               <button
                 type="button"
-                onClick={handleConfirmDriveApply}
+                onClick={handleConfirmApply}
                 disabled={applying || applySuccess}
                 className="pavitra-btn pavitra-btn-sm font-bold inline-flex items-center gap-2 !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer disabled:opacity-50"
                 style={{ backgroundColor: '#d97706', color: '#ffffff' }}
@@ -713,7 +702,7 @@ export function JobsBoard({
                 {applying ? (
                   <>
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span>Verifying &amp; Applying...</span>
+                    <span>Redirecting...</span>
                   </>
                 ) : (
                   <>

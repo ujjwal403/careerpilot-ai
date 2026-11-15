@@ -38,6 +38,7 @@ import {
   getSpecializationsForDegree,
 } from '@/lib/data/india-data'
 import { CollegeCombobox } from '@/components/common/CollegeCombobox'
+import { AIProfileOptimizer } from './AIProfileOptimizer'
 
 interface ProfileFormProps {
   initialUser: User | null
@@ -322,6 +323,24 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
     }
   }
 
+  const handleApplyHeadline = (newHeadline: string) => {
+    setHeadline(newHeadline)
+    setStatusMessage({ type: 'success', text: 'AI Headline applied to profile! Click "Save Changes" at the bottom to commit.' })
+  }
+
+  const handleApplyBio = (newBio: string) => {
+    setBio(newBio)
+    setStatusMessage({ type: 'success', text: 'AI Summary applied to profile! Click "Save Changes" at the bottom to commit.' })
+  }
+
+  const handleAddSkillFromAI = (newSkill: string) => {
+    setSkills((prev) => {
+      if (prev.some((s) => s.toLowerCase() === newSkill.toLowerCase())) return prev
+      return [...prev, newSkill]
+    })
+    setStatusMessage({ type: 'success', text: `Added "${newSkill}" to your skills! Click "Save Changes" to commit.` })
+  }
+
   return (
     <form onSubmit={handleSave} className="space-y-8 max-w-4xl mx-auto text-[#29231e]">
       {/* Top Banner / Completion Card */}
@@ -411,6 +430,25 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           </div>
         </div>
       )}
+
+      {/* Gemini AI Profile Coach */}
+      <AIProfileOptimizer
+        profile={{
+          headline,
+          bio,
+          college_name: collegeName,
+          degree,
+          field_of_study: fieldOfStudy,
+          cgpa,
+          passing_year: passingYear,
+          skills,
+          desired_roles: roles,
+          location: city || state,
+        }}
+        onApplyHeadline={handleApplyHeadline}
+        onApplyBio={handleApplyBio}
+        onAddSkill={handleAddSkillFromAI}
+      />
 
       {/* 1. Personal & Contact Information */}
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-6 sm:p-8 shadow-xs space-y-5">

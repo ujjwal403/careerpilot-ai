@@ -34,7 +34,7 @@ interface ResumeManagerProps {
 export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
   const [resume, setResume] = useState<Resume | null>(initialResume)
   const [activeTab, setActiveTab] = useState<'scanner' | 'ats' | 'extracted' | 'upload'>('scanner')
-  const [uploadMethod, setUploadMethod] = useState<'direct' | 'drive' | 'profile'>('direct')
+  const [uploadMethod, setUploadMethod] = useState<'drive' | 'profile'>('drive')
   const [uploading, setUploading] = useState(false)
   const [extracting, setExtracting] = useState(false)
   const [analyzing, setAnalyzing] = useState(false)
@@ -684,18 +684,6 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
-              onClick={() => setUploadMethod('direct')}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                uploadMethod === 'direct'
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                  : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
-              }`}
-            >
-              <FileUp className="w-3.5 h-3.5" />
-              <span>Direct Upload (PDF/DOCX)</span>
-            </button>
-            <button
-              type="button"
               onClick={() => setUploadMethod('drive')}
               className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 uploadMethod === 'drive'
@@ -719,54 +707,6 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               <span>Sync from Career Profile</span>
             </button>
           </div>
-
-          {/* Method A: Drag-and-drop zone */}
-          {uploadMethod === 'direct' && (
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              className={`relative border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center transition-all group ${
-                isDragging
-                  ? 'border-[#d97706] bg-[#fff3df] scale-[1.01]'
-                  : 'border-[#eadcc9] hover:border-[#d97706] bg-[#fffaf3]'
-              }`}
-            >
-              <input
-                type="file"
-                accept=".pdf,.docx,.doc"
-                onChange={handleFileUpload}
-                disabled={uploading}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
-              />
-
-              <div className="flex flex-col items-center pointer-events-none">
-                {uploading ? (
-                  <>
-                    <Loader2 className="w-10 h-10 animate-spin text-[#d97706] mb-3" />
-                    <p className="text-sm font-bold text-[#572d12]">Uploading & Analyzing Resume...</p>
-                    <p className="text-xs text-[#635b52] mt-1">Please wait while our parsing engine reads your file.</p>
-                  </>
-                ) : (
-                  <>
-                    <div className="w-14 h-14 rounded-2xl bg-[#fff3df] border border-[#eadcc9] flex items-center justify-center text-[#d97706] mb-3 group-hover:scale-105 transition-transform">
-                      <FileUp className="w-7 h-7" />
-                    </div>
-                    <p className="text-sm font-bold text-[#572d12]">
-                      {isDragging
-                        ? 'Release to upload your resume'
-                        : resume
-                        ? 'Drop a new file here or click to replace your resume'
-                        : 'Drag & drop your resume file here or click to browse'}
-                    </p>
-                    <p className="text-xs text-[#78716c] mt-1">
-                      Supports PDF, DOCX • Strict 10 MB maximum file limit
-                    </p>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
 
           {/* Method B: Google Drive link paste */}
           {uploadMethod === 'drive' && (

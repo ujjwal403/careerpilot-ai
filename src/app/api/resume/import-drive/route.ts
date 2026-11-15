@@ -64,10 +64,6 @@ export async function POST(request: Request) {
       data: { user },
     } = await supabase.auth.getUser()
 
-    if (!user) {
-      return NextResponse.json({ error: 'You must be signed in to import a resume.' }, { status: 401 })
-    }
-
     const body = await request.json()
     const { driveUrl } = body
 
@@ -173,6 +169,32 @@ export async function POST(request: Request) {
       fileName = `${fileName}.${fileExt}`
     }
 
+    // Extract raw text from buffer
+    let rawText = ''
+    try {
+      rawText = await extractRawTextFromBuffer(buffer, contentType, fileName)
+    } catch {
+      rawText = ''
+    }
+    const extractedData = await extractResumeInformation(rawText, fileName)
+    const atsReport = evaluateATSCompatibility(rawText, extractedData)
+
+    // If guest / unauthenticated, return the calculated ATS report directly
+    if (!user) {
+      return NextResponse.json({
+        success: true,
+        isGuest: true,
+        resume: {
+          content: rawText.replace(/\0/g, ''),
+          file_name: fileName,
+          title: fileName.replace(/\.[^/.]+$/, ''),
+          file_url: driveUrl,
+        },
+        extractedData,
+        atsReport,
+      })
+    }
+
     const storagePath = `${user.id}/${Date.now()}.${fileExt}`
 
     // Upload to Supabase Storage bucket 'resumes'
@@ -183,21 +205,11 @@ export async function POST(request: Request) {
         upsert: true,
       })
 
-    if (uploadError) {
-      return NextResponse.json({ error: 'Failed to save resume in cloud storage. Please try again.' }, { status: 500 })
+    let publicUrl = driveUrl
+    if (!uploadError) {
+      const { data: urlData } = supabase.storage.from('resumes').getPublicUrl(storagePath)
+      publicUrl = urlData.publicUrl || driveUrl
     }
-
-    const { data: urlData } = supabase.storage.from('resumes').getPublicUrl(storagePath)
-
-    // Run AI Information Extraction on document text
-    let rawText = ''
-    try {
-      rawText = await extractRawTextFromBuffer(buffer, contentType, fileName)
-    } catch {
-      rawText = ''
-    }
-    const extractedData = await extractResumeInformation(rawText, fileName)
-    const atsReport = evaluateATSCompatibility(rawText, extractedData)
 
     // Demote any existing primary resumes to satisfy idx_resumes_one_primary_per_user
     await supabase
@@ -215,7 +227,7 @@ export async function POST(request: Request) {
         file_name: fileName,
         file_size: buffer.byteLength,
         mime_type: contentType,
-        file_url: urlData.publicUrl,
+        file_url: publicUrl,
         content: rawText.replace(/\0/g, '').slice(0, 50000) || null,
         is_primary: true,
         ai_score: atsReport.totalScore,
@@ -240,7 +252,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to record resume in database.' }, { status: 500 })
     }
 
-    return NextResponse.json({ success: true, resume: newResume })
+    return NextResponse.json({
+      success: true,
+      resume: newResume,
+      extractedData,
+      atsReport,
+    })
   } catch {
     return NextResponse.json(
       { error: 'An unexpected error occurred while importing from Google Drive. Please try again.' },

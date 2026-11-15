@@ -131,7 +131,8 @@ export function LoginForm() {
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                   disabled={loading}
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
+                  style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                     errors.email
                       ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
                       : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
@@ -156,7 +157,8 @@ export function LoginForm() {
                   value={form.password}
                   onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                   disabled={loading}
-                  className={`w-full pl-10 pr-10 py-2.5 rounded-xl border bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
+                  style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}
+                  className={`w-full pl-10 pr-10 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                     errors.password
                       ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
                       : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'

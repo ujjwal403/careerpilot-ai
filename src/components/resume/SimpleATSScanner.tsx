@@ -23,6 +23,7 @@ import {
   Layers,
   Award,
   RefreshCw,
+  Link2,
 } from 'lucide-react'
 import { evaluateATSCompatibility, type ATSScorerResult } from '@/lib/ats-scorer'
 import { evaluateJobProfileMatches, type JobProfileMatchResult } from '@/lib/job-profile-matcher'
@@ -57,15 +58,16 @@ export function SimpleATSScanner({
   initialResumeText = '',
   initialSkills = [],
 }: SimpleATSScannerProps) {
-  const [inputMode, setInputMode] = useState<'upload' | 'paste'>('upload')
+  const [inputMode, setInputMode] = useState<'drive' | 'paste'>('drive')
+  const [driveUrl, setDriveUrl] = useState('')
+  const [importedFileName, setImportedFileName] = useState<string | null>(null)
   const [resumeText, setResumeText] = useState(initialResumeText)
-  const [file, setFile] = useState<File | null>(null)
   const [analyzing, setAnalyzing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedJobCategory, setSelectedJobCategory] = useState<string>('all')
   const [expandedMissingItem, setExpandedMissingItem] = useState<string | null>(null)
 
-  // Only show ATS score report after user actively uploads a file or clicks Calculate ATS Score
+  // Only show ATS score report after user actively imports a Drive link or analyzes text
   const [customReport, setCustomReport] = useState<ATSScorerResult | null>(null)
 
   // Evaluate Job Profile Matches based on current text & skills
@@ -76,42 +78,44 @@ export function SimpleATSScanner({
     return evaluateJobProfileMatches(resumeText, initialSkills)
   }, [resumeText, initialSkills])
 
-  // Handle direct file upload & text extraction
-  const handleFileUpload = async (uploadedFile: File) => {
-    if (uploadedFile.size > 10 * 1024 * 1024) {
-      setError('File size exceeds 10MB limit. Please upload a smaller file.')
+  // Handle Google Drive link import & instant ATS evaluation
+  const handleDriveImport = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+
+    if (!driveUrl.trim()) {
+      setError('Please paste a valid Google Drive resume link.')
       return
     }
 
-    setFile(uploadedFile)
+    if (!driveUrl.includes('drive.google.com') && !driveUrl.includes('docs.google.com')) {
+      setError('Please provide a valid Google Drive URL (e.g. https://drive.google.com/file/d/.../view).')
+      return
+    }
+
     setError(null)
     setAnalyzing(true)
 
     try {
-      const formData = new FormData()
-      formData.append('file', uploadedFile)
-
-      const res = await fetch('/api/resume/upload', {
+      const res = await fetch('/api/resume/import-drive', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ driveUrl: driveUrl.trim() }),
       })
 
       const data = await res.json()
 
       if (!res.ok || data.error) {
-        throw new Error(data.error || 'Failed to parse resume.')
+        throw new Error(data.error || 'Failed to import resume from Google Drive.')
       }
 
       const extractedContent = data.resume?.content || ''
-      const extractedSkills = data.extractedData?.skills?.hard_skills || []
-
       setResumeText(extractedContent)
+      setImportedFileName(data.resume?.file_name || 'Google Drive Resume')
 
-      // Generate ATS report (prefer server-parsed deterministic audit)
       const report = data.atsReport || evaluateATSCompatibility(extractedContent, data.extractedData)
       setCustomReport(report)
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to analyze uploaded CV.'
+      const msg = err instanceof Error ? err.message : 'Could not fetch your resume from Google Drive.'
       setError(msg)
     } finally {
       setAnalyzing(false)
@@ -203,15 +207,15 @@ export function SimpleATSScanner({
           <div className="inline-flex items-center gap-1.5 p-1 rounded-2xl bg-[#fffaf3] border border-[#eadcc9]">
             <button
               type="button"
-              onClick={() => setInputMode('upload')}
+              onClick={() => setInputMode('drive')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                inputMode === 'upload'
+                inputMode === 'drive'
                   ? 'bg-white text-[#d97706] shadow-xs border border-[#eadcc9]'
                   : 'text-[#78716c] hover:text-[#572d12]'
               }`}
             >
-              <UploadCloud className="w-4 h-4" />
-              <span>Upload PDF / DOCX</span>
+              <Link2 className="w-4 h-4 text-[#d97706]" />
+              <span>Google Drive Link</span>
             </button>
             <button
               type="button"
@@ -229,50 +233,72 @@ export function SimpleATSScanner({
 
           <div className="text-xs font-bold text-[#78716c] flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-[#166534] animate-pulse" />
-            <span>Live Deterministic Analysis</span>
+            <span>Google Drive Verified Sync</span>
           </div>
         </div>
 
-        {/* Mode A: File Upload Dropzone */}
-        {inputMode === 'upload' && (
-          <div>
-            <div
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                e.preventDefault()
-                const dropped = e.dataTransfer.files?.[0]
-                if (dropped) handleFileUpload(dropped)
-              }}
-              className="border-2 border-dashed border-[#eadcc9] hover:border-[#d97706] rounded-3xl p-8 sm:p-12 text-center bg-[#fffaf3] hover:bg-[#fff3df]/40 transition-all cursor-pointer relative"
-            >
-              <input
-                type="file"
-                accept=".pdf,.docx,.doc"
-                onChange={(e) => {
-                  const selected = e.target.files?.[0]
-                  if (selected) handleFileUpload(selected)
-                }}
-                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-              />
-
-              <div className="flex flex-col items-center justify-center gap-3 pointer-events-none">
-                <div className="w-14 h-14 rounded-2xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center">
-                  <UploadCloud className="w-7 h-7" />
+        {/* Mode A: Google Drive Link Input (Cloud Link Only - No Local File Uploads) */}
+        {inputMode === 'drive' && (
+          <form onSubmit={handleDriveImport} className="space-y-4">
+            <div className="p-6 sm:p-8 rounded-3xl border border-[#eadcc9] bg-[#fffaf3] space-y-4">
+              <div className="flex items-start gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center shrink-0">
+                  <Link2 className="w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-base font-bold text-[#572d12]">
-                    {file ? file.name : 'Drop your CV / Resume here to calculate ATS Score'}
-                  </p>
-                  <p className="text-xs text-[#78716c] mt-1">
-                    Supports PDF, DOCX, or DOC (Max 10MB) • Instant Evaluation
+                  <h4 className="text-base font-extrabold text-[#572d12]">
+                    Link Your Resume from Google Drive
+                  </h4>
+                  <p className="text-xs text-[#78716c] mt-0.5 leading-relaxed">
+                    CareerPilot securely evaluates resumes linked directly from Google Drive. Ensure your file sharing is set to <strong className="text-[#572d12]">Anyone with the link can view</strong>.
                   </p>
                 </div>
-                <span className="pavitra-btn pavitra-btn-light pavitra-btn-sm font-bold text-xs mt-2">
-                  Browse from Computer
-                </span>
+              </div>
+
+              <div className="relative">
+                <input
+                  type="url"
+                  placeholder="https://drive.google.com/file/d/1A2b3C.../view?usp=sharing"
+                  value={driveUrl}
+                  onChange={(e) => setDriveUrl(e.target.value)}
+                  disabled={analyzing}
+                  className="w-full pl-4 pr-32 py-3 rounded-xl border border-[#eadcc9] bg-white text-xs sm:text-sm text-[#29231e] placeholder:text-[#9b9186] focus:outline-hidden focus:border-[#d97706]"
+                />
+                <button
+                  type="submit"
+                  disabled={analyzing || !driveUrl.trim()}
+                  className="absolute right-1.5 top-1.5 bottom-1.5 px-4 rounded-lg bg-gradient-to-r from-[#d97706] to-[#b45309] text-white text-xs font-bold transition-all shadow-xs hover:shadow-md disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+                >
+                  {analyzing ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Fetching...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Audit Resume</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-[11px] text-[#78716c]">
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-[#eadcc9]">
+                  <span className="w-4 h-4 rounded-full bg-[#fff3df] text-[#d97706] font-bold text-[10px] flex items-center justify-center shrink-0">1</span>
+                  <span>Open CV in Google Drive</span>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-[#eadcc9]">
+                  <span className="w-4 h-4 rounded-full bg-[#fff3df] text-[#d97706] font-bold text-[10px] flex items-center justify-center shrink-0">2</span>
+                  <span>Share → Anyone with the link</span>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-[#eadcc9]">
+                  <span className="w-4 h-4 rounded-full bg-[#fff3df] text-[#d97706] font-bold text-[10px] flex items-center justify-center shrink-0">3</span>
+                  <span>Paste link & get ATS score</span>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         )}
 
         {/* Mode B: Direct Text Paste */}
@@ -370,19 +396,19 @@ export function SimpleATSScanner({
             <div className="flex items-center gap-2 text-xs font-bold text-[#572d12]">
               <CheckCircle2 className="w-4 h-4 text-[#166534]" />
               <span>Resume Evaluated Successfully</span>
-              {file && <span className="text-[#78716c] font-normal">• {file.name}</span>}
+              {importedFileName && <span className="text-[#78716c] font-normal">• {importedFileName}</span>}
             </div>
             <button
               type="button"
               onClick={() => {
                 setCustomReport(null)
-                setFile(null)
+                setImportedFileName(null)
                 setResumeText('')
               }}
               className="text-xs font-bold text-[#d97706] hover:text-[#b45309] hover:underline cursor-pointer flex items-center gap-1.5"
             >
               <RefreshCw className="w-3.5 h-3.5" />
-              <span>Upload Another Resume</span>
+              <span>Audit Another Resume Link</span>
             </button>
           </div>
 

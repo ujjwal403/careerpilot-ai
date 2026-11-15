@@ -33,6 +33,7 @@ export function GoogleAuthButton({ label = 'Continue with Google' }: { label?: s
         type="button"
         onClick={handleGoogleSignIn}
         disabled={loading}
+        style={{ backgroundColor: '#ffffff', color: '#572d12', colorScheme: 'light' }}
         className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-[#eadcc9] bg-white hover:bg-[#fffaf3] text-[#572d12] text-sm font-semibold transition-all shadow-sm hover:border-[#d97706]/50 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer"
       >
         {loading ? (

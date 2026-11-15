@@ -22,10 +22,14 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap items-center gap-3.5 my-7">
-              <Link className="pavitra-btn" href="/signup">
+              <Link
+                className="pavitra-btn !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white !font-bold shadow-md shadow-[#d97706]/25 hover:!from-[#b45309] hover:!to-[#92400e]"
+                style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                href="/signup"
+              >
                 Start Free ATS Audit
               </Link>
-              <Link className="pavitra-btn pavitra-btn-light" href="/jobs">
+              <Link className="pavitra-btn pavitra-btn-light font-bold" href="/jobs">
                 Find Verified Openings
               </Link>
             </div>
@@ -49,7 +53,11 @@ export function Hero() {
               If you are submitting applications this season, please do not blast unverified resumes into silent applicant tracking portals. Run an instant 60-second ATS audit first.
             </p>
 
-            <Link className="pavitra-btn pavitra-btn-full text-center" href="/resume">
+            <Link
+              className="pavitra-btn pavitra-btn-full text-center !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white !font-bold shadow-md shadow-[#d97706]/25 hover:!from-[#b45309] hover:!to-[#92400e]"
+              style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+              href="/resume"
+            >
               📍 Start 60-Second Resume Audit
             </Link>
 

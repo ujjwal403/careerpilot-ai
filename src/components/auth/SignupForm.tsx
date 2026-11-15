@@ -248,7 +248,8 @@ export function SignupForm() {
               placeholder="e.g. Alex Rivera"
               value={form.name}
               onChange={(e) => handleChange('name', e.target.value)}
-              className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
+              style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}
+              className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                 errors.name
                   ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
                   : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
@@ -270,7 +271,8 @@ export function SignupForm() {
               placeholder="alex@company.com"
               value={form.email}
               onChange={(e) => handleChange('email', e.target.value)}
-              className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
+              style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}
+              className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                 errors.email
                   ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
                   : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
@@ -292,7 +294,8 @@ export function SignupForm() {
               placeholder="Min. 8 characters (letters & numbers)"
               value={form.password}
               onChange={(e) => handleChange('password', e.target.value)}
-              className={`w-full pl-10 pr-10 py-2.5 rounded-xl border bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
+              style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}
+              className={`w-full pl-10 pr-10 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                 errors.password
                   ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
                   : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'

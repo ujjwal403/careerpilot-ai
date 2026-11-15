@@ -91,7 +91,7 @@ export function OnboardingWizard() {
   const [customSkill, setCustomSkill] = useState('')
 
   // Step 4: Resume
-  const [uploadMethod, setUploadMethod] = useState<'direct' | 'drive'>('direct')
+  const [uploadMethod, setUploadMethod] = useState<'drive'>('drive')
   const [isDragging, setIsDragging] = useState(false)
   const [resumeFile, setResumeFile] = useState<File | null>(null)
   const [driveUrl, setDriveUrl] = useState('')
@@ -788,131 +788,22 @@ export function OnboardingWizard() {
               <span>ATS Telemetry Check</span>
             </div>
             <h2 className="text-2xl font-extrabold tracking-tight text-[#572d12] mb-1.5">
-              Upload your resume
+              Link your resume from Google Drive
             </h2>
             <p className="text-xs sm:text-sm text-[#78716c]">
-              We evaluate ATS formatting, extract projects, and index your academic achievements.
+              We evaluate ATS formatting, extract projects, and index your academic achievements directly from your Google Drive link.
             </p>
           </div>
 
-          {/* Method Selector Tabs */}
-          <div className="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-[#fffaf3] border border-[#eadcc9]">
-            <button
-              type="button"
-              onClick={() => setUploadMethod('direct')}
-              className={`py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                uploadMethod === 'direct'
-                  ? 'bg-white text-[#d97706] shadow-xs border border-[#eadcc9]'
-                  : 'text-[#78716c] hover:text-[#572d12]'
-              }`}
-            >
-              <FileUp className="w-3.5 h-3.5" />
-              <span>Method A: Direct Upload</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setUploadMethod('drive')}
-              className={`py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                uploadMethod === 'drive'
-                  ? 'bg-white text-[#d97706] shadow-xs border border-[#eadcc9]'
-                  : 'text-[#78716c] hover:text-[#572d12]'
-              }`}
-            >
-              <Link2 className="w-3.5 h-3.5" />
-              <span>Method B: Google Drive</span>
-            </button>
-          </div>
-
-          {/* METHOD A: Direct File Upload */}
-          {uploadMethod === 'direct' && (
-            <div>
-              <div
-                onDragOver={(e) => {
-                  e.preventDefault()
-                  setIsDragging(true)
-                }}
-                onDragLeave={(e) => {
-                  e.preventDefault()
-                  setIsDragging(false)
-                }}
-                onDrop={(e) => {
-                  e.preventDefault()
-                  setIsDragging(false)
-                  const file = e.dataTransfer.files?.[0]
-                  if (file) validateAndSetFile(file)
-                }}
-                className={`border-2 border-dashed rounded-3xl p-8 text-center transition-all cursor-pointer relative bg-[#fffaf3] ${
-                  isDragging
-                    ? 'border-[#d97706] bg-[#fff3df]'
-                    : resumeFile
-                    ? 'border-emerald-500 bg-emerald-50/50'
-                    : 'border-[#eadcc9] hover:border-[#d97706]'
-                }`}
-              >
-                <input
-                  type="file"
-                  accept=".pdf,.docx,.doc"
-                  onChange={handleFileChange}
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                />
-
-                <div className="flex flex-col items-center justify-center gap-3 pointer-events-none">
-                  {resumeFile ? (
-                    <>
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-[#166534] flex items-center justify-center">
-                        <Check className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-[#166534]">{resumeFile.name}</p>
-                        <p className="text-xs text-[#78716c] mt-0.5">
-                          {(resumeFile.size / 1024 / 1024).toFixed(2)} MB • Ready for AI Extraction
-                        </p>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="w-12 h-12 rounded-2xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center">
-                        <FileUp className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-[#572d12]">
-                          Drag & drop your resume file here
-                        </p>
-                        <p className="text-xs text-[#78716c] mt-0.5">or click to browse from device</p>
-                      </div>
-                      <span className="text-[11px] font-semibold text-[#78716c]">
-                        Supports PDF and DOCX (Max 10MB)
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {resumeFile && (
-                <div className="mt-3 flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => setResumeFile(null)}
-                    className="text-xs font-bold text-rose-600 hover:underline cursor-pointer"
-                  >
-                    Remove file
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* METHOD B: Google Drive Link */}
-          {uploadMethod === 'drive' && (
-            <div className="space-y-4">
-              <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#635b52] space-y-1.5">
-                <p className="font-bold text-[#572d12]">How to import from Google Drive:</p>
-                <ol className="list-decimal pl-4 space-y-1 text-[#78716c]">
-                  <li>Right click your resume in Google Drive & click <b>Share</b>.</li>
-                  <li>Set General Access to <b>&quot;Anyone with the link&quot;</b>.</li>
-                  <li>Paste the copied link below to extract your profile instantly.</li>
-                </ol>
+          {/* Google Drive Link Form */}
+          <div className="space-y-4">
+            <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#635b52] space-y-1.5">
+              <p className="font-bold text-[#572d12]">How to import from Google Drive:</p>
+              <ol className="list-decimal pl-4 space-y-1 text-[#78716c]">
+                <li>Right click your resume in Google Drive & click <b>Share</b>.</li>
+                <li>Set General Access to <b>&quot;Anyone with the link&quot;</b> (Viewer).</li>
+                <li>Paste the copied link below to extract your profile instantly.</li>
+              </ol>
               </div>
 
               <form onSubmit={handleDriveImport} className="space-y-3">
@@ -963,7 +854,6 @@ export function OnboardingWizard() {
                 </div>
               )}
             </div>
-          )}
 
           {/* Stepper Navigation */}
           <div className="flex items-center justify-between pt-4 border-t border-[#eadcc9]">

@@ -57,7 +57,8 @@ export function Navbar() {
               <>
                 <Link
                   href="/dashboard"
-                  className="pavitra-btn pavitra-btn-sm"
+                  className="pavitra-btn pavitra-btn-sm !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white !font-bold shadow-xs hover:!from-[#b45309] hover:!to-[#92400e]"
+                  style={{ backgroundColor: '#d97706', color: '#ffffff' }}
                 >
                   Dashboard
                 </Link>
@@ -73,7 +74,8 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="pavitra-btn pavitra-btn-sm"
+                  className="pavitra-btn pavitra-btn-sm !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white !font-bold shadow-xs hover:!from-[#b45309] hover:!to-[#92400e]"
+                  style={{ backgroundColor: '#d97706', color: '#ffffff' }}
                 >
                   Audit Resume Free
                 </Link>

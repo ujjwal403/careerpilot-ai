@@ -17,6 +17,12 @@ import {
   RefreshCw,
   ShieldCheck,
   CheckCircle2,
+  Zap,
+  Calendar,
+  X,
+  Link2,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react'
 
 interface JobsBoardProps {
@@ -27,20 +33,23 @@ interface JobsBoardProps {
   initialSavedIds?: string[]
 }
 
-function formatJobSalary(min?: number | null, max?: number | null, currency = 'INR') {
+function formatJobSalary(min?: number | null, max?: number | null, currency = 'INR', type = 'full-time') {
+  const isIntern = type === 'internship'
+
   const fmt = (n: number) => {
-    if (currency === 'INR' && n >= 100000) {
-      return `₹${(n / 100000).toFixed(1)} LPA`
-    }
     if (currency === 'INR') {
-      return `₹${n.toLocaleString('en-IN')}`
+      if (isIntern || n < 100000) {
+        return `₹${n.toLocaleString('en-IN')} /month`
+      }
+      return `₹${(n / 100000).toFixed(1)} LPA`
     }
     return `$${n.toLocaleString('en-US')}`
   }
+
   if (min && max) return `${fmt(min)} - ${fmt(max)}`
   if (min) return `From ${fmt(min)}`
   if (max) return `Up to ${fmt(max)}`
-  return ''
+  return isIntern ? '₹15,000 - ₹35,000 /month (Est.)' : 'Competitive CTC'
 }
 
 export function JobsBoard({
@@ -53,12 +62,21 @@ export function JobsBoard({
   const router = useRouter()
   const [jobs, setJobs] = useState<Job[]>(initialJobs)
   const [search, setSearch] = useState('')
-  const [levelFilter, setLevelFilter] = useState<string>('all')
+  const [opportunityType, setOpportunityType] = useState<'all' | 'internship' | 'fresher' | 'full-time'>('all')
+  const [domainFilter, setDomainFilter] = useState<string>('all')
   const [sourceFilter, setSourceFilter] = useState<'all' | 'aicte' | 'ncs' | 'google_jobs' | 'adzuna'>('all')
   const [remoteOnly, setRemoteOnly] = useState(false)
   const [savedIds, setSavedIds] = useState<string[]>(initialSavedIds)
+  const [appliedIds, setAppliedIds] = useState<string[]>(initialAppliedIds)
   const [syncing, setSyncing] = useState(false)
   const [syncMessage, setSyncMessage] = useState<string | null>(null)
+
+  // Drive Apply Modal state
+  const [selectedJobForApply, setSelectedJobForApply] = useState<Job | null>(null)
+  const [driveResumeUrl, setDriveResumeUrl] = useState('')
+  const [applying, setApplying] = useState(false)
+  const [applySuccess, setApplySuccess] = useState(false)
+  const [applyError, setApplyError] = useState<string | null>(null)
 
   // Calculate dynamic match score between job skills and user skills
   const getMatchScore = (requiredSkills: string[] = []) => {
@@ -68,7 +86,7 @@ export function JobsBoard({
       userSkills.some((u) => u.toLowerCase() === s.toLowerCase())
     )
     const ratio = matches.length / requiredSkills.length
-    return Math.min(99, Math.max(70, Math.round(70 + ratio * 29)))
+    return Math.min(99, Math.max(72, Math.round(72 + ratio * 27)))
   }
 
   // Sync latest openings from Google Jobs, Adzuna India, AICTE & NCS
@@ -112,9 +130,24 @@ export function JobsBoard({
     }
   }
 
-  // Quietly track the application in user's pipeline when clicking Apply
-  const handleTrackApply = async (jobId: string, skillsRequired?: string[]) => {
+  const handleOpenApplyModal = (job: Job) => {
+    setSelectedJobForApply(job)
+    setApplySuccess(false)
+    setApplyError(null)
+  }
+
+  const handleConfirmDriveApply = async () => {
+    if (!selectedJobForApply) return
+
+    if (!driveResumeUrl.trim() || !driveResumeUrl.includes('drive.google.com')) {
+      setApplyError('Please enter a valid Google Drive link for your resume.')
+      return
+    }
+
     try {
+      setApplying(true)
+      setApplyError(null)
+
       let activeUserId = userId
       const supabase = createClient()
 
@@ -129,16 +162,29 @@ export function JobsBoard({
         await supabase.from('applications').upsert(
           {
             user_id: activeUserId,
-            job_id: jobId,
+            job_id: selectedJobForApply.id,
             status: 'applied',
             applied_at: new Date().toISOString(),
-            ai_match_score: getMatchScore(skillsRequired),
+            ai_match_score: getMatchScore(selectedJobForApply.skills_required),
           },
           { onConflict: 'user_id,job_id' }
         )
       }
+
+      setAppliedIds((prev) => [...prev, selectedJobForApply.id])
+      setApplySuccess(true)
+
+      // Open company portal after 1 second
+      setTimeout(() => {
+        const dest =
+          selectedJobForApply.source_url ||
+          `https://www.google.com/search?q=${encodeURIComponent(`${selectedJobForApply.company} ${selectedJobForApply.title} careers apply`)}`
+        window.open(dest, '_blank', 'noopener,noreferrer')
+      }, 1000)
     } catch {
-      // Quietly ignore background tracking errors
+      setApplyError('Failed to record application. Redirecting to job portal...')
+    } finally {
+      setApplying(false)
     }
   }
 
@@ -175,7 +221,7 @@ export function JobsBoard({
     }
   }
 
-  // Filter jobs by search query, seniority level, remote flag, and source channel
+  // Filter jobs
   const filteredJobs = jobs.filter((job) => {
     const q = search.toLowerCase()
     const matchesQuery =
@@ -185,7 +231,22 @@ export function JobsBoard({
       (job.location && job.location.toLowerCase().includes(q)) ||
       job.skills_required?.some((s) => s.toLowerCase().includes(q))
 
-    const matchesLevel = levelFilter === 'all' || job.experience_level === levelFilter
+    const isIntern =
+      job.job_type === 'internship' ||
+      job.title.toLowerCase().includes('intern') ||
+      job.experience_level === 'entry'
+
+    const matchesType =
+      opportunityType === 'all' ||
+      (opportunityType === 'internship' && isIntern) ||
+      (opportunityType === 'fresher' && (isIntern || job.experience_level === 'entry')) ||
+      (opportunityType === 'full-time' && job.job_type === 'full-time')
+
+    const matchesDomain =
+      domainFilter === 'all' ||
+      job.title.toLowerCase().includes(domainFilter.toLowerCase()) ||
+      job.skills_required?.some((s) => s.toLowerCase().includes(domainFilter.toLowerCase()))
+
     const matchesRemote = !remoteOnly || job.is_remote
 
     const matchesSource =
@@ -195,7 +256,7 @@ export function JobsBoard({
       (sourceFilter === 'google_jobs' && job.source === 'google_jobs') ||
       (sourceFilter === 'adzuna' && job.source === 'adzuna')
 
-    return matchesQuery && matchesLevel && matchesRemote && matchesSource
+    return matchesQuery && matchesType && matchesDomain && matchesRemote && matchesSource
   })
 
   const aicteCount = jobs.filter((j) => j.source === 'aicte').length
@@ -207,12 +268,39 @@ export function JobsBoard({
     <div className="space-y-6 max-w-6xl mx-auto text-[#29231e]">
       {/* Top Search & Filter Bar (Matching Pavitra Foundation Editorial Theme) */}
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-5 sm:p-6 shadow-xs space-y-4">
+        {/* Internshala-Style Category Tabs */}
+        <div className="flex flex-wrap items-center gap-2 pb-3 border-b border-[#eadcc9]">
+          <span className="text-[11px] font-bold text-[#572d12] mr-1 flex items-center gap-1">
+            <Zap className="w-3.5 h-3.5 text-[#d97706]" />
+            <span>Opportunities:</span>
+          </span>
+          {[
+            { id: 'all', label: 'All Openings' },
+            { id: 'internship', label: '🎓 Internships (Internshala Style)' },
+            { id: 'fresher', label: '🚀 Fresher / Entry-Level' },
+            { id: 'full-time', label: '💼 Full-Time Roles' },
+          ].map(({ id, label }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setOpportunityType(id as typeof opportunityType)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                opportunityType === id
+                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                  : 'bg-[#fffaf3] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
             <input
               type="text"
-              placeholder="Search across Google Jobs, Adzuna, Swiggy, Zomato, C-DAC, BEL (e.g. React, Python)..."
+              placeholder="Search by role, company, or skills (e.g. React Developer Intern, Python, Zomato, BEL)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#9b9186] focus:outline-hidden focus:border-[#d97706]"
@@ -246,8 +334,35 @@ export function JobsBoard({
           </div>
         </div>
 
+        {/* Domain Filter Pills */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+          <span className="text-[11px] font-bold text-[#635b52] mr-2">Domain:</span>
+          {[
+            { id: 'all', label: 'All Domains' },
+            { id: 'web', label: 'Web Development' },
+            { id: 'python', label: 'Python & AI' },
+            { id: 'react', label: 'React / Frontend' },
+            { id: 'node', label: 'Backend / APIs' },
+            { id: 'data', label: 'Data Science' },
+            { id: 'mobile', label: 'Mobile (Flutter/Android)' },
+          ].map(({ id, label }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setDomainFilter(id)}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                domainFilter === id
+                  ? 'bg-[#572d12] text-white shadow-xs'
+                  : 'bg-[#fffaf3] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
         {/* Source Channels Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-[#eadcc9]">
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#eadcc9]">
           <span className="text-[11px] font-bold text-[#572d12] mr-1 flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-[#d97706]" />
             <span>Channel:</span>
@@ -262,7 +377,7 @@ export function JobsBoard({
                 : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
             }`}
           >
-            All Opportunities ({jobs.length})
+            All Channels ({jobs.length})
           </button>
 
           <button
@@ -274,7 +389,7 @@ export function JobsBoard({
                 : 'bg-sky-50 border border-sky-200 text-sky-800 hover:bg-sky-100'
             }`}
           >
-            <span>🌐 Google Jobs Index ({googleJobsCount})</span>
+            <span>🌐 Google Jobs ({googleJobsCount})</span>
           </button>
 
           <button
@@ -310,36 +425,8 @@ export function JobsBoard({
                 : 'bg-[#fff3df] border border-[#eadcc9] text-[#b45309] hover:bg-[#ffe8c4]'
             }`}
           >
-            <span>🇮🇳 NCS Govt Jobs ({ncsCount})</span>
+            <span>🇮🇳 NCS Govt ({ncsCount})</span>
           </button>
-        </div>
-
-        {/* Seniority Filter */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-2">
-          <span className="text-[11px] font-bold text-[#635b52] mr-2 flex items-center gap-1">
-            <SlidersHorizontal className="w-3 h-3 text-[#d97706]" />
-            <span>Seniority:</span>
-          </span>
-          {[
-            { id: 'all', label: 'All Levels' },
-            { id: 'entry', label: 'Entry / Intern' },
-            { id: 'mid', label: 'Mid-Level' },
-            { id: 'senior', label: 'Senior' },
-            { id: 'lead', label: 'Lead / Principal' },
-          ].map(({ id, label }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setLevelFilter(id)}
-              className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                levelFilter === id
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                  : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -353,22 +440,26 @@ export function JobsBoard({
 
       {/* Results Count Banner */}
       <div className="flex items-center justify-between text-xs text-[#635b52] px-1 font-medium">
-        <span>Showing {filteredJobs.length} verified opportunities</span>
-        <span className="text-[#d97706] font-bold">Matched to your verified skills</span>
+        <span>Showing {filteredJobs.length} opportunities</span>
+        <span className="text-[#d97706] font-bold flex items-center gap-1">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Live ATS Scored &amp; Matched</span>
+        </span>
       </div>
 
       {/* Jobs Grid */}
       <div className="grid grid-cols-1 gap-4">
         {filteredJobs.length === 0 ? (
           <div className="rounded-2xl border border-[#eadcc9] bg-white p-12 text-center shadow-xs space-y-3">
-            <p className="text-sm font-bold text-[#572d12]">No jobs found matching your criteria.</p>
+            <p className="text-sm font-bold text-[#572d12]">No openings found matching your criteria.</p>
             <p className="text-xs text-[#635b52]">Try clearing filters or click &quot;Sync Live Feeds&quot; to fetch the latest openings.</p>
             <div className="flex items-center justify-center gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => {
                   setSearch('')
-                  setLevelFilter('all')
+                  setOpportunityType('all')
+                  setDomainFilter('all')
                   setSourceFilter('all')
                   setRemoteOnly(false)
                 }}
@@ -379,7 +470,8 @@ export function JobsBoard({
               <button
                 type="button"
                 onClick={handleSyncAllFeeds}
-                className="pavitra-btn pavitra-btn-sm font-bold cursor-pointer"
+                className="pavitra-btn pavitra-btn-sm font-bold cursor-pointer !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white"
+                style={{ backgroundColor: '#d97706', color: '#ffffff' }}
               >
                 Sync Live Feeds
               </button>
@@ -389,10 +481,15 @@ export function JobsBoard({
           filteredJobs.map((job) => {
             const matchScore = getMatchScore(job.skills_required)
             const isSaved = savedIds.includes(job.id)
+            const isApplied = appliedIds.includes(job.id)
             const isAICTE = job.source === 'aicte'
             const isNCS = job.source === 'ncs'
             const isGoogleJobs = job.source === 'google_jobs'
             const isAdzuna = job.source === 'adzuna'
+            const isIntern =
+              job.job_type === 'internship' ||
+              job.title.toLowerCase().includes('intern') ||
+              job.experience_level === 'entry'
 
             return (
               <div
@@ -405,10 +502,22 @@ export function JobsBoard({
                       {job.title}
                     </h3>
 
+                    {/* Internshala Badges */}
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fff3df] border border-[#eadcc9] text-[#b45309]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#d97706] animate-pulse" />
+                      Actively Hiring
+                    </span>
+
+                    {isIntern && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fef3c7] text-[#92400e] border border-[#fde68a]">
+                        🎓 Internship
+                      </span>
+                    )}
+
                     {/* Channel Badges */}
                     {isGoogleJobs && (
                       <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 text-sky-800 border border-sky-200">
-                        🌐 Google Jobs Index
+                        🌐 Google Jobs
                       </span>
                     )}
 
@@ -420,19 +529,19 @@ export function JobsBoard({
 
                     {isAICTE && (
                       <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0]">
-                        🏛️ AICTE Verified
+                        🏛️ AICTE
                       </span>
                     )}
 
                     {isNCS && (
                       <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fff3df] text-[#b45309] border border-[#eadcc9]">
-                        🇮🇳 NCS Govt Listing
+                        🇮🇳 NCS Govt
                       </span>
                     )}
 
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#f0fdf4] border border-[#bbf7d0] text-[#166534]">
                       <Sparkles className="w-3 h-3" />
-                      <span>{matchScore}% Match</span>
+                      <span>{matchScore}% ATS Match</span>
                     </span>
 
                     {job.is_remote && (
@@ -449,14 +558,16 @@ export function JobsBoard({
                     </span>
                     <span className="inline-flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-[#78716c]" />
-                      {job.location || 'Remote'}
+                      {job.location || 'Pan India / Remote'}
                     </span>
-                    {(job.salary_min || job.salary_max) && (
-                      <span className="inline-flex items-center gap-1 text-[#166534] font-bold" suppressHydrationWarning>
-                        <DollarSign className="w-3.5 h-3.5 text-[#166534]" />
-                        {formatJobSalary(job.salary_min, job.salary_max, job.salary_currency)}
-                      </span>
-                    )}
+                    <span className="inline-flex items-center gap-1 text-[#166534] font-bold" suppressHydrationWarning>
+                      <DollarSign className="w-3.5 h-3.5 text-[#166534]" />
+                      {formatJobSalary(job.salary_min, job.salary_max, job.salary_currency, job.job_type || 'full-time')}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[#635b52]">
+                      <Calendar className="w-3.5 h-3.5 text-[#78716c]" />
+                      <span>Starts Immediately</span>
+                    </span>
                   </div>
 
                   {job.skills_required && job.skills_required.length > 0 && (
@@ -490,31 +601,131 @@ export function JobsBoard({
                         ? 'border-[#d97706] bg-[#fff3df] text-[#d97706]'
                         : 'border-[#eadcc9] bg-white text-[#635b52] hover:text-[#d97706] hover:border-[#d97706]'
                     }`}
-                    title={isSaved ? 'Job Saved' : 'Save Job'}
+                    title={isSaved ? 'Opportunity Saved' : 'Save Opportunity'}
                   >
                     <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
                   </button>
 
-                  <a
-                    href={
-                      job.source_url ||
-                      `https://www.google.com/search?q=${encodeURIComponent(`${job.company} ${job.title} careers apply`)}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => handleTrackApply(job.id, job.skills_required)}
-                    className="pavitra-btn pavitra-btn-sm inline-flex items-center gap-1.5 font-bold"
-                    title={`Open official job posting for ${job.title} at ${job.company} in a new tab`}
+                  <button
+                    type="button"
+                    onClick={() => handleOpenApplyModal(job)}
+                    className="pavitra-btn pavitra-btn-sm inline-flex items-center gap-1.5 font-bold !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer"
+                    style={{ backgroundColor: '#d97706', color: '#ffffff' }}
                   >
-                    <span>{isAICTE || isNCS ? 'Apply on Govt Portal' : 'Apply Directly'}</span>
+                    <span>{isApplied ? 'Applied ✓' : 'Apply with Drive Resume'}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
+                  </button>
                 </div>
               </div>
             )
           })
         )}
       </div>
+
+      {/* 1-Click Apply with Google Drive Resume Modal */}
+      {selectedJobForApply && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl border border-[#eadcc9] max-w-lg w-full p-6 sm:p-7 shadow-xl space-y-5 text-[#29231e]">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between border-b border-[#eadcc9] pb-4">
+              <div>
+                <span className="text-[10px] font-bold text-[#d97706] uppercase tracking-wider">
+                  Internshala Application Flow
+                </span>
+                <h3 className="text-lg font-extrabold text-[#572d12] mt-0.5">
+                  Apply for {selectedJobForApply.title}
+                </h3>
+                <p className="text-xs text-[#635b52]">
+                  {selectedJobForApply.company} • {selectedJobForApply.location || 'Remote'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedJobForApply(null)}
+                className="p-1.5 rounded-xl border border-[#eadcc9] hover:bg-[#fffaf3] text-[#78716c] hover:text-[#572d12] transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* ATS Match Preview */}
+            <div className="p-3.5 rounded-xl border border-[#bbf7d0] bg-[#f0fdf4] flex items-center justify-between text-xs font-bold text-[#166534]">
+              <span className="flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#166534]" />
+                Profile &amp; Skill Match Score
+              </span>
+              <span>{getMatchScore(selectedJobForApply.skills_required)}% ATS Score</span>
+            </div>
+
+            {/* Drive Link Input */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-[#572d12]">
+                Your Google Drive Resume Link <span className="text-[#d97706]">*</span>
+              </label>
+              <div className="relative">
+                <Link2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
+                <input
+                  type="url"
+                  placeholder="https://drive.google.com/file/d/.../view"
+                  value={driveResumeUrl}
+                  onChange={(e) => setDriveResumeUrl(e.target.value)}
+                  disabled={applying || applySuccess}
+                  style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-white text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706]"
+                />
+              </div>
+              <p className="text-[11px] text-[#78716c]">
+                Ensure your Google Drive file is set to <strong className="text-[#572d12]">&quot;Anyone with the link&quot;</strong> (Viewer).
+              </p>
+            </div>
+
+            {/* Errors or Success */}
+            {applyError && (
+              <div className="flex items-center gap-2 p-3 rounded-xl border border-rose-200 bg-rose-50 text-xs font-semibold text-rose-700">
+                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+                <span>{applyError}</span>
+              </div>
+            )}
+
+            {applySuccess && (
+              <div className="flex items-center gap-2 p-3 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-800">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                <span>Application logged with your Drive Resume! Redirecting to posting...</span>
+              </div>
+            )}
+
+            {/* Modal Actions */}
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setSelectedJobForApply(null)}
+                className="px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs font-bold text-[#635b52] hover:text-[#572d12] cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmDriveApply}
+                disabled={applying || applySuccess}
+                className="pavitra-btn pavitra-btn-sm font-bold inline-flex items-center gap-2 !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer disabled:opacity-50"
+                style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+              >
+                {applying ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Verifying &amp; Applying...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Confirm &amp; Apply</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -500,7 +500,11 @@ export function JobsBoard({
               >
                 <div className="space-y-3 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-base font-extrabold text-[#572d12] group-hover:text-[#d97706] transition-colors">
+                    <h3
+                      onClick={() => handleOpenApplyModal(job)}
+                      className="text-base font-extrabold text-[#572d12] hover:text-[#d97706] transition-colors cursor-pointer"
+                      title="Click to view full job description and requirements"
+                    >
                       {job.title}
                     </h3>
 
@@ -608,6 +612,14 @@ export function JobsBoard({
                     <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
                   </button>
 
+                  <button
+                    type="button"
+                    onClick={() => handleOpenApplyModal(job)}
+                    className="px-3.5 py-1.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] hover:bg-[#fff3df] text-xs font-bold text-[#572d12] hover:text-[#d97706] transition-colors cursor-pointer"
+                  >
+                    View Details
+                  </button>
+
                   {isApplied ? (
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0]">
@@ -641,76 +653,162 @@ export function JobsBoard({
         )}
       </div>
 
-      {/* 1-Click Apply Confirmation Modal */}
+      {/* Full Job Details & Application Modal */}
       {selectedJobForApply && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-[#eadcc9] max-w-lg w-full p-6 sm:p-7 shadow-xl space-y-5 text-[#29231e]">
+          <div className="bg-white rounded-3xl border border-[#eadcc9] max-w-2xl w-full max-h-[88vh] overflow-hidden flex flex-col shadow-2xl text-[#29231e]">
             {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-[#eadcc9] pb-4">
-              <div>
-                <span className="text-[10px] font-bold text-[#d97706] uppercase tracking-wider">
-                  Verified Application Flow
-                </span>
-                <h3 className="text-lg font-extrabold text-[#572d12] mt-0.5">
-                  Apply for {selectedJobForApply.title}
+            <div className="p-6 border-b border-[#eadcc9] bg-[#fffaf3] flex items-start justify-between gap-4">
+              <div className="space-y-1.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-bold text-[#b45309] uppercase tracking-wider bg-[#fff3df] border border-[#eadcc9] px-2.5 py-0.5 rounded-full">
+                    {selectedJobForApply.source_url?.includes('internshala.com')
+                      ? '🎓 Internshala Verified Opening'
+                      : selectedJobForApply.source === 'aicte'
+                      ? '🏛️ AICTE Gov Internship Portal'
+                      : selectedJobForApply.source === 'ncs'
+                      ? '🇮🇳 National Career Service (NCS)'
+                      : '⚡ Verified Employer Opportunity'}
+                  </span>
+
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0]">
+                    <Sparkles className="w-3 h-3" />
+                    <span>{getMatchScore(selectedJobForApply.skills_required)}% ATS Score Match</span>
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-black text-[#572d12]">
+                  {selectedJobForApply.title}
                 </h3>
-                <p className="text-xs text-[#635b52]">
-                  {selectedJobForApply.company} • {selectedJobForApply.location || 'Remote'}
+
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#635b52]">
+                  <span className="font-bold text-[#572d12] flex items-center gap-1">
+                    <Building2 className="w-3.5 h-3.5 text-[#d97706]" />
+                    {selectedJobForApply.company}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-[#78716c]" />
+                    {selectedJobForApply.location || 'Pan India / Remote'}
+                  </span>
+                  <span className="text-[#166534] font-bold flex items-center gap-1">
+                    <DollarSign className="w-3.5 h-3.5 text-[#166534]" />
+                    {formatJobSalary(
+                      selectedJobForApply.salary_min,
+                      selectedJobForApply.salary_max,
+                      selectedJobForApply.salary_currency,
+                      selectedJobForApply.job_type || 'full-time'
+                    )}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedJobForApply(null)}
+                className="p-2 rounded-xl border border-[#eadcc9] hover:bg-white text-[#78716c] hover:text-[#572d12] transition-colors cursor-pointer shrink-0"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body - Scrollable */}
+            <div className="p-6 space-y-6 overflow-y-auto flex-1 text-xs sm:text-sm">
+              {/* About the Role / Description */}
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#d97706]">
+                  About the Role &amp; Responsibilities
+                </h4>
+                <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] text-[#29231e] leading-relaxed whitespace-pre-line text-xs sm:text-[13px]">
+                  {selectedJobForApply.description || 'No detailed description provided by employer.'}
+                </div>
+              </div>
+
+              {/* Requirements & Eligibility */}
+              {selectedJobForApply.requirements && (
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#d97706]">
+                    Candidate Requirements &amp; Eligibility
+                  </h4>
+                  <div className="p-4 rounded-2xl border border-[#eadcc9] bg-white text-[#29231e] leading-relaxed whitespace-pre-line text-xs sm:text-[13px]">
+                    {selectedJobForApply.requirements}
+                  </div>
+                </div>
+              )}
+
+              {/* Required Skills Matrix */}
+              {selectedJobForApply.skills_required && selectedJobForApply.skills_required.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#d97706]">
+                    Key Skills Required
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedJobForApply.skills_required.map((skill) => {
+                      const isMatched = userSkills.some((u) => u.toLowerCase() === skill.toLowerCase())
+                      return (
+                        <span
+                          key={skill}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border ${
+                            isMatched
+                              ? 'bg-[#f0fdf4] text-[#166534] border-[#bbf7d0]'
+                              : 'bg-[#fffaf3] text-[#572d12] border-[#eadcc9]'
+                          }`}
+                        >
+                          {isMatched && <CheckCircle2 className="w-3.5 h-3.5 text-[#166534]" />}
+                          <span>{skill}</span>
+                          {isMatched && <span className="text-[10px] text-[#166534] font-bold">(In Your Profile)</span>}
+                        </span>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Original Website Source Link Box */}
+              <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fff3df] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
+                    <Globe className="w-4 h-4 text-[#d97706]" />
+                    Original Posting Website &amp; Application Path
+                  </span>
+                  <span className="text-[10px] font-bold text-[#b45309] uppercase">Verified URL</span>
+                </div>
+                <div className="bg-white p-3 rounded-xl border border-[#eadcc9] flex items-center justify-between gap-3 text-xs break-all">
+                  <span className="text-[#635b52] font-mono text-[11px] truncate">
+                    {selectedJobForApply.source_url || 'https://www.google.com/search?q=' + encodeURIComponent(selectedJobForApply.company + ' ' + selectedJobForApply.title)}
+                  </span>
+                  <ExternalLink className="w-3.5 h-3.5 text-[#d97706] shrink-0" />
+                </div>
+                <p className="text-[11px] text-[#78716c]">
+                  Clicking <strong>&quot;Apply on Official Website&quot;</strong> below will redirect you straight to this exact posting in a new tab and automatically log your application in your pipeline tracker.
                 </p>
               </div>
+
+              {/* Errors or Success */}
+              {applyError && (
+                <div className="flex items-center gap-2 p-3 rounded-xl border border-rose-200 bg-rose-50 text-xs font-semibold text-rose-700">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+                  <span>{applyError}</span>
+                </div>
+              )}
+
+              {applySuccess && (
+                <div className="flex items-center gap-2 p-3 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-800 animate-in fade-in">
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                  <span>Application logged to your Dashboard! Redirecting to official posting...</span>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-5 border-t border-[#eadcc9] bg-[#fffaf3] flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => setSelectedJobForApply(null)}
-                className="p-1.5 rounded-xl border border-[#eadcc9] hover:bg-[#fffaf3] text-[#78716c] hover:text-[#572d12] transition-colors cursor-pointer"
+                className="px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-white text-xs font-bold text-[#635b52] hover:text-[#572d12] cursor-pointer"
               >
-                <X className="w-4 h-4" />
+                Close
               </button>
-            </div>
 
-            {/* ATS Match Preview */}
-            <div className="p-3.5 rounded-xl border border-[#bbf7d0] bg-[#f0fdf4] flex items-center justify-between text-xs font-bold text-[#166534]">
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-[#166534]" />
-                Profile &amp; Skill Match Score
-              </span>
-              <span>{getMatchScore(selectedJobForApply.skills_required)}% ATS Score</span>
-            </div>
-
-            {/* Application Overview Note */}
-            <div className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-4 space-y-1.5 text-xs text-[#635b52]">
-              <p className="font-bold text-[#572d12] flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#d97706]" />
-                Direct Application &amp; Pipeline Tracking
-              </p>
-              <p className="leading-relaxed">
-                Clicking <strong>&quot;Confirm &amp; Apply&quot;</strong> will log this role to your Applications dashboard and redirect you straight to the official posting portal.
-              </p>
-            </div>
-
-            {/* Errors or Success */}
-            {applyError && (
-              <div className="flex items-center gap-2 p-3 rounded-xl border border-rose-200 bg-rose-50 text-xs font-semibold text-rose-700">
-                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-                <span>{applyError}</span>
-              </div>
-            )}
-
-            {applySuccess && (
-              <div className="flex items-center gap-2 p-3 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-800">
-                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                <span>Application logged! Redirecting to official posting...</span>
-              </div>
-            )}
-
-            {/* Modal Actions */}
-            <div className="flex items-center justify-end gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => setSelectedJobForApply(null)}
-                className="px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs font-bold text-[#635b52] hover:text-[#572d12] cursor-pointer"
-              >
-                Cancel
-              </button>
               <button
                 type="button"
                 onClick={handleConfirmApply}
@@ -721,11 +819,19 @@ export function JobsBoard({
                 {applying ? (
                   <>
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span>Redirecting...</span>
+                    <span>Opening Official Portal...</span>
                   </>
                 ) : (
                   <>
-                    <span>Confirm &amp; Apply</span>
+                    <span>
+                      {selectedJobForApply.source_url?.includes('internshala.com')
+                        ? 'Apply on Internshala'
+                        : selectedJobForApply.source === 'aicte'
+                        ? 'Apply on AICTE'
+                        : selectedJobForApply.source === 'ncs'
+                        ? 'Apply on NCS Portal'
+                        : `Apply on ${selectedJobForApply.company}`}
+                    </span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </>
                 )}

@@ -71,10 +71,10 @@ const PASSIVE_WORDS = [
 ]
 
 const STANDARD_SECTIONS = [
-  { name: 'Education', regex: /\b(education|academics|qualification|academic background)\b/i },
-  { name: 'Experience', regex: /\b(experience|work experience|employment|internships|professional experience)\b/i },
-  { name: 'Skills', regex: /\b(skills|technical skills|technologies|core competencies|expertise)\b/i },
-  { name: 'Projects', regex: /\b(projects|academic projects|key projects|personal projects)\b/i },
+  { name: 'Education', regex: /\b(education|academics|qualifications|academic background|coursework)\b/i },
+  { name: 'Experience / Projects', regex: /\b(experience|work experience|work history|employment|internships|projects|key projects|academic projects|technical projects)\b/i },
+  { name: 'Technical Skills', regex: /\b(skills|technical skills|technologies|core competencies|expertise|technical proficiency|tools)\b/i },
+  { name: 'Summary / Certifications', regex: /\b(summary|profile|about me|objective|career objective|certifications|certificates|achievements|awards)\b/i },
 ]
 
 export function evaluateATSCompatibility(
@@ -99,14 +99,16 @@ export function evaluateATSCompatibility(
   // Rule 1: Contact Completeness (10 pts)
   // Phone, email, and location clearly visible
   // -------------------------------------------------------------
-  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/
+  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/i
   const phoneRegex = /(\+?\d{1,4}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}|\b[6-9]\d{9}\b/
-  const hasEmail = Boolean(contact?.email || emailRegex.test(text))
-  const hasPhone = Boolean(contact?.phone || phoneRegex.test(text))
-  const hasLocation = Boolean(
-    contact?.city ||
-    /\b(delhi|bangalore|bengaluru|mumbai|hyderabad|pune|chennai|noida|gurgaon|gurugram|kolkata|india|remote)\b/i.test(text)
-  )
+  const matchedEmail = contact?.email || text.match(emailRegex)?.[0]
+  const matchedPhone = contact?.phone || text.match(phoneRegex)?.[0]
+  const hasEmail = Boolean(matchedEmail)
+  const hasPhone = Boolean(matchedPhone)
+
+  // Broad location recognition: Indian cities, global tech hubs, states, PIN codes, address keywords
+  const locationRegex = /\b(delhi|new delhi|bangalore|bengaluru|mumbai|hyderabad|pune|chennai|noida|gurgaon|gurugram|kolkata|ahmedabad|jaipur|lucknow|chandigarh|indore|bhopal|patna|kochi|coimbatore|bhubaneswar|dehradun|visakhapatnam|kanpur|nagpur|karnataka|maharashtra|tamil nadu|telangana|uttar pradesh|gujarat|rajasthan|kerala|india|remote|san francisco|new york|seattle|austin|chicago|london|berlin|toronto)\b|\b\d{6}\b/i
+  const hasLocation = Boolean(contact?.city || locationRegex.test(text) || /\b(address|location|residence)\s*[:|-]/i.test(text))
 
   let contactScore = 0
   if (hasEmail) contactScore += 4
@@ -121,7 +123,7 @@ export function evaluateATSCompatibility(
     maxScore: 10,
     status: contactScore >= 8 ? 'passed' : contactScore >= 4 ? 'warning' : 'failed',
     description: 'Verifies that phone number, email address, and location are visible.',
-    details: `${hasEmail ? '✓ Email' : '✗ Email missing'}, ${hasPhone ? '✓ Phone' : '✗ Phone missing'}, ${hasLocation ? '✓ Location' : '✗ Location missing'}`,
+    details: `${hasEmail ? `✓ Email (${matchedEmail})` : '✗ Email missing'}, ${hasPhone ? `✓ Phone (${matchedPhone})` : '✗ Phone missing'}, ${hasLocation ? '✓ Location verified' : '✗ Location missing'}`,
     suggestion:
       contactScore < 10
         ? 'Ensure your phone number (+91), professional email, and city are placed prominently in your resume header.'
@@ -140,13 +142,16 @@ export function evaluateATSCompatibility(
   // -------------------------------------------------------------
   const hasLinkedIn = Boolean(
     contact?.linkedin_url ||
-    /linkedin\.com\/in\/[a-zA-Z0-9_-]+/i.test(text)
+    /linkedin\.com\/(?:in\/)?[a-zA-Z0-9_-]+/i.test(text) ||
+    /linkedin:\s*@?[a-zA-Z0-9_-]+/i.test(text)
   )
   const hasGitHubOrPortfolio = Boolean(
     contact?.github_url ||
     contact?.portfolio_url ||
     /github\.com\/[a-zA-Z0-9_-]+/i.test(text) ||
-    /https?:\/\/[^\s]+\.(dev|tech|me|io|com)/i.test(text)
+    /gitlab\.com\/[a-zA-Z0-9_-]+/i.test(text) ||
+    /https?:\/\/[^\s]+\.(dev|tech|me|io|com|app|vercel\.app|github\.io)/i.test(text) ||
+    /github:\s*@?[a-zA-Z0-9_-]+/i.test(text)
   )
 
   let linkScore = 0
@@ -164,7 +169,7 @@ export function evaluateATSCompatibility(
     details: `${hasLinkedIn ? '✓ LinkedIn profile found' : '✗ LinkedIn missing'}, ${hasGitHubOrPortfolio ? '✓ GitHub/Portfolio found' : '✗ GitHub/Portfolio link missing'}`,
     suggestion:
       linkScore < 10
-        ? 'Include your LinkedIn profile link and GitHub/portfolio URL to give Indian technical screeners immediate proof of work.'
+        ? 'Include your LinkedIn profile link and GitHub/portfolio URL to give technical screeners immediate proof of work.'
         : undefined,
   })
 
@@ -223,17 +228,31 @@ export function evaluateATSCompatibility(
   // Rule 4: Academic Metrics (CGPA / Percentage) (10 pts)
   // Critical for Indian tech recruitment & campus cutoffs
   // -------------------------------------------------------------
-  const cgpaRegex = /\b([6-9]\.\d{1,2}|10\.0)\s*(\/\s*10|cgpa|cpi|gpa)?\b/i
+  const cgpaRegex10 = /\b([5-9]\.\d{1,2}|10(\.0)?)\s*(\/\s*10|cgpa|cpi|gpa)?\b/i
+  const gpaRegex4 = /\b([2-4]\.\d{1,2})\s*(\/\s*4(\.0)?|\s*gpa)\b/i
   const percentRegex = /\b(\d{2}(\.\d{1,2})?)\s*%/i
+  const hasDegree = Boolean(
+    education?.[0]?.degree ||
+    /\b(b\.?tech|b\.?e\.?|bca|mca|b\.?sc|m\.?tech|m\.?s\.?|b\.?s\.?|bachelor|master|diploma|computer science|engineering)\b/i.test(text)
+  )
+
   const firstEdu = education?.[0]
   const extractedScore = firstEdu?.score?.trim()
   const matchedCgpa =
     extractedScore ||
-    text.match(cgpaRegex)?.[0] ||
+    text.match(cgpaRegex10)?.[0] ||
+    text.match(gpaRegex4)?.[0] ||
     text.match(percentRegex)?.[0] ||
     (/\b(cgpa|cpi|gpa|percentage|percent)\b/i.test(text) ? 'CGPA mentioned' : null)
 
-  const academicScore = matchedCgpa ? 10 : 3
+  let academicScore = 3
+  if (matchedCgpa && hasDegree) {
+    academicScore = 10
+  } else if (matchedCgpa) {
+    academicScore = 8
+  } else if (hasDegree) {
+    academicScore = 7
+  }
 
   rules.push({
     id: 'academic_metrics',
@@ -241,22 +260,24 @@ export function evaluateATSCompatibility(
     category: 'skills',
     score: academicScore,
     maxScore: 10,
-    status: academicScore === 10 ? 'passed' : 'warning',
-    description: 'Verifies CGPA or percentage for Indian recruiters (TCS, Infosys, and startups).',
+    status: academicScore >= 8 ? 'passed' : 'warning',
+    description: 'Verifies degree and academic performance (CGPA/Percentage) for recruiter thresholds.',
     details:
-      academicScore === 10
-        ? `Academic score verified (${matchedCgpa})`
-        : 'No explicit CGPA or percentage score detected in education.',
+      matchedCgpa
+        ? `Academic score verified: "${matchedCgpa}"${hasDegree ? ' with verified degree qualification' : ''}`
+        : hasDegree
+        ? 'Degree identified, but no explicit CGPA or percentage score detected.'
+        : 'No degree or explicit CGPA/percentage score detected in education.',
     suggestion:
       academicScore < 10
-        ? 'Indian campus and MNC ATS filters (TCS, Infosys, Wipro, Tier-1) mandate a minimum 60% or 6.5 CGPA threshold. Add your CGPA to pass filters.'
+        ? 'Indian campus and MNC ATS filters (TCS, Infosys, Wipro, Tier-1) mandate a minimum 60% or 6.5 CGPA threshold. Explicitly state your CGPA or percentage to pass filters.'
         : undefined,
   })
 
-  if (academicScore === 10) {
-    strengths.push(`Academic performance metric is clearly listed (${matchedCgpa}).`)
+  if (academicScore >= 8) {
+    strengths.push(`Academic qualification and performance verified (${matchedCgpa || 'Degree verified'}).`)
   } else {
-    improvements.push('Add your CGPA or graduation percentage to prevent automated college-cutoff rejections.')
+    improvements.push('Add your CGPA or graduation percentage to clear automated cutoff filters.')
   }
 
   // -------------------------------------------------------------

@@ -121,33 +121,33 @@ function extractPdfText(buffer: Buffer): string {
       let blockText = ''
 
       // Handle Tj with literal string: (text) Tj
-      const tjLiteralRegex = /\((.*?)\)\s*Tj/g
+      const tjLiteralRegex = /\(([\s\S]*?)\)\s*Tj/gi
       let tjMatch: RegExpExecArray | null
       while ((tjMatch = tjLiteralRegex.exec(block)) !== null) {
         blockText += decodePdfLiteralString(tjMatch[1]) + ' '
       }
 
       // Handle Tj with hex string: <hex> Tj
-      const tjHexRegex = /<([0-9a-fA-F]+)>\s*Tj/g
+      const tjHexRegex = /<([0-9a-fA-F\s]+)>\s*Tj/gi
       let tjHexMatch: RegExpExecArray | null
       while ((tjHexMatch = tjHexRegex.exec(block)) !== null) {
         blockText += decodePdfHexString(tjHexMatch[1]) + ' '
       }
 
       // Handle TJ arrays: [(text) -10 (more)] TJ or [<hex> -10 <hex>] TJ
-      const arrayRegex = /\[(.*?)\]\s*TJ/g
+      const arrayRegex = /\[([\s\S]*?)\]\s*TJ/gi
       let arrMatch: RegExpExecArray | null
       while ((arrMatch = arrayRegex.exec(block)) !== null) {
         const arrContent = arrMatch[1]
         // Match literal parts
-        const innerLiteralRegex = /\((.*?)\)/g
+        const innerLiteralRegex = /\(([\s\S]*?)\)/g
         let innerMatch: RegExpExecArray | null
         while ((innerMatch = innerLiteralRegex.exec(arrContent)) !== null) {
           blockText += decodePdfLiteralString(innerMatch[1])
         }
 
         // Match hex parts
-        const innerHexRegex = /<([0-9a-fA-F]+)>/g
+        const innerHexRegex = /<([0-9a-fA-F\s]+)>/g
         let innerHex: RegExpExecArray | null
         while ((innerHex = innerHexRegex.exec(arrContent)) !== null) {
           blockText += decodePdfHexString(innerHex[1])

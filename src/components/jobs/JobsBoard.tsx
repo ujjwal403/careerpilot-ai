@@ -62,7 +62,7 @@ export function JobsBoard({
   const router = useRouter()
   const [jobs, setJobs] = useState<Job[]>(initialJobs)
   const [search, setSearch] = useState('')
-  const [opportunityType, setOpportunityType] = useState<'all' | 'internship' | 'fresher' | 'full-time'>('all')
+  const [opportunityType, setOpportunityType] = useState<'all' | 'internship' | 'fresher' | 'full-time' | 'applied'>('all')
   const [domainFilter, setDomainFilter] = useState<string>('all')
   const [sourceFilter, setSourceFilter] = useState<'all' | 'aicte' | 'ncs' | 'google_jobs' | 'adzuna'>('all')
   const [remoteOnly, setRemoteOnly] = useState(false)
@@ -238,6 +238,7 @@ export function JobsBoard({
 
     const matchesType =
       opportunityType === 'all' ||
+      (opportunityType === 'applied' && appliedIds.includes(job.id)) ||
       (opportunityType === 'internship' && isIntern) ||
       (opportunityType === 'fresher' && (isIntern || job.experience_level === 'entry')) ||
       (opportunityType === 'full-time' && job.job_type === 'full-time')
@@ -275,8 +276,9 @@ export function JobsBoard({
             <span>Opportunities:</span>
           </span>
           {[
-            { id: 'all', label: 'All Openings' },
-            { id: 'internship', label: '🎓 Internships (Internshala Style)' },
+            { id: 'all', label: `All Openings (${jobs.length})` },
+            { id: 'applied', label: `✅ Applied Jobs (${appliedIds.length})` },
+            { id: 'internship', label: '🎓 Internships (Internshala)' },
             { id: 'fresher', label: '🚀 Fresher / Entry-Level' },
             { id: 'full-time', label: '💼 Full-Time Roles' },
           ].map(({ id, label }) => (
@@ -606,15 +608,32 @@ export function JobsBoard({
                     <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => handleOpenApplyModal(job)}
-                    className="pavitra-btn pavitra-btn-sm inline-flex items-center gap-1.5 font-bold !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer"
-                    style={{ backgroundColor: '#d97706', color: '#ffffff' }}
-                  >
-                    <span>{isApplied ? 'Applied ✓' : 'Apply Now'}</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </button>
+                  {isApplied ? (
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0]">
+                        <CheckCircle2 className="w-4 h-4 text-[#166534]" />
+                        <span>Applied ✓</span>
+                      </span>
+                      <a
+                        href="/applications"
+                        className="px-3 py-1.5 rounded-xl border border-[#eadcc9] bg-white hover:bg-[#fffaf3] text-xs font-bold text-[#d97706] hover:underline transition-colors flex items-center gap-1"
+                        title="View status in your Applications Pipeline"
+                      >
+                        <span>Track</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleOpenApplyModal(job)}
+                      className="pavitra-btn pavitra-btn-sm inline-flex items-center gap-1.5 font-bold !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer"
+                      style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                    >
+                      <span>Apply Now</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
             )

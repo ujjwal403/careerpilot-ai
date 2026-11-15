@@ -157,3 +157,4 @@ Respond ONLY with a valid JSON object (no markdown quotes, no triple backticks, 
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
+

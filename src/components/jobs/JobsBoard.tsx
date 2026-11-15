@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Job } from '@/types'
@@ -31,6 +31,13 @@ interface JobsBoardProps {
   userId?: string
   initialAppliedIds?: string[]
   initialSavedIds?: string[]
+}
+
+function getJobDestinationUrl(job: Job): string {
+  if (job.source_url && job.source_url.startsWith('http')) {
+    return job.source_url
+  }
+  return `https://www.google.com/search?q=${encodeURIComponent(`${job.company} ${job.title} careers apply`)}`
 }
 
 function formatJobSalary(min?: number | null, max?: number | null, currency = 'INR', type = 'full-time') {
@@ -71,11 +78,45 @@ export function JobsBoard({
   const [syncing, setSyncing] = useState(false)
   const [syncMessage, setSyncMessage] = useState<string | null>(null)
 
-  // Apply Modal state
+  // Apply & Details Modal state
   const [selectedJobForApply, setSelectedJobForApply] = useState<Job | null>(null)
-  const [applying, setApplying] = useState(false)
   const [applySuccess, setApplySuccess] = useState(false)
   const [applyError, setApplyError] = useState<string | null>(null)
+
+  // Initialize and persist applied jobs from localStorage so user never loses track
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('careerpilot_applied_jobs')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setAppliedIds((prev) => Array.from(new Set([...prev, ...parsed])))
+        }
+      }
+    } catch {
+      // ignore storage errors
+    }
+  }, [])
+
+  // Lock background scroll and listen for Escape key when modal is open
+  useEffect(() => {
+    if (!selectedJobForApply) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedJobForApply(null)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [selectedJobForApply])
 
   // Calculate dynamic match score between job skills and user skills
   const getMatchScore = (requiredSkills: string[] = []) => {
@@ -135,13 +176,24 @@ export function JobsBoard({
     setApplyError(null)
   }
 
-  const handleConfirmApply = async () => {
-    if (!selectedJobForApply) return
+  // Unified mark-applied handler that updates state, localStorage, and Supabase in background
+  const handleMarkApplied = async (job: Job) => {
+    // 1. Optimistic state update
+    setAppliedIds((prev) => (prev.includes(job.id) ? prev : [...prev, job.id]))
 
+    // 2. Persist in localStorage as resilient backup
     try {
-      setApplying(true)
-      setApplyError(null)
+      const stored = localStorage.getItem('careerpilot_applied_jobs')
+      const current = stored ? JSON.parse(stored) : []
+      if (!current.includes(job.id)) {
+        localStorage.setItem('careerpilot_applied_jobs', JSON.stringify([...current, job.id]))
+      }
+    } catch {
+      // ignore storage errors
+    }
 
+    // 3. Persist to Supabase applications table in background
+    try {
       let activeUserId = userId
       const supabase = createClient()
 
@@ -153,38 +205,23 @@ export function JobsBoard({
       }
 
       if (activeUserId) {
-        await supabase.from('applications').upsert(
-          {
-            user_id: activeUserId,
-            job_id: selectedJobForApply.id,
-            status: 'applied',
-            applied_at: new Date().toISOString(),
-            ai_match_score: getMatchScore(selectedJobForApply.skills_required),
-          },
-          { onConflict: 'user_id,job_id' }
-        )
+        // Ensure job.id is a valid UUID before upserting into public.applications
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(job.id)
+        if (isUuid) {
+          await supabase.from('applications').upsert(
+            {
+              user_id: activeUserId,
+              job_id: job.id,
+              status: 'applied',
+              applied_at: new Date().toISOString(),
+              ai_match_score: getMatchScore(job.skills_required),
+            },
+            { onConflict: 'user_id,job_id' }
+          )
+        }
       }
-
-      setAppliedIds((prev) => [...prev, selectedJobForApply.id])
-      setApplySuccess(true)
-
-      // Open company portal after short feedback
-      setTimeout(() => {
-        const dest =
-          selectedJobForApply.source_url ||
-          `https://www.google.com/search?q=${encodeURIComponent(`${selectedJobForApply.company} ${selectedJobForApply.title} careers apply`)}`
-        window.open(dest, '_blank', 'noopener,noreferrer')
-        setSelectedJobForApply(null)
-      }, 700)
-    } catch {
-      // Direct user even if background tracking has issue
-      const dest =
-        selectedJobForApply.source_url ||
-        `https://www.google.com/search?q=${encodeURIComponent(`${selectedJobForApply.company} ${selectedJobForApply.title} careers apply`)}`
-      window.open(dest, '_blank', 'noopener,noreferrer')
-      setSelectedJobForApply(null)
-    } finally {
-      setApplying(false)
+    } catch (err) {
+      console.warn('Could not record application in Supabase:', err)
     }
   }
 
@@ -614,7 +651,11 @@ export function JobsBoard({
 
                   <button
                     type="button"
-                    onClick={() => handleOpenApplyModal(job)}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleOpenApplyModal(job)
+                    }}
                     className="px-3.5 py-1.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] hover:bg-[#fff3df] text-xs font-bold text-[#572d12] hover:text-[#d97706] transition-colors cursor-pointer"
                   >
                     View Details
@@ -636,15 +677,21 @@ export function JobsBoard({
                       </a>
                     </div>
                   ) : (
-                    <button
-                      type="button"
-                      onClick={() => handleOpenApplyModal(job)}
-                      className="pavitra-btn pavitra-btn-sm inline-flex items-center gap-1.5 font-bold !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer"
+                    <a
+                      href={getJobDestinationUrl(job)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleMarkApplied(job)
+                      }}
+                      className="pavitra-btn pavitra-btn-sm inline-flex items-center gap-1.5 font-bold !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer no-underline"
                       style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                      title={`Apply directly on ${job.company} official portal`}
                     >
                       <span>Apply Now</span>
                       <ExternalLink className="w-3.5 h-3.5" />
-                    </button>
+                    </a>
                   )}
                 </div>
               </div>
@@ -655,11 +702,24 @@ export function JobsBoard({
 
       {/* Full Job Details & Application Modal */}
       {selectedJobForApply && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-[#eadcc9] max-w-2xl w-full max-h-[88vh] overflow-hidden flex flex-col shadow-2xl text-[#29231e]">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedJobForApply.title}
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setSelectedJobForApply(null)
+            }
+          }}
+        >
+          <div
+            className="bg-white rounded-3xl border border-[#eadcc9] max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl text-[#29231e] relative my-auto animate-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Modal Header */}
-            <div className="p-6 border-b border-[#eadcc9] bg-[#fffaf3] flex items-start justify-between gap-4">
-              <div className="space-y-1.5">
+            <div className="p-5 sm:p-6 border-b border-[#eadcc9] bg-[#fffaf3] flex items-start justify-between gap-4 shrink-0">
+              <div className="space-y-1.5 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[10px] font-bold text-[#b45309] uppercase tracking-wider bg-[#fff3df] border border-[#eadcc9] px-2.5 py-0.5 rounded-full">
                     {selectedJobForApply.source_url?.includes('internshala.com')
@@ -677,7 +737,7 @@ export function JobsBoard({
                   </span>
                 </div>
 
-                <h3 className="text-xl font-black text-[#572d12]">
+                <h3 className="text-lg sm:text-xl font-black text-[#572d12] break-words">
                   {selectedJobForApply.title}
                 </h3>
 
@@ -690,7 +750,7 @@ export function JobsBoard({
                     <MapPin className="w-3.5 h-3.5 text-[#78716c]" />
                     {selectedJobForApply.location || 'Pan India / Remote'}
                   </span>
-                  <span className="text-[#166534] font-bold flex items-center gap-1">
+                  <span className="text-[#166534] font-bold flex items-center gap-1" suppressHydrationWarning>
                     <DollarSign className="w-3.5 h-3.5 text-[#166534]" />
                     {formatJobSalary(
                       selectedJobForApply.salary_min,
@@ -706,13 +766,15 @@ export function JobsBoard({
                 type="button"
                 onClick={() => setSelectedJobForApply(null)}
                 className="p-2 rounded-xl border border-[#eadcc9] hover:bg-white text-[#78716c] hover:text-[#572d12] transition-colors cursor-pointer shrink-0"
+                title="Close modal"
+                aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Modal Body - Scrollable */}
-            <div className="p-6 space-y-6 overflow-y-auto flex-1 text-xs sm:text-sm">
+            <div className="p-5 sm:p-6 space-y-6 overflow-y-auto flex-1 text-xs sm:text-sm">
               {/* About the Role / Description */}
               <div className="space-y-2">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#d97706]">
@@ -764,7 +826,7 @@ export function JobsBoard({
               )}
 
               {/* Original Website Source Link Box */}
-              <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fff3df] space-y-2">
+              <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fff3df] space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
                     <Globe className="w-4 h-4 text-[#d97706]" />
@@ -772,70 +834,67 @@ export function JobsBoard({
                   </span>
                   <span className="text-[10px] font-bold text-[#b45309] uppercase">Verified URL</span>
                 </div>
-                <div className="bg-white p-3 rounded-xl border border-[#eadcc9] flex items-center justify-between gap-3 text-xs break-all">
-                  <span className="text-[#635b52] font-mono text-[11px] truncate">
-                    {selectedJobForApply.source_url || 'https://www.google.com/search?q=' + encodeURIComponent(selectedJobForApply.company + ' ' + selectedJobForApply.title)}
+                <a
+                  href={getJobDestinationUrl(selectedJobForApply)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    handleMarkApplied(selectedJobForApply)
+                    setApplySuccess(true)
+                  }}
+                  className="bg-white hover:bg-[#fffaf3] p-3 rounded-xl border border-[#eadcc9] hover:border-[#d97706] flex items-center justify-between gap-3 text-xs transition-colors group/link cursor-pointer block no-underline"
+                  title="Open direct job URL in new tab"
+                >
+                  <span className="text-[#635b52] group-hover/link:text-[#d97706] font-mono text-[11px] truncate block">
+                    {getJobDestinationUrl(selectedJobForApply)}
                   </span>
                   <ExternalLink className="w-3.5 h-3.5 text-[#d97706] shrink-0" />
-                </div>
+                </a>
                 <p className="text-[11px] text-[#78716c]">
-                  Clicking <strong>&quot;Apply on Official Website&quot;</strong> below will redirect you straight to this exact posting in a new tab and automatically log your application in your pipeline tracker.
+                  Clicking <strong>&quot;Apply on Official Website&quot;</strong> below opens this exact verified posting in a new tab and automatically logs your application in your pipeline tracker.
                 </p>
               </div>
-
-              {/* Errors or Success */}
-              {applyError && (
-                <div className="flex items-center gap-2 p-3 rounded-xl border border-rose-200 bg-rose-50 text-xs font-semibold text-rose-700">
-                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-                  <span>{applyError}</span>
-                </div>
-              )}
 
               {applySuccess && (
                 <div className="flex items-center gap-2 p-3 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-800 animate-in fade-in">
                   <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                  <span>Application logged to your Dashboard! Redirecting to official posting...</span>
+                  <span>Application tracked in Dashboard! Official portal opened in new tab.</span>
                 </div>
               )}
             </div>
 
             {/* Modal Footer */}
-            <div className="p-5 border-t border-[#eadcc9] bg-[#fffaf3] flex items-center justify-between gap-3">
+            <div className="p-4 sm:p-5 border-t border-[#eadcc9] bg-[#fffaf3] flex items-center justify-between gap-3 shrink-0">
               <button
                 type="button"
                 onClick={() => setSelectedJobForApply(null)}
-                className="px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-white text-xs font-bold text-[#635b52] hover:text-[#572d12] cursor-pointer"
+                className="px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-white text-xs font-bold text-[#635b52] hover:text-[#572d12] hover:bg-[#fffaf3] transition-colors cursor-pointer"
               >
                 Close
               </button>
 
-              <button
-                type="button"
-                onClick={handleConfirmApply}
-                disabled={applying || applySuccess}
-                className="pavitra-btn pavitra-btn-sm font-bold inline-flex items-center gap-2 !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer disabled:opacity-50"
+              <a
+                href={getJobDestinationUrl(selectedJobForApply)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  handleMarkApplied(selectedJobForApply)
+                  setApplySuccess(true)
+                }}
+                className="pavitra-btn pavitra-btn-sm font-bold inline-flex items-center gap-2 !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer no-underline shadow-xs hover:opacity-95"
                 style={{ backgroundColor: '#d97706', color: '#ffffff' }}
               >
-                {applying ? (
-                  <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span>Opening Official Portal...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>
-                      {selectedJobForApply.source_url?.includes('internshala.com')
-                        ? 'Apply on Internshala'
-                        : selectedJobForApply.source === 'aicte'
-                        ? 'Apply on AICTE'
-                        : selectedJobForApply.source === 'ncs'
-                        ? 'Apply on NCS Portal'
-                        : `Apply on ${selectedJobForApply.company}`}
-                    </span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </>
-                )}
-              </button>
+                <span>
+                  {selectedJobForApply.source_url?.includes('internshala.com')
+                    ? 'Apply on Internshala'
+                    : selectedJobForApply.source === 'aicte'
+                    ? 'Apply on AICTE'
+                    : selectedJobForApply.source === 'ncs'
+                    ? 'Apply on NCS Portal'
+                    : `Apply on ${selectedJobForApply.company}`}
+                </span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
             </div>
           </div>
         </div>

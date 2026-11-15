@@ -45,7 +45,7 @@ async function JobsData() {
     if (displayJobs.length < 15) {
       const defaultRecords = await getAllDefaultJobs()
       const fallbackJobs: Job[] = defaultRecords.map((r, i) => ({
-        id: `default-job-${i + 1}`,
+        id: r.id || `00000000-0000-4000-8000-${String(i + 1).padStart(12, '0')}`,
         title: r.title,
         company: r.company,
         location: r.location || 'India',

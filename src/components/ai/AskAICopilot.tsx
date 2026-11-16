@@ -13,7 +13,10 @@ import {
   Loader2,
   Clock,
   ShieldAlert,
+  Copy,
+  Check,
 } from 'lucide-react'
+import { ChatMessageContent } from './ChatMessageContent'
 
 interface ChatMessage {
   id: string
@@ -49,15 +52,26 @@ export function AskAICopilot({ initialOpen = false, userProfile }: AskAICopilotP
     {
       id: 'welcome',
       role: 'model',
-      text: `Hello! I'm your **CareerPilot AI Copilot** powered by Google Gemini.\n\n⚠️ **Note:** To ensure quality guidance, you can ask **1 question at a time**.\n\nAsk me about resume bullets, cold email templates to founders, standout project ideas, or interview roadmaps!`,
+      text: `Hello! I'm your **CareerPilot AI Copilot**.\n\n⚠️ **Usage Rule:** Every user can ask **1 question at a time**. Once answered, you can ask your next question!\n\nAsk me about resume impact bullets, cold email templates to founders, standout project architectures, or interview roadmaps!`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [cooldown, setCooldown] = useState(0)
+  const [copiedId, setCopiedId] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleCopyMessage = async (id: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedId(id)
+      setTimeout(() => setCopiedId(null), 2000)
+    } catch {
+      // fallback
+    }
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -174,7 +188,7 @@ export function AskAICopilot({ initialOpen = false, userProfile }: AskAICopilotP
           </div>
           <span className="text-xs sm:text-sm">Ask AI Copilot</span>
           <span className="bg-white/20 px-1.5 py-0.2 sm:py-0.5 rounded-full text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider">
-            Gemini
+            AI
           </span>
         </button>
       )}
@@ -293,16 +307,38 @@ export function AskAICopilot({ initialOpen = false, userProfile }: AskAICopilotP
                         : 'bg-white text-[#29231e] border border-[#eadcc9] rounded-tl-xs'
                     }`}
                   >
-                    <div className="space-y-1.5 leading-relaxed text-xs sm:text-[13px] whitespace-pre-wrap">
-                      {m.text}
-                    </div>
-                    <span
-                      className={`block text-[9px] mt-1 text-right ${
-                        isUser ? 'text-white/60' : 'text-[#78716c]'
+                    <ChatMessageContent content={m.text} isUser={isUser} />
+                    <div
+                      className={`flex items-center justify-between text-[9px] mt-2 pt-1 border-t ${
+                        isUser
+                          ? 'border-white/20 text-white/60'
+                          : 'border-[#eadcc9]/60 text-[#78716c]'
                       }`}
                     >
-                      {m.timestamp}
-                    </span>
+                      {!isUser ? (
+                        <button
+                          type="button"
+                          onClick={() => handleCopyMessage(m.id, m.text)}
+                          className="inline-flex items-center gap-1 hover:text-[#2563eb] transition-colors cursor-pointer text-[10px]"
+                          title="Copy message"
+                        >
+                          {copiedId === m.id ? (
+                            <>
+                              <Check className="w-2.5 h-2.5 text-emerald-600" />
+                              <span className="text-emerald-600 font-semibold">Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-2.5 h-2.5" />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                      ) : (
+                        <span />
+                      )}
+                      <span>{m.timestamp}</span>
+                    </div>
                   </div>
                 </div>
               )
@@ -385,7 +421,7 @@ export function AskAICopilot({ initialOpen = false, userProfile }: AskAICopilotP
               </button>
             </form>
             <div className="flex items-center justify-between text-[10px] text-[#78716c] mt-2 px-1">
-              <span>Powered by Google Gemini 1.5 Flash</span>
+              <span>CareerPilot Intelligence Engine</span>
               <span className="font-bold text-[#1d4ed8]">Limit: 1 question at a time</span>
             </div>
           </div>

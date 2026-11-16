@@ -19,7 +19,7 @@ export function DashboardQuickActions() {
       badge: 'Audit CV',
     },
     {
-      title: 'Gemini Profile Coach',
+      title: 'AI Profile Coach',
       desc: 'AI summary rewrite & missing skill alerts',
       href: '/profile',
       icon: Sparkles,

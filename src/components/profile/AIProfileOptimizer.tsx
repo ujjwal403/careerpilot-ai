@@ -88,7 +88,7 @@ export function AIProfileOptimizer({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-extrabold text-[#572d12]">Gemini AI Profile Coach</h3>
+              <h3 className="text-lg font-extrabold text-[#572d12]">AI Profile Coach</h3>
               <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-[#eff6ff] border border-[#eadcc9] text-[#1d4ed8]">
                 Internshala Ready
               </span>
@@ -114,7 +114,7 @@ export function AIProfileOptimizer({
           ) : (
             <>
               <Zap className="w-3.5 h-3.5 fill-current" />
-              <span>{result ? 'Re-Audit with AI' : 'Audit Profile with Gemini'}</span>
+              <span>{result ? 'Re-Audit with AI' : 'Audit Profile with AI'}</span>
             </>
           )}
         </button>
@@ -128,7 +128,7 @@ export function AIProfileOptimizer({
           <div className="space-y-1 flex-1">
             <h4 className="text-sm font-bold text-[#572d12]">Enhance Your Profile for Top Internship Openings</h4>
             <p className="text-xs text-[#635b52] leading-relaxed">
-              Click &quot;Audit Profile with Gemini&quot; above. Our AI evaluates your current branch, college, skills, and target roles to give you high-converting bios and missing keywords recruiters search for.
+              Click &quot;Audit Profile with AI&quot; above. Our AI evaluates your current branch, college, skills, and target roles to give you high-converting bios and missing keywords recruiters search for.
             </p>
           </div>
         </div>

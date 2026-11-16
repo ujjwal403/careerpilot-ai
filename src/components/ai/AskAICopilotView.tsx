@@ -15,7 +15,10 @@ import {
   Code2,
   Clock,
   ShieldAlert,
+  Copy,
+  Check,
 } from 'lucide-react'
+import { ChatMessageContent } from './ChatMessageContent'
 
 interface ChatMessage {
   id: string
@@ -63,15 +66,26 @@ export function AskAICopilotView({ userProfile }: AskAICopilotViewProps) {
     {
       id: 'welcome',
       role: 'model',
-      text: `Hello! I am **CareerPilot AI**, your dedicated career copilot and engineering mentor powered by Google Gemini.\n\n⚠️ **Usage Rule:** Every user can ask **1 question at a time**. Once I finish answering, you can ask your next question!\n\nWhether you need help with resume bullets, cold email templates to founders, standout project ideas, or interview prep—ask your question below!`,
+      text: `Hello! I am **CareerPilot AI**, your dedicated career copilot and engineering mentor.\n\n⚠️ **Usage Rule:** Every user can ask **1 question at a time**. Once I finish answering, you can ask your next question!\n\nWhether you need help with resume bullets, cold email templates to founders, standout project ideas, or interview prep—ask your question below!`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [cooldown, setCooldown] = useState(0)
+  const [copiedId, setCopiedId] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleCopyMessage = async (id: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedId(id)
+      setTimeout(() => setCopiedId(null), 2000)
+    } catch {
+      // fallback
+    }
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -266,16 +280,38 @@ export function AskAICopilotView({ userProfile }: AskAICopilotViewProps) {
                     : 'bg-white text-[#29231e] border border-[#eadcc9] rounded-tl-xs'
                 }`}
               >
-                <div className="space-y-2 whitespace-pre-wrap leading-relaxed">
-                  {m.text}
-                </div>
-                <span
-                  className={`block text-[10px] mt-2 text-right ${
-                    isUser ? 'text-white/60' : 'text-[#78716c]'
+                <ChatMessageContent content={m.text} isUser={isUser} />
+                <div
+                  className={`flex items-center justify-between text-[10px] mt-2.5 pt-1.5 border-t ${
+                    isUser
+                      ? 'border-white/20 text-white/60'
+                      : 'border-[#eadcc9]/60 text-[#78716c]'
                   }`}
                 >
-                  {m.timestamp}
-                </span>
+                  {!isUser ? (
+                    <button
+                      type="button"
+                      onClick={() => handleCopyMessage(m.id, m.text)}
+                      className="inline-flex items-center gap-1 hover:text-[#2563eb] transition-colors cursor-pointer text-[11px]"
+                      title="Copy response"
+                    >
+                      {copiedId === m.id ? (
+                        <>
+                          <Check className="w-3 h-3 text-emerald-600" />
+                          <span className="text-emerald-600 font-semibold">Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3 h-3" />
+                          <span>Copy Response</span>
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <span />
+                  )}
+                  <span>{m.timestamp}</span>
+                </div>
               </div>
             </div>
           )
@@ -367,7 +403,7 @@ export function AskAICopilotView({ userProfile }: AskAICopilotViewProps) {
           </button>
         </form>
         <div className="flex items-center justify-between text-[11px] text-[#78716c] mt-2.5 px-1">
-          <span>Powered by Google Gemini 1.5 Flash</span>
+          <span>CareerPilot Intelligence Engine</span>
           <span className="font-bold text-[#1d4ed8]">Policy: Exactly 1 question at a time</span>
         </div>
       </div>

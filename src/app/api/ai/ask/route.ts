@@ -83,13 +83,17 @@ Candidate Context:
 
 ${profileContext}
 
-Your guidance rules:
-1. Be concise, actionable, and encouraging. Give structured answers with bullet points and bold highlights.
-2. If asked about resume tips, emphasize action verbs, measurable impact (Google's X-Y-Z formula: "Accomplished [X] as measured by [Y], by doing [Z]"), and clean single-column ATS formatting.
-3. If asked about projects, recommend realistic, modern full-stack / AI capstone projects with clear architecture and why recruiters love them.
-4. If asked about cold emails/LinkedIn outreach, provide short, polite, high-converting templates.
-5. If asked about interviews, give practical preparation roadmaps (DSA, system design basics, core CS subjects, behavioral questions).
-6. Format your responses with clean GitHub Markdown (headings, bullet points, code blocks). Do not be overly verbose.`
+CRITICAL RULES:
+1. Never mention the name "Gemini" or "Google Gemini". Always identify as "CareerPilot AI".
+2. Format answers with exceptional visual clarity:
+   - Use "### Section Title" for clear structure.
+   - Use bullet points with bold prefixes (* **Key Point:** Details).
+   - Use short, digestible paragraphs (max 2-3 sentences).
+   - If providing code or email templates, format them inside clean code blocks.
+   - Keep answers practical, encouraging, and easy to read.
+3. If asked about resume tips, emphasize action verbs, measurable impact (Google's X-Y-Z formula: "Accomplished [X] as measured by [Y], by doing [Z]"), and clean single-column ATS formatting.
+4. If asked about projects, recommend realistic, modern full-stack / AI capstone projects with clear architecture and why recruiters love them.
+5. If asked about cold emails/LinkedIn outreach, provide short, polite, high-converting templates.`
 
     if (apiKey) {
       try {
@@ -145,7 +149,7 @@ Your guidance rules:
           if (replyText) {
             return NextResponse.json({
               reply: replyText.trim(),
-              source: 'gemini',
+              source: 'careerpilot_ai',
             })
           }
         }
@@ -203,7 +207,7 @@ Your guidance rules:
    - **Why Recruiters Love It:** Proves you can manage live WebSockets, optimistic UI updates, and role-based row-level security (RLS).
 
 2. **AI Document & Resume Intelligence Platform (GenAI + Vector Search)**
-   - **Tech Stack:** Python / FastAPI, LangChain, Gemini API, Pinecone/pgvector.
+   - **Tech Stack:** Python / FastAPI, LangChain, LLM APIs (OpenAI / Anthropic / Groq), Pinecone/pgvector.
    - **Why Recruiters Love It:** Demonstrates hands-on Generative AI implementation beyond simple wrapper scripts.
 
 3. **Distributed E-Commerce / Quick-Commerce Checkout Squad (Backend)**
@@ -216,7 +220,7 @@ Here are the 3 highest-ROI steps you can take today to secure verified tech inte
 
 1. **Audit Your Profile Skills**:
    - Ensure your profile lists at least 6 core hard skills (languages, frameworks, databases, tools).
-   - Use the **Gemini Profile Coach** in your Profile tab to rewrite your headline and professional bio.
+   - Use the **AI Profile Coach** in your Profile tab to rewrite your headline and professional bio.
 
 2. **Target Verified Openings on Job Radar**:
    - Explore verified openings from **Blinkit, Swiggy Labs, Zepto, and Razorpay** in the **Job Radar** tab.

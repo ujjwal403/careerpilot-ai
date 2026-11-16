@@ -46,7 +46,7 @@ export async function fetchInternshalaInternships(): Promise<JobInsert[]> {
       salary_max: 50000,
       salary_currency: 'INR',
       description:
-        'Internshala Hot Opening: Assist in building Swiggy’s customer conversational agent and food recommendation systems using Gemini / OpenAI APIs, RAG semantic search, and vector databases.',
+        'Internshala Hot Opening: Assist in building Swiggy’s customer conversational agent and food recommendation systems using LLM / OpenAI APIs, RAG semantic search, and vector databases.',
       requirements:
         'Strong Python programming skills, familiarity with LangChain or LlamaIndex, prompt chaining, and embeddings. Basic knowledge of FastAPI and Docker.',
       skills_required: ['Python', 'Machine Learning', 'FastAPI', 'Docker', 'Vector DB'],
@@ -722,7 +722,7 @@ export async function fetchGoogleJobs(): Promise<JobInsert[]> {
       description:
         'Indexed via Google Jobs / AngelList. Build LLM-powered enterprise assistants, RAG search engines with pgvector, and responsive Next.js web applications.',
       requirements:
-        'Proficiency in Next.js App Router, TypeScript, Python FastAPI, OpenAI/Gemini API, and vector databases.',
+        'Proficiency in Next.js App Router, TypeScript, Python FastAPI, Modern AI / LLM APIs, and vector databases.',
       skills_required: ['Next.js', 'TypeScript', 'Python', 'Vector DB', 'Tailwind CSS'],
       is_active: true,
       posted_at: currentDate,

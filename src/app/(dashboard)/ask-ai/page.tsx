@@ -4,7 +4,7 @@ import { AskAICopilotView } from '@/components/ai/AskAICopilotView'
 
 export const metadata: Metadata = {
   title: 'Ask AI Copilot – CareerPilot AI',
-  description: 'Instant career coaching, resume feedback, cold email templates, and interview prep powered by Google Gemini',
+  description: 'Instant career coaching, resume feedback, cold email templates, and interview prep powered by CareerPilot AI',
 }
 
 export default async function AskAIPage() {

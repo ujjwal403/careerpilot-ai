@@ -431,7 +431,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
         </div>
       )}
 
-      {/* Gemini AI Profile Coach */}
+      {/* AI Profile Coach */}
       <AIProfileOptimizer
         profile={{
           headline,

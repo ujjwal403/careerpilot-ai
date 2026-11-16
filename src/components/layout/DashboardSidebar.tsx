@@ -28,7 +28,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: '/jobs', label: 'Job Radar', shortLabel: 'Jobs', icon: Briefcase, badge: 'Live' },
   { href: '/resume', label: 'Resume Scorer', shortLabel: 'Resume', icon: FileText },
   { href: '/applications', label: 'Applications', shortLabel: 'Tracker', icon: Layers },
-  { href: '/ask-ai', label: 'Ask AI Copilot', shortLabel: 'Ask AI', icon: Sparkles, badge: 'Gemini' },
+  { href: '/ask-ai', label: 'Ask AI Copilot', shortLabel: 'Ask AI', icon: Sparkles, badge: 'AI' },
   { href: '/profile', label: 'Career Profile', shortLabel: 'Profile', icon: User },
 ]
 

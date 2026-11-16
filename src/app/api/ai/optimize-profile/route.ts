@@ -88,7 +88,7 @@ Respond ONLY with a valid JSON object (no markdown quotes, no triple backticks, 
             const cleanText = rawText.replace(/```json\s*/gi, '').replace(/```\s*$/gi, '').trim()
             try {
               const parsed = JSON.parse(cleanText)
-              return NextResponse.json({ success: true, source: 'gemini', data: parsed })
+              return NextResponse.json({ success: true, source: 'careerpilot_ai', data: parsed })
             } catch {
               // fallback below
             }
@@ -136,7 +136,7 @@ Respond ONLY with a valid JSON object (no markdown quotes, no triple backticks, 
         },
         {
           title: 'AI Workflow Assistant or Search Tool',
-          techStack: 'Python, FastAPI, Gemini API / OpenAI, Vector Database',
+          techStack: 'Python, FastAPI, LLM APIs (OpenAI / Claude), Vector Database',
           description: 'Demonstrates modern AI integration capabilities, prompt chaining, and asynchronous background task processing.',
         },
       ],

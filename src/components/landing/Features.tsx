@@ -111,7 +111,7 @@ export function Features() {
         {/* Toolbar & Search Bar */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-5">
           <div className="flex items-center gap-3 flex-1 max-w-lg bg-white border border-[#eadcc9] rounded-xl px-4 py-3 shadow-xs">
-            <span className="text-[#d97706] text-lg">🔍</span>
+            <span className="text-[#2563eb] text-lg">🔍</span>
             <input
               type="text"
               placeholder="Search ATS rules e.g. CGPA, Skills, Verbs..."
@@ -122,7 +122,7 @@ export function Features() {
             {search && (
               <button
                 onClick={() => setSearch('')}
-                className="text-xs text-[#635b52] hover:text-[#d97706]"
+                className="text-xs text-[#635b52] hover:text-[#2563eb]"
               >
                 Clear
               </button>
@@ -160,7 +160,7 @@ export function Features() {
                     {rule.rule}
                   </td>
                   <td className="whitespace-nowrap">
-                    <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#fff3df] text-[#d97706] border border-[#eadcc9]">
+                    <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#eff6ff] text-[#2563eb] border border-[#eadcc9]">
                       {rule.standard}
                     </span>
                   </td>
@@ -184,7 +184,7 @@ export function Features() {
         </div>
 
         {/* Bottom Banner */}
-        <div className="mt-8 p-4 rounded-xl bg-[#fff3df] border border-[#eadcc9] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#572d12]">
+        <div className="mt-8 p-4 rounded-xl bg-[#eff6ff] border border-[#eadcc9] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#572d12]">
           <div>
             <strong>Interactive Verification:</strong> Before saving to your database, inspect and edit extracted skills, academic scores, and contact details with full human control.
           </div>

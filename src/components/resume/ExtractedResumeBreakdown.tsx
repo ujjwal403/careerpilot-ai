@@ -121,7 +121,7 @@ export function ExtractedResumeBreakdown({
       {/* Top Banner Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#eadcc9] pb-6">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb]">
             <Sparkles className="h-6 w-6" />
           </div>
           <div>
@@ -154,7 +154,7 @@ export function ExtractedResumeBreakdown({
               disabled={isExtracting}
               className="pavitra-btn pavitra-btn-light pavitra-btn-sm font-bold inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
-              <RefreshCw className={`h-3.5 w-3.5 text-[#d97706] ${isExtracting ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`h-3.5 w-3.5 text-[#2563eb] ${isExtracting ? 'animate-spin' : ''}`} />
               <span>{isExtracting ? 'Re-extracting...' : 'Re-extract'}</span>
             </button>
           )}
@@ -170,7 +170,7 @@ export function ExtractedResumeBreakdown({
             ) : (
               <>
                 <span>Sync to Profile</span>
-                <ArrowRight className="h-3.5 w-3.5 text-[#d97706]" />
+                <ArrowRight className="h-3.5 w-3.5 text-[#2563eb]" />
               </>
             )}
           </button>
@@ -199,8 +199,8 @@ export function ExtractedResumeBreakdown({
             onClick={() => setActiveTab(tab.id as typeof activeTab)}
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
               activeTab === tab.id
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
+                : 'bg-[#eff6ff] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
             }`}
           >
             {tab.label}
@@ -213,8 +213,8 @@ export function ExtractedResumeBreakdown({
         {/* 1. Contact Information Card */}
         {(activeTab === 'all' || activeTab === 'contact') && (
           <div className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-5">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#d97706]">
-              <User className="h-4 w-4 text-[#d97706]" />
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#2563eb]">
+              <User className="h-4 w-4 text-[#2563eb]" />
               Contact Information
             </div>
             <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -261,9 +261,9 @@ export function ExtractedResumeBreakdown({
                     href={contact.linkedin_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#eadcc9] bg-[#fff3df] px-3 py-1.5 text-xs font-bold text-[#572d12] hover:bg-[#ffe8c4]"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#eadcc9] bg-[#eff6ff] px-3 py-1.5 text-xs font-bold text-[#572d12] hover:bg-[#ffe8c4]"
                   >
-                    <svg className="h-3.5 w-3.5 fill-current text-[#d97706]" viewBox="0 0 24 24">
+                    <svg className="h-3.5 w-3.5 fill-current text-[#2563eb]" viewBox="0 0 24 24">
                       <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.4 10.24v-8.37H5.06v8.37h2.8z" />
                     </svg>
                     LinkedIn Profile
@@ -275,9 +275,9 @@ export function ExtractedResumeBreakdown({
                     href={contact.github_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#eadcc9] bg-[#fff3df] px-3 py-1.5 text-xs font-bold text-[#572d12] hover:bg-[#ffe8c4]"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#eadcc9] bg-[#eff6ff] px-3 py-1.5 text-xs font-bold text-[#572d12] hover:bg-[#ffe8c4]"
                   >
-                    <FolderGit2 className="h-3.5 w-3.5 text-[#d97706]" />
+                    <FolderGit2 className="h-3.5 w-3.5 text-[#2563eb]" />
                     GitHub
                     <ExternalLink className="h-3 w-3 opacity-60" />
                   </a>
@@ -290,8 +290,8 @@ export function ExtractedResumeBreakdown({
         {/* 2. Education & Academics Card */}
         {(activeTab === 'all' || activeTab === 'academics') && (
           <div className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-5">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#d97706]">
-              <GraduationCap className="h-4 w-4 text-[#d97706]" />
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#2563eb]">
+              <GraduationCap className="h-4 w-4 text-[#2563eb]" />
               Education & Campus Credentials
             </div>
 
@@ -317,7 +317,7 @@ export function ExtractedResumeBreakdown({
                         </span>
                       )}
                       {edu.graduation_year && (
-                        <span className="rounded-full bg-[#fff3df] border border-[#eadcc9] px-2.5 py-1 text-xs font-semibold text-[#572d12]">
+                        <span className="rounded-full bg-[#eff6ff] border border-[#eadcc9] px-2.5 py-1 text-xs font-semibold text-[#572d12]">
                           Class of {edu.graduation_year}
                         </span>
                       )}
@@ -336,8 +336,8 @@ export function ExtractedResumeBreakdown({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Hard Skills */}
             <div className="rounded-2xl border border-[#eadcc9] bg-white p-5 shadow-xs">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#d97706]">
-                <Code2 className="h-4 w-4 text-[#d97706]" />
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#2563eb]">
+                <Code2 className="h-4 w-4 text-[#2563eb]" />
                 Technical Hard Skills ({skills?.hard_skills?.length || 0})
               </div>
               <p className="text-[11px] text-[#635b52] mt-1">
@@ -347,7 +347,7 @@ export function ExtractedResumeBreakdown({
                 {skills?.hard_skills?.map((skill, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center rounded-lg border border-[#eadcc9] bg-[#fff3df] px-2.5 py-1 text-xs font-semibold text-[#572d12]"
+                    className="inline-flex items-center rounded-lg border border-[#eadcc9] bg-[#eff6ff] px-2.5 py-1 text-xs font-semibold text-[#572d12]"
                   >
                     {skill}
                   </span>
@@ -381,8 +381,8 @@ export function ExtractedResumeBreakdown({
         {/* 4. Experience & Internships */}
         {(activeTab === 'all' || activeTab === 'experience') && (
           <div className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-5">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#d97706]">
-              <Briefcase className="h-4 w-4 text-[#d97706]" />
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#2563eb]">
+              <Briefcase className="h-4 w-4 text-[#2563eb]" />
               Work Experience & Internships
             </div>
 
@@ -393,14 +393,14 @@ export function ExtractedResumeBreakdown({
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                       <div>
                         <h4 className="text-sm font-extrabold text-[#572d12]">{exp.role_title}</h4>
-                        <p className="text-xs font-bold text-[#d97706]">{exp.company_name}</p>
+                        <p className="text-xs font-bold text-[#2563eb]">{exp.company_name}</p>
                       </div>
-                      <span className="inline-block rounded-md bg-[#fff3df] border border-[#eadcc9] px-2.5 py-1 text-[11px] font-semibold text-[#572d12] self-start sm:self-auto">
+                      <span className="inline-block rounded-md bg-[#eff6ff] border border-[#eadcc9] px-2.5 py-1 text-[11px] font-semibold text-[#572d12] self-start sm:self-auto">
                         {exp.duration}
                       </span>
                     </div>
 
-                    <ul className="mt-3 space-y-1.5 text-xs text-[#635b52] pl-4 list-disc marker:text-[#d97706]">
+                    <ul className="mt-3 space-y-1.5 text-xs text-[#635b52] pl-4 list-disc marker:text-[#2563eb]">
                       {exp.bullet_points.map((pt, pIdx) => (
                         <li key={pIdx} className="leading-relaxed">
                           {pt}
@@ -422,7 +422,7 @@ export function ExtractedResumeBreakdown({
             {/* Projects */}
             <div className="rounded-2xl border border-[#eadcc9] bg-white p-5 shadow-xs">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#572d12]">
-                <FolderGit2 className="h-4 w-4 text-[#d97706]" />
+                <FolderGit2 className="h-4 w-4 text-[#2563eb]" />
                 Projects & Hackathons
               </div>
 
@@ -437,7 +437,7 @@ export function ExtractedResumeBreakdown({
                             href={proj.link}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-[#635b52] hover:text-[#d97706]"
+                            className="text-[#635b52] hover:text-[#2563eb]"
                           >
                             <ExternalLink className="h-3 w-3" />
                           </a>
@@ -450,7 +450,7 @@ export function ExtractedResumeBreakdown({
                         {proj.technologies.map((t, tIdx) => (
                           <span
                             key={tIdx}
-                            className="rounded bg-[#fff3df] border border-[#eadcc9] px-2 py-0.5 text-[10px] font-semibold text-[#572d12]"
+                            className="rounded bg-[#eff6ff] border border-[#eadcc9] px-2 py-0.5 text-[10px] font-semibold text-[#572d12]"
                           >
                             {t}
                           </span>
@@ -467,7 +467,7 @@ export function ExtractedResumeBreakdown({
             {/* Certifications */}
             <div className="rounded-2xl border border-[#eadcc9] bg-white p-5 shadow-xs">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#572d12]">
-                <Award className="h-4 w-4 text-[#d97706]" />
+                <Award className="h-4 w-4 text-[#2563eb]" />
                 Certifications & Achievements
               </div>
 
@@ -483,7 +483,7 @@ export function ExtractedResumeBreakdown({
                         <p className="text-[11px] text-[#635b52]">{cert.issuer || 'Professional Issuer'}</p>
                       </div>
                       {cert.year && (
-                        <span className="rounded bg-[#fff3df] border border-[#eadcc9] px-2 py-1 text-[10px] font-semibold text-[#572d12]">
+                        <span className="rounded bg-[#eff6ff] border border-[#eadcc9] px-2 py-1 text-[10px] font-semibold text-[#572d12]">
                           {cert.year}
                         </span>
                       )}

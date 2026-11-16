@@ -11,6 +11,7 @@ import {
   Layers,
   User,
   Compass,
+  Sparkles,
   LucideIcon,
 } from 'lucide-react'
 
@@ -27,6 +28,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: '/jobs', label: 'Job Radar', shortLabel: 'Jobs', icon: Briefcase, badge: 'Live' },
   { href: '/resume', label: 'Resume Scorer', shortLabel: 'Resume', icon: FileText },
   { href: '/applications', label: 'Applications', shortLabel: 'Tracker', icon: Layers },
+  { href: '/ask-ai', label: 'Ask AI Copilot', shortLabel: 'Ask AI', icon: Sparkles, badge: 'Gemini' },
   { href: '/profile', label: 'Career Profile', shortLabel: 'Profile', icon: User },
 ]
 
@@ -46,7 +48,7 @@ export function DashboardSidebar() {
             </span>
             <div className="leading-tight">
               <span className="font-bold text-base text-[#572d12] tracking-tight block">
-                <b className="text-[#d97706] font-extrabold">CareerPilot</b> AI
+                <b className="text-[#2563eb] font-extrabold">CareerPilot</b> AI
               </span>
               <small className="block text-[10px] text-[#78716c] uppercase tracking-wider font-semibold">
                 Service • Precision • Telemetry
@@ -57,7 +59,7 @@ export function DashboardSidebar() {
 
         {/* Section label */}
         <div className="px-5 mt-4 mb-2">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#d97706]">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#2563eb]">
             NAVIGATION
           </span>
         </div>
@@ -71,17 +73,17 @@ export function DashboardSidebar() {
                 href={href}
                 className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                   isActive
-                    ? 'bg-[#fff3df] border border-[#eadcc9] text-[#d97706]'
+                    ? 'bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb]'
                     : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#fffaf3]'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#d97706]' : 'text-[#78716c]'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#2563eb]' : 'text-[#78716c]'}`} />
                   <span>{label}</span>
                 </div>
                 {badge && (
                   <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                    isActive ? 'bg-[#d97706] text-white' : 'bg-[#fff3df] text-[#d97706] border border-[#eadcc9]'
+                    isActive ? 'bg-[#2563eb] text-white' : 'bg-[#eff6ff] text-[#2563eb] border border-[#eadcc9]'
                   }`}>
                     {badge}
                   </span>
@@ -99,7 +101,7 @@ export function DashboardSidebar() {
             href="/profile"
             className="flex items-center gap-3 px-2 py-1.5 rounded-lg hover:bg-white transition-colors group"
           >
-            <div className="w-8 h-8 rounded-full bg-[#fff3df] border border-[#eadcc9] flex items-center justify-center text-xs font-bold text-[#d97706] uppercase shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#eff6ff] border border-[#eadcc9] flex items-center justify-center text-xs font-bold text-[#2563eb] uppercase shrink-0">
               {user.email?.charAt(0) ?? 'U'}
             </div>
             <div className="flex-1 min-w-0">
@@ -128,7 +130,7 @@ export function DashboardMobileBottomNav() {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#fffaf3]/95 backdrop-blur-md border-t border-[#eadcc9] px-2 pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))] flex items-center justify-around shadow-md"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#fffaf3]/98 backdrop-blur-md border-t border-[#eadcc9] px-1 pt-1.5 pb-[max(0.6rem,env(safe-area-inset-bottom))] flex items-center justify-between shadow-lg"
     >
       {NAV_ITEMS.map(({ href, shortLabel, label, icon: Icon, badge }) => {
         const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(`${href}/`))
@@ -136,19 +138,19 @@ export function DashboardMobileBottomNav() {
           <Link
             key={href}
             href={href}
-            className={`flex flex-col items-center justify-center min-w-[56px] py-1 px-1.5 rounded-xl transition-all duration-150 active:scale-95 relative ${
+            className={`flex flex-col items-center justify-center flex-1 min-w-0 py-1 px-0.5 rounded-xl transition-all duration-150 active:scale-95 relative ${
               isActive
-                ? 'text-[#d97706] font-extrabold bg-[#fff3df] border border-[#eadcc9]'
+                ? 'text-[#2563eb] font-extrabold bg-[#eff6ff] border border-[#eadcc9]'
                 : 'text-[#78716c] hover:text-[#572d12]'
             }`}
           >
             <div className="relative">
-              <Icon className={`w-5 h-5 ${isActive ? 'text-[#d97706]' : 'text-[#78716c]'}`} />
+              <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-[#2563eb]' : 'text-[#78716c]'}`} />
               {badge && (
-                <span className="absolute -top-1 -right-2.5 w-2 h-2 rounded-full bg-[#d97706]" />
+                <span className="absolute -top-1 -right-2 w-1.5 h-1.5 rounded-full bg-[#2563eb]" />
               )}
             </div>
-            <span className="text-[10px] mt-0.5 tracking-tight font-medium leading-none">
+            <span className="text-[9px] sm:text-[10px] mt-0.5 tracking-tight font-medium leading-none truncate max-w-[54px] sm:max-w-none">
               {shortLabel || label}
             </span>
           </Link>

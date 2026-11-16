@@ -182,8 +182,8 @@ export function DataVerificationModal({
         {/* Header */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#eadcc9]">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#fff3df] text-[#d97706] text-xs font-bold">
-              <Sparkles className="w-3.5 h-3.5 text-[#d97706]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#eff6ff] text-[#2563eb] text-xs font-bold">
+              <Sparkles className="w-3.5 h-3.5 text-[#2563eb]" />
               <span>Interactive Data Verification</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#572d12]">
@@ -211,8 +211,8 @@ export function DataVerificationModal({
             onClick={() => setActiveTab('academics')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
               activeTab === 'academics'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs font-bold'
-                : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#fff3df]'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs font-bold'
+                : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#eff6ff]'
             }`}
           >
             <GraduationCap className="w-4 h-4" />
@@ -223,8 +223,8 @@ export function DataVerificationModal({
             onClick={() => setActiveTab('skills')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
               activeTab === 'skills'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs font-bold'
-                : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#fff3df]'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs font-bold'
+                : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#eff6ff]'
             }`}
           >
             <Sparkles className="w-4 h-4" />
@@ -235,8 +235,8 @@ export function DataVerificationModal({
             onClick={() => setActiveTab('contact')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
               activeTab === 'contact'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs font-bold'
-                : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#fff3df]'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs font-bold'
+                : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#eff6ff]'
             }`}
           >
             <Phone className="w-4 h-4" />
@@ -247,8 +247,8 @@ export function DataVerificationModal({
             onClick={() => setActiveTab('experience')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
               activeTab === 'experience'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs font-bold'
-                : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#fff3df]'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs font-bold'
+                : 'text-[#635b52] hover:text-[#572d12] hover:bg-[#eff6ff]'
             }`}
           >
             <Briefcase className="w-4 h-4" />
@@ -273,7 +273,7 @@ export function DataVerificationModal({
                     value={collegeName}
                     onChange={(e) => setCollegeName(e.target.value)}
                     placeholder="e.g. Indian Institute of Technology (IIT) Delhi"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
@@ -284,7 +284,7 @@ export function DataVerificationModal({
                     value={degree}
                     onChange={(e) => setDegree(e.target.value)}
                     placeholder="e.g. B.Tech, BCA, MCA, B.Sc"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
@@ -295,7 +295,7 @@ export function DataVerificationModal({
                     value={fieldOfStudy}
                     onChange={(e) => setFieldOfStudy(e.target.value)}
                     placeholder="e.g. Computer Science & Engineering (CSE)"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
@@ -306,7 +306,7 @@ export function DataVerificationModal({
                     value={score}
                     onChange={(e) => setScore(e.target.value)}
                     placeholder="e.g. 8.64 CGPA or 85%"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
@@ -317,7 +317,7 @@ export function DataVerificationModal({
                     value={graduationYear}
                     onChange={(e) => setGraduationYear(e.target.value)}
                     placeholder="e.g. 2026"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
               </div>
@@ -341,7 +341,7 @@ export function DataVerificationModal({
                       }
                     }}
                     placeholder="Type skill name (e.g. GraphQL, Docker) and press Enter..."
-                    className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                   <button
                     type="button"
@@ -363,7 +363,7 @@ export function DataVerificationModal({
                       key={s}
                       type="button"
                       onClick={() => handleAddSkill(s)}
-                      className="px-2.5 py-1 rounded-lg border border-[#eadcc9] bg-[#fff3df] hover:border-[#d97706] text-[#572d12] text-[11px] font-semibold transition-colors cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg border border-[#eadcc9] bg-[#eff6ff] hover:border-[#2563eb] text-[#572d12] text-[11px] font-semibold transition-colors cursor-pointer"
                     >
                       + {s}
                     </button>
@@ -385,13 +385,13 @@ export function DataVerificationModal({
                     skillsList.map((skill) => (
                       <span
                         key={skill}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-[#eadcc9] bg-[#fff3df] text-[#572d12]"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-[#eadcc9] bg-[#eff6ff] text-[#572d12]"
                       >
                         <span>{skill}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveSkill(skill)}
-                          className="text-[#d97706] hover:text-rose-600 transition-colors cursor-pointer"
+                          className="text-[#2563eb] hover:text-rose-600 transition-colors cursor-pointer"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -409,7 +409,7 @@ export function DataVerificationModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-[#d97706]" />
+                    <User className="w-3.5 h-3.5 text-[#2563eb]" />
                     <span>Full Name</span>
                   </label>
                   <input
@@ -417,13 +417,13 @@ export function DataVerificationModal({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Candidate Name"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-[#d97706]" />
+                    <Mail className="w-3.5 h-3.5 text-[#2563eb]" />
                     <span>Email Address</span>
                   </label>
                   <input
@@ -431,13 +431,13 @@ export function DataVerificationModal({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="alex@gmail.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-[#d97706]" />
+                    <Phone className="w-3.5 h-3.5 text-[#2563eb]" />
                     <span>Phone Number</span>
                   </label>
                   <input
@@ -445,13 +445,13 @@ export function DataVerificationModal({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98765 43210"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#d97706]" />
+                    <MapPin className="w-3.5 h-3.5 text-[#2563eb]" />
                     <span>Location / City</span>
                   </label>
                   <input
@@ -459,13 +459,13 @@ export function DataVerificationModal({
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="e.g. Bangalore, India"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <Link2 className="w-3.5 h-3.5 text-[#d97706]" />
+                    <Link2 className="w-3.5 h-3.5 text-[#2563eb]" />
                     <span>LinkedIn Profile URL</span>
                   </label>
                   <input
@@ -473,13 +473,13 @@ export function DataVerificationModal({
                     value={linkedinUrl}
                     onChange={(e) => setLinkedinUrl(e.target.value)}
                     placeholder="https://linkedin.com/in/username"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <Code2 className="w-3.5 h-3.5 text-[#d97706]" />
+                    <Code2 className="w-3.5 h-3.5 text-[#2563eb]" />
                     <span>GitHub Profile URL</span>
                   </label>
                   <input
@@ -487,13 +487,13 @@ export function DataVerificationModal({
                     value={githubUrl}
                     onChange={(e) => setGithubUrl(e.target.value)}
                     placeholder="https://github.com/username"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <Globe className="w-3.5 h-3.5 text-[#d97706]" />
+                    <Globe className="w-3.5 h-3.5 text-[#2563eb]" />
                     <span>Portfolio Website</span>
                   </label>
                   <input
@@ -501,7 +501,7 @@ export function DataVerificationModal({
                     value={portfolioUrl}
                     onChange={(e) => setPortfolioUrl(e.target.value)}
                     placeholder="https://myportfolio.dev"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
               </div>
@@ -519,7 +519,7 @@ export function DataVerificationModal({
                     value={recentRole}
                     onChange={(e) => setRecentRole(e.target.value)}
                     placeholder="e.g. Full Stack Developer / SDE"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
@@ -530,7 +530,7 @@ export function DataVerificationModal({
                     value={recentCompany}
                     onChange={(e) => setRecentCompany(e.target.value)}
                     placeholder="e.g. TechCorp or Freelance"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
 
@@ -541,7 +541,7 @@ export function DataVerificationModal({
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
                     placeholder="e.g. July 2024 - Present (or Fresher / 2026 Grad)"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706] focus:bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
               </div>

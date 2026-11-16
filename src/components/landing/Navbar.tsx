@@ -28,7 +28,7 @@ export function Navbar() {
           </span>
           <div className="leading-tight">
             <span className="text-base sm:text-lg font-bold text-[#572d12]">
-              <b className="text-[#d97706] font-extrabold">CareerPilot</b> AI
+              <b className="text-[#2563eb] font-extrabold">CareerPilot</b> AI
             </span>
             <small className="block text-[9px] sm:text-[10px] text-[#78716c] uppercase tracking-[1.4px] font-semibold">
               Precision • Telemetry • Dedication
@@ -42,7 +42,7 @@ export function Navbar() {
             <Link
               key={href}
               href={href}
-              className="hover:text-[#d97706] transition-colors"
+              className="hover:text-[#2563eb] transition-colors"
             >
               {label}
             </Link>
@@ -57,8 +57,8 @@ export function Navbar() {
               <>
                 <Link
                   href="/dashboard"
-                  className="pavitra-btn pavitra-btn-sm !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white !font-bold shadow-xs hover:!from-[#b45309] hover:!to-[#92400e]"
-                  style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                  className="pavitra-btn pavitra-btn-sm !bg-gradient-to-r !from-[#2563eb] !to-[#1d4ed8] !text-white !font-bold shadow-xs hover:!from-[#1d4ed8] hover:!to-[#1e40af]"
+                  style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
                 >
                   Dashboard
                 </Link>
@@ -68,14 +68,14 @@ export function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="px-3 py-1.5 text-xs font-bold text-[#572d12] hover:text-[#d97706] transition-colors"
+                  className="px-3 py-1.5 text-xs font-bold text-[#572d12] hover:text-[#2563eb] transition-colors"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/signup"
-                  className="pavitra-btn pavitra-btn-sm !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white !font-bold shadow-xs hover:!from-[#b45309] hover:!to-[#92400e]"
-                  style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                  className="pavitra-btn pavitra-btn-sm !bg-gradient-to-r !from-[#2563eb] !to-[#1d4ed8] !text-white !font-bold shadow-xs hover:!from-[#1d4ed8] hover:!to-[#1e40af]"
+                  style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
                 >
                   Audit Resume Free
                 </Link>
@@ -88,7 +88,7 @@ export function Navbar() {
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label="Toggle Navigation Menu"
-            className="md:hidden p-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-[#572d12] hover:bg-[#fff3df] transition-colors cursor-pointer"
+            className="md:hidden p-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-[#572d12] hover:bg-[#eff6ff] transition-colors cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -104,7 +104,7 @@ export function Navbar() {
                 key={href}
                 href={href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl text-sm font-bold text-[#572d12] hover:bg-[#fff3df] hover:text-[#d97706] transition-colors"
+                className="px-3 py-2 rounded-xl text-sm font-bold text-[#572d12] hover:bg-[#eff6ff] hover:text-[#2563eb] transition-colors"
               >
                 {label}
               </Link>
@@ -128,7 +128,7 @@ export function Navbar() {
                 <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-2 text-xs font-bold text-[#572d12] border border-[#eadcc9] rounded-xl hover:bg-[#fff3df] transition-colors"
+                  className="w-full text-center py-2 text-xs font-bold text-[#572d12] border border-[#eadcc9] rounded-xl hover:bg-[#eff6ff] transition-colors"
                 >
                   Sign In
                 </Link>

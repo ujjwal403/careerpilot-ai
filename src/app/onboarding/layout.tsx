@@ -12,15 +12,15 @@ export default function OnboardingLayout({ children }: { children: React.ReactNo
           </span>
           <div className="leading-tight">
             <span className="text-lg font-bold text-[#572d12]">
-              <b className="text-[#d97706] font-extrabold">CareerPilot</b> AI
+              <b className="text-[#2563eb] font-extrabold">CareerPilot</b> AI
             </span>
             <small className="block text-[10px] text-[#78716c] uppercase tracking-[1.4px] font-semibold">
               India Placement & Career Telemetry
             </small>
           </div>
         </Link>
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#fff3df] border border-[#eadcc9] text-[#d97706]">
-          <span className="w-2 h-2 rounded-full bg-[#d97706] animate-pulse" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb]">
+          <span className="w-2 h-2 rounded-full bg-[#2563eb] animate-pulse" />
           <span>Student & Job Seeker Onboarding</span>
         </div>
       </header>

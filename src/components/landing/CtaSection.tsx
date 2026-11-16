@@ -47,7 +47,7 @@ export function CtaSection() {
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-2xl">{cap.icon}</span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#fff3df] text-[#d97706] border border-[#eadcc9]">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#eff6ff] text-[#2563eb] border border-[#eadcc9]">
                       {cap.badge}
                     </span>
                   </div>
@@ -59,7 +59,7 @@ export function CtaSection() {
                 <div className="mt-5 pt-3 border-t border-[#eadcc9]">
                   <Link
                     href="/resume"
-                    className="text-xs font-bold text-[#d97706] hover:text-[#b45309]"
+                    className="text-xs font-bold text-[#2563eb] hover:text-[#1d4ed8]"
                   >
                     Learn More ↗
                   </Link>

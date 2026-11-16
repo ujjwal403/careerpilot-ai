@@ -346,7 +346,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
       {/* Top Banner / Completion Card */}
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-6 sm:p-7 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center font-black text-xl uppercase shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] flex items-center justify-center font-black text-xl uppercase shrink-0">
             {fullName ? fullName.charAt(0) : 'U'}
           </div>
           <div>
@@ -368,12 +368,12 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
         {/* Completion Progress Bar */}
         <div className="sm:text-right">
           <div className="flex items-center sm:justify-end gap-2 mb-1.5">
-            <Sparkles className="w-4 h-4 text-[#d97706]" />
+            <Sparkles className="w-4 h-4 text-[#2563eb]" />
             <span className="text-xs font-bold text-[#572d12]">Profile Strength: {completionScore}%</span>
           </div>
-          <div className="w-48 h-2 bg-[#fff3df] border border-[#eadcc9] rounded-full overflow-hidden">
+          <div className="w-48 h-2 bg-[#eff6ff] border border-[#eadcc9] rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-[#d97706] to-[#b45309] rounded-full transition-all duration-500"
+              className="h-full bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] rounded-full transition-all duration-500"
               style={{ width: `${completionScore}%` }}
             />
           </div>
@@ -384,7 +384,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
       {isAcademicsMissing && (
         <div className="relative overflow-hidden rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-[#fff3df] border border-[#eadcc9] flex items-center justify-center text-[#d97706] shrink-0 mt-0.5 sm:mt-0">
+            <div className="w-10 h-10 rounded-xl bg-[#eff6ff] border border-[#eadcc9] flex items-center justify-center text-[#2563eb] shrink-0 mt-0.5 sm:mt-0">
               <GraduationCap className="w-5 h-5" />
             </div>
             <div>
@@ -421,7 +421,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
             {statusMessage.type === 'success' && (
               <a
                 href="/resume"
-                className="inline-flex items-center gap-1 font-bold text-[#d97706] hover:underline underline-offset-4 shrink-0"
+                className="inline-flex items-center gap-1 font-bold text-[#2563eb] hover:underline underline-offset-4 shrink-0"
               >
                 <span>View Updated Resume</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -454,12 +454,12 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-6 sm:p-8 shadow-xs space-y-5">
         <div className="flex items-center justify-between border-b border-[#eadcc9] pb-3">
           <h3 className="text-base font-bold text-[#572d12] flex items-center gap-2">
-            <UserIcon className="w-4 h-4 text-[#d97706]" />
+            <UserIcon className="w-4 h-4 text-[#2563eb]" />
             <span>Basic Information</span>
           </h3>
           {isIdentityLocked && (
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#ede3d7] border border-[#eadcc9] text-[#572d12]">
-              <Lock className="w-3 h-3 text-[#d97706]" />
+              <Lock className="w-3 h-3 text-[#2563eb]" />
               Identity Record Locked
             </span>
           )}
@@ -484,7 +484,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
                 isIdentityLocked
                   ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
               }`}
               placeholder="e.g. Rahul Sharma"
             />
@@ -496,7 +496,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               type="text"
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
               placeholder="e.g. B.Tech Computer Science Graduate | Full Stack Developer"
             />
           </div>
@@ -509,7 +509,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                 placeholder="+91 98765 43210"
               />
             </div>
@@ -531,7 +531,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
                 isIdentityLocked
                   ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
               }`}
             >
               {COUNTRIES.map((c) => (
@@ -545,7 +545,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
-                State / Union Territory {country === 'India' && <span className="text-[#d97706]">*</span>}
+                State / Union Territory {country === 'India' && <span className="text-[#2563eb]">*</span>}
               </label>
               {isIdentityLocked && (
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
@@ -561,7 +561,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
                   isIdentityLocked
                     ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
                 }`}
               >
                 <option value="">-- Select Your State / UT --</option>
@@ -581,7 +581,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
                   isIdentityLocked
                     ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
                 }`}
                 placeholder="State or Province"
               />
@@ -591,7 +591,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
-                City / Tech Hub {country === 'India' && <span className="text-[#d97706]">*</span>}
+                City / Tech Hub {country === 'India' && <span className="text-[#2563eb]">*</span>}
               </label>
               {isIdentityLocked && (
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
@@ -611,7 +611,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
                   isIdentityLocked
                     ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
                 }`}
                 placeholder={state ? `e.g. ${availableCities[0] || 'City'}` : 'Select state or type city'}
               />
@@ -635,7 +635,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
             rows={3}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706] resize-none"
+            className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb] resize-none"
             placeholder="Tell recruiters about your background, projects, academic honors, and career goals..."
           />
         </div>
@@ -646,7 +646,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#eadcc9] pb-4">
           <div>
             <h3 className="text-base font-bold text-[#572d12] flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-[#d97706]" />
+              <GraduationCap className="w-5 h-5 text-[#2563eb]" />
               <span>Education & Academics (India Placement Standard)</span>
             </h3>
             <p className="text-xs text-[#78716c] mt-0.5">
@@ -655,11 +655,11 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           </div>
           {isAcademicsLocked ? (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#ede3d7] border border-[#eadcc9] text-[#572d12] self-start sm:self-auto">
-              <Lock className="w-3.5 h-3.5 text-[#d97706]" />
+              <Lock className="w-3.5 h-3.5 text-[#2563eb]" />
               Academic Record Verified
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-[#fff3df] border border-[#eadcc9] text-[#d97706] self-start sm:self-auto">
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] self-start sm:self-auto">
               <Landmark className="w-3.5 h-3.5" />
               AICTE & Campus Filter Ready
             </span>
@@ -669,7 +669,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
         {/* Lock Notice Banner */}
         {isAcademicsLocked && (
           <div className="flex items-start gap-3 p-3.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#572d12]">
-            <Lock className="w-4 h-4 text-[#d97706] shrink-0 mt-0.5" />
+            <Lock className="w-4 h-4 text-[#2563eb] shrink-0 mt-0.5" />
             <div className="leading-relaxed">
               <strong>Institutional Record Fixed:</strong> In accordance with Indian university placement standards, your registered college, degree, and specialization cannot be changed once established.
               <span className="text-[#166534] font-semibold block mt-1">
@@ -684,7 +684,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
-                College Location / State <span className="text-[#d97706]">*</span>
+                College Location / State <span className="text-[#2563eb]">*</span>
               </label>
               {isAcademicsLocked && (
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
@@ -699,7 +699,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
                 isAcademicsLocked
                   ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
               }`}
             >
               <option value="">-- Select College State --</option>
@@ -718,7 +718,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
-                College / University Name <span className="text-[#d97706]">*</span>
+                College / University Name <span className="text-[#2563eb]">*</span>
               </label>
               {isAcademicsLocked && (
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
@@ -747,7 +747,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
-                Degree / Program <span className="text-[#d97706]">*</span>
+                Degree / Program <span className="text-[#2563eb]">*</span>
               </label>
               {isAcademicsLocked && (
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
@@ -768,7 +768,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
                 isAcademicsLocked
                   ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                  : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
               }`}
             >
               {INDIAN_DEGREES.map((deg) => (
@@ -783,7 +783,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
-                Branch / Specialization <span className="text-[#d97706]">*</span>
+                Branch / Specialization <span className="text-[#2563eb]">*</span>
               </label>
               {isAcademicsLocked && (
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#78716c] bg-[#ede3d7] px-2 py-0.5 rounded-md">
@@ -802,7 +802,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 className={`w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
                   isAcademicsLocked
                     ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+                    : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
                 }`}
                 placeholder="e.g. Computer Science & Engineering (CSE)"
               />
@@ -821,7 +821,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
-                CGPA / SGPA / Percentage <span className="text-[#d97706]">*</span>
+                CGPA / SGPA / Percentage <span className="text-[#2563eb]">*</span>
               </label>
               <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#166534] bg-[#f0fdf4] border border-[#bbf7d0] px-2 py-0.5 rounded-md">
                 <Sparkles className="w-3 h-3 text-[#166534]" /> Editable Every Semester
@@ -833,7 +833,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 type="text"
                 value={cgpa}
                 onChange={(e) => setCgpa(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                 placeholder="e.g. 8.75 / 10 CGPA or 85%"
               />
             </div>
@@ -846,7 +846,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-bold text-[#572d12] uppercase tracking-wider">
-                Graduation / Passing Year <span className="text-[#d97706]">*</span>
+                Graduation / Passing Year <span className="text-[#2563eb]">*</span>
               </label>
               <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#166534] bg-[#f0fdf4] border border-[#bbf7d0] px-2 py-0.5 rounded-md">
                 <Calendar className="w-3 h-3 text-[#166534]" /> Editable
@@ -860,7 +860,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 max="2032"
                 value={passingYear}
                 onChange={(e) => setPassingYear(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                 placeholder="e.g. 2025"
               />
             </div>
@@ -875,7 +875,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
       <div className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-6 sm:p-8 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#eadcc9] pb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] flex items-center justify-center shrink-0">
               <FileText className="w-5 h-5" />
             </div>
             <div>
@@ -900,7 +900,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
             disabled={syncingResume}
             className="pavitra-btn pavitra-btn-light pavitra-btn-sm font-bold inline-flex items-center gap-1.5 shrink-0 cursor-pointer disabled:opacity-50"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-[#d97706] ${syncingResume ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 text-[#2563eb] ${syncingResume ? 'animate-spin' : ''}`} />
             <span>{syncingResume ? 'Updating Resume...' : 'Update Resume Now'}</span>
           </button>
         </div>
@@ -916,7 +916,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
             type="button"
             onClick={() => setSyncWithResume(!syncWithResume)}
             className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer shrink-0 ${
-              syncWithResume ? 'bg-[#d97706]' : 'bg-[#e5e7eb]'
+              syncWithResume ? 'bg-[#2563eb]' : 'bg-[#e5e7eb]'
             }`}
           >
             <span
@@ -932,7 +932,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-6 sm:p-8 shadow-xs space-y-6">
         <div>
           <h3 className="text-base font-bold text-[#572d12] flex items-center gap-2 mb-1">
-            <Briefcase className="w-4 h-4 text-[#d97706]" />
+            <Briefcase className="w-4 h-4 text-[#2563eb]" />
             <span>Target Roles</span>
           </h3>
           <p className="text-xs text-[#78716c] mb-3">Roles matched with incoming Google Jobs, Adzuna India, AICTE & NCS feeds</p>
@@ -941,7 +941,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
             {roles.map((r) => (
               <span
                 key={r}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fff3df] border border-[#eadcc9] text-[#d97706] text-xs font-bold"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] text-xs font-bold"
               >
                 {r}
                 <button
@@ -961,7 +961,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               value={newRole}
               onChange={(e) => setNewRole(e.target.value)}
               placeholder="Add another role (e.g. AI / ML Engineer, Java Developer)..."
-              className="flex-1 px-4 py-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className="flex-1 px-4 py-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
             />
             <button
               type="button"
@@ -977,7 +977,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
         {/* Technical Skills Section */}
         <div className="pt-4 border-t border-[#eadcc9]">
           <h3 className="text-base font-bold text-[#572d12] flex items-center gap-2 mb-1">
-            <Wrench className="w-4 h-4 text-[#d97706]" />
+            <Wrench className="w-4 h-4 text-[#2563eb]" />
             <span>Technical Skills</span>
           </h3>
           <p className="text-xs text-[#78716c] mb-3">Core competencies for ATS benchmark calculation and recruiter screening</p>
@@ -1006,7 +1006,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               value={newSkill}
               onChange={(e) => setNewSkill(e.target.value)}
               placeholder="Add skill (e.g. Spring Boot, PyTorch, Next.js, Redis)..."
-              className="flex-1 px-4 py-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className="flex-1 px-4 py-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
             />
             <button
               type="button"
@@ -1027,7 +1027,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                   key={s}
                   type="button"
                   onClick={() => handleAddSkill(s)}
-                  className="px-2.5 py-1 rounded-full text-[11px] font-semibold border border-[#eadcc9] bg-[#fffdfa] text-[#572d12] hover:bg-[#fff3df] hover:border-[#d97706] transition-colors cursor-pointer"
+                  className="px-2.5 py-1 rounded-full text-[11px] font-semibold border border-[#eadcc9] bg-[#fffdfa] text-[#572d12] hover:bg-[#eff6ff] hover:border-[#2563eb] transition-colors cursor-pointer"
                 >
                   + {s}
                 </button>
@@ -1040,7 +1040,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
       {/* 5. Compensation & Availability (Indian INR Format in LPA) */}
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-6 sm:p-8 shadow-xs space-y-4">
         <h3 className="text-base font-bold text-[#572d12] flex items-center gap-2">
-          <DollarSign className="w-4 h-4 text-[#d97706]" />
+          <DollarSign className="w-4 h-4 text-[#2563eb]" />
           <span>Expected CTC & Placement Availability (₹ INR)</span>
         </h3>
 
@@ -1054,7 +1054,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               step="50000"
               value={salaryMin}
               onChange={(e) => setSalaryMin(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
               placeholder="e.g. 600000 (6 LPA)"
             />
             <p className="text-[11px] text-[#78716c] mt-1">
@@ -1071,7 +1071,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
               step="50000"
               value={salaryMax}
               onChange={(e) => setSalaryMax(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
               placeholder="e.g. 1800000 (18 LPA)"
             />
             <p className="text-[11px] text-[#78716c] mt-1">
@@ -1089,7 +1089,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
             type="button"
             onClick={() => setOpenToWork(!openToWork)}
             className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-              openToWork ? 'bg-[#d97706]' : 'bg-[#e5e7eb]'
+              openToWork ? 'bg-[#2563eb]' : 'bg-[#e5e7eb]'
             }`}
           >
             <span
@@ -1104,7 +1104,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
       {/* 6. Professional Links */}
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-6 sm:p-8 shadow-xs space-y-4">
         <h3 className="text-base font-bold text-[#572d12] flex items-center gap-2">
-          <Globe className="w-4 h-4 text-[#d97706]" />
+          <Globe className="w-4 h-4 text-[#2563eb]" />
           <span>Professional & Code Portfolios</span>
         </h3>
 
@@ -1117,7 +1117,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 type="url"
                 value={linkedinUrl}
                 onChange={(e) => setLinkedinUrl(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                 placeholder="https://linkedin.com/in/..."
               />
             </div>
@@ -1131,7 +1131,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 type="url"
                 value={githubUrl}
                 onChange={(e) => setGithubUrl(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                 placeholder="https://github.com/..."
               />
             </div>
@@ -1145,7 +1145,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 type="url"
                 value={portfolioUrl}
                 onChange={(e) => setPortfolioUrl(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                 placeholder="https://myportfolio.dev"
               />
             </div>
@@ -1161,7 +1161,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
           disabled={syncingResume}
           className="pavitra-btn pavitra-btn-light pavitra-btn-sm font-bold w-full sm:w-auto inline-flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
         >
-          <FileText className="w-4 h-4 text-[#d97706]" />
+          <FileText className="w-4 h-4 text-[#2563eb]" />
           <span>Update Resume from Profile</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>

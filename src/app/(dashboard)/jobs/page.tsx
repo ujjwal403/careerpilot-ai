@@ -116,7 +116,7 @@ export default function JobsPage() {
       <Suspense
         fallback={
           <div className="flex flex-col items-center justify-center py-24 text-[#78716c]">
-            <Loader2 className="w-6 h-6 animate-spin text-[#d97706] mb-3" />
+            <Loader2 className="w-6 h-6 animate-spin text-[#2563eb] mb-3" />
             <p className="text-xs">Scanning live job radar...</p>
           </div>
         }

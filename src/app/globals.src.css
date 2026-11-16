@@ -4,14 +4,14 @@
 
 /* ========================================================
    PAVITRA FOUNDATION DESIGN SYSTEM & EXACT COLOR SHADES
-   --saffron: #d97706 (amber/saffron)
+   --blue: #2563eb (amber/saffron)
    --deep: #572d12 (deep rich bronze/umber)
    --gold: #eab308
    --green: #166534
    --ink: #29231e
    --muted: #635b52
    --bg: #fffaf3 (warm cream linen)
-   --alt: #fff3df (soft sand section)
+   --alt: #eff6ff (soft sand section)
    --border: #eadcc9 (crisp sand border)
    --shadow: 0 18px 50px rgba(74, 45, 15, 0.10)
    ======================================================== */
@@ -20,15 +20,15 @@
 html,
 body {
   color-scheme: light !important;
-  --saffron: #d97706;
-  --saffron-dark: #b45309;
+  --blue: #2563eb;
+  --blue-dark: #1d4ed8;
   --deep: #572d12;
   --gold: #eab308;
   --green: #166534;
   --ink: #29231e;
   --muted: #635b52;
   --bg: #fffaf3;
-  --alt: #fff3df;
+  --alt: #eff6ff;
   --white: #ffffff;
   --border: #eadcc9;
   --shadow: 0 18px 50px rgba(74, 45, 15, 0.10);
@@ -86,10 +86,10 @@ a {
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background-color: #d97706;
-  background: linear-gradient(135deg, #d97706, #b45309);
+  background-color: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
   flex-shrink: 0;
 }
 
@@ -99,21 +99,21 @@ a {
   align-items: center;
   justify-content: center;
   border: 0;
-  background-color: #d97706 !important;
-  background: linear-gradient(135deg, #d97706, #b45309) !important;
+  background-color: #2563eb !important;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
   color: #ffffff !important;
   padding: 13px 22px;
   border-radius: 10px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.25);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
   font-size: 14px;
 }
 .pavitra-btn:hover {
   transform: translateY(-1px);
-  background: linear-gradient(135deg, #b45309, #92400e) !important;
-  box-shadow: 0 10px 25px rgba(217, 119, 6, 0.35);
+  background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
 }
 .pavitra-btn:active {
   transform: scale(0.98);
@@ -127,13 +127,13 @@ a {
   box-shadow: none;
 }
 .pavitra-btn-light:hover {
-  border-color: #d97706;
-  color: #d97706 !important;
+  border-color: #2563eb;
+  color: #2563eb !important;
   background: #fffdfa !important;
 }
 .pavitra-btn-light:active {
   transform: scale(0.98);
-  background-color: #fff3df !important;
+  background-color: #eff6ff !important;
 }
 
 .pavitra-btn-sm {
@@ -149,14 +149,14 @@ a {
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 2px;
-  color: #d97706;
+  color: #2563eb;
   text-transform: uppercase;
 }
 
 /* Hero Section */
 .pavitra-hero {
   padding: 80px 0 70px;
-  background: radial-gradient(circle at 80% 20%, #fde68a 0, transparent 32%), linear-gradient(135deg, #fff8ec, #fffaf3);
+  background: radial-gradient(circle at 80% 20%, #bfdbfe 0, transparent 32%), linear-gradient(135deg, #fff8ec, #fffaf3);
   border-bottom: 1px solid #eadcc9;
 }
 .pavitra-hero h1 {
@@ -167,7 +167,7 @@ a {
   font-weight: 800;
 }
 .pavitra-hero h1 span {
-  color: #d97706;
+  color: #2563eb;
 }
 .pavitra-hero-card {
   background: rgba(255, 255, 255, 0.95);
@@ -183,7 +183,7 @@ a {
   border-bottom: 1px solid #eadcc9;
 }
 .pavitra-section-alt {
-  background: #fff3df;
+  background: #eff6ff;
 }
 .pavitra-section-head {
   text-align: center;
@@ -213,18 +213,18 @@ a {
 .pavitra-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(74, 45, 15, 0.08);
-  border-color: #d97706;
+  border-color: #2563eb;
 }
 
 .pavitra-card-icon {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: #fff3df;
+  background: #eff6ff;
   border: 1px solid #eadcc9;
   display: grid;
   place-items: center;
-  color: #d97706;
+  color: #2563eb;
   margin-bottom: 20px;
 }
 
@@ -242,7 +242,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #fff3df;
+  background: #eff6ff;
   border: 1px solid #eadcc9;
   padding: 6px 14px;
   border-radius: 999px;

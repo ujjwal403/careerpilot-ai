@@ -50,19 +50,19 @@ export function HowItWorks() {
               <span className="pavitra-eyebrow text-[11px]">OUR CORE PRINCIPLES</span>
               <div className="space-y-2 text-sm text-[#572d12]">
                 <div className="flex items-start gap-2">
-                  <span className="text-[#d97706] font-bold">✓</span>
+                  <span className="text-[#2563eb] font-bold">✓</span>
                   <div>
                     <strong>Human-in-the-Loop Verification:</strong> AI extracts, but you always have final authority to edit your verified profile before it is saved.
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#d97706] font-bold">✓</span>
+                  <span className="text-[#2563eb] font-bold">✓</span>
                   <div>
                     <strong>Zero Spam Radar:</strong> Every role match is scored dynamically against your verified skills, location, and compensation target.
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#d97706] font-bold">✓</span>
+                  <span className="text-[#2563eb] font-bold">✓</span>
                   <div>
                     <strong>Complete Privacy:</strong> Your resume data and verified metrics are never sold or shared without your explicit consent.
                   </div>

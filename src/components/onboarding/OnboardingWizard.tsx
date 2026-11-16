@@ -308,7 +308,7 @@ export function OnboardingWizard() {
             <span
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                 step === num
-                  ? 'bg-[#d97706] text-white shadow-xs'
+                  ? 'bg-[#2563eb] text-white shadow-xs'
                   : step > num
                   ? 'bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0]'
                   : 'bg-[#fffaf3] text-[#78716c] border border-[#eadcc9]'
@@ -338,7 +338,7 @@ export function OnboardingWizard() {
       {step === 1 && (
         <div className="space-y-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#fff3df] text-xs font-bold text-[#d97706] mb-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#eff6ff] text-xs font-bold text-[#2563eb] mb-3">
               <Landmark className="w-3.5 h-3.5" />
               <span>Indian Higher Education & Placement Filter</span>
             </div>
@@ -352,7 +352,7 @@ export function OnboardingWizard() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2 flex items-start gap-2.5 p-3 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs text-[#572d12]">
-              <Lock className="w-4 h-4 text-[#d97706] shrink-0 mt-0.5" />
+              <Lock className="w-4 h-4 text-[#2563eb] shrink-0 mt-0.5" />
               <div className="leading-relaxed">
                 <strong>Placement Integrity Standard:</strong> Your registered college, degree, and specialization will be permanently verified and locked to your profile once submitted.
                 <span className="text-[#166534] font-semibold block mt-1">
@@ -369,7 +369,7 @@ export function OnboardingWizard() {
               <select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
               >
                 {COUNTRIES.map((c) => (
                   <option key={c} value={c}>
@@ -382,12 +382,12 @@ export function OnboardingWizard() {
             {/* State */}
             <div>
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-                State / Union Territory <span className="text-[#d97706]">*</span>
+                State / Union Territory <span className="text-[#2563eb]">*</span>
               </label>
               <select
                 value={state}
                 onChange={(e) => handleStateChange(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
               >
                 <option value="">-- Select Your State / UT --</option>
                 {INDIAN_STATES_AND_UTS.map((s) => (
@@ -401,7 +401,7 @@ export function OnboardingWizard() {
             {/* City */}
             <div>
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-                City / Tech Hub <span className="text-[#d97706]">*</span>
+                City / Tech Hub <span className="text-[#2563eb]">*</span>
               </label>
               <div className="relative">
                 <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
@@ -410,7 +410,7 @@ export function OnboardingWizard() {
                   list="onboarding-cities-list"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                   placeholder={state ? `e.g. ${availableCities[0] || 'City'}` : 'Select state first or type city'}
                 />
                 <datalist id="onboarding-cities-list">
@@ -424,12 +424,12 @@ export function OnboardingWizard() {
             {/* College State */}
             <div>
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-                College State <span className="text-[#d97706]">*</span>
+                College State <span className="text-[#2563eb]">*</span>
               </label>
               <select
                 value={effectiveCollegeState}
                 onChange={(e) => setCollegeState(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
               >
                 <option value="">-- Select College State --</option>
                 {INDIAN_STATES_AND_UTS.map((s) => (
@@ -443,7 +443,7 @@ export function OnboardingWizard() {
             {/* College / University Name (Interactive Combobox) */}
             <div className="sm:col-span-2">
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-                University / College Name <span className="text-[#d97706]">*</span>
+                University / College Name <span className="text-[#2563eb]">*</span>
               </label>
               <CollegeCombobox
                 value={collegeName}
@@ -464,7 +464,7 @@ export function OnboardingWizard() {
             {/* Degree */}
             <div>
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-                Degree / Course <span className="text-[#d97706]">*</span>
+                Degree / Course <span className="text-[#2563eb]">*</span>
               </label>
               <select
                 value={degree}
@@ -473,7 +473,7 @@ export function OnboardingWizard() {
                   const specs = getSpecializationsForDegree(e.target.value)
                   if (specs.length > 0) setFieldOfStudy(specs[0])
                 }}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
               >
                 {INDIAN_DEGREES.map((deg) => (
                   <option key={deg} value={deg}>
@@ -486,14 +486,14 @@ export function OnboardingWizard() {
             {/* Branch / Stream (Cascaded) */}
             <div>
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-                Branch / Specialization <span className="text-[#d97706]">*</span>
+                Branch / Specialization <span className="text-[#2563eb]">*</span>
               </label>
               <input
                 type="text"
                 list="onboarding-specializations-list"
                 value={fieldOfStudy}
                 onChange={(e) => setFieldOfStudy(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                 placeholder="e.g. Computer Science & Engineering (CSE)"
               />
               <datalist id="onboarding-specializations-list">
@@ -506,7 +506,7 @@ export function OnboardingWizard() {
             {/* CGPA */}
             <div>
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-                CGPA / SGPA / % <span className="text-[#d97706]">*</span>
+                CGPA / SGPA / % <span className="text-[#2563eb]">*</span>
               </label>
               <div className="relative">
                 <Award className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
@@ -514,7 +514,7 @@ export function OnboardingWizard() {
                   type="text"
                   value={cgpa}
                   onChange={(e) => setCgpa(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                   placeholder="e.g. 8.6 / 10 CGPA or 82%"
                 />
               </div>
@@ -523,7 +523,7 @@ export function OnboardingWizard() {
             {/* Passing Year */}
             <div>
               <label className="block text-xs font-bold text-[#572d12] mb-1.5 uppercase tracking-wider">
-                Graduation Year <span className="text-[#d97706]">*</span>
+                Graduation Year <span className="text-[#2563eb]">*</span>
               </label>
               <div className="relative">
                 <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
@@ -533,7 +533,7 @@ export function OnboardingWizard() {
                   max="2032"
                   value={passingYear}
                   onChange={(e) => setPassingYear(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                   placeholder="e.g. 2025"
                 />
               </div>
@@ -564,7 +564,7 @@ export function OnboardingWizard() {
       {step === 2 && (
         <div className="space-y-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#fff3df] text-xs font-bold text-[#d97706] mb-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#eff6ff] text-xs font-bold text-[#2563eb] mb-3">
               <Briefcase className="w-3.5 h-3.5" />
               <span>Career Trajectory</span>
             </div>
@@ -591,11 +591,11 @@ export function OnboardingWizard() {
                     onClick={() => toggleRole(role)}
                     className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                       isSelected
-                        ? 'border-[#d97706] bg-[#fff3df] text-[#d97706] shadow-xs'
-                        : 'border-[#eadcc9] bg-[#fffaf3] text-[#635b52] hover:text-[#572d12] hover:border-[#d97706]'
+                        ? 'border-[#2563eb] bg-[#eff6ff] text-[#2563eb] shadow-xs'
+                        : 'border-[#eadcc9] bg-[#fffaf3] text-[#635b52] hover:text-[#572d12] hover:border-[#2563eb]'
                     }`}
                   >
-                    {isSelected && <Check className="w-3.5 h-3.5 inline mr-1 text-[#d97706]" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 inline mr-1 text-[#2563eb]" />}
                     {role}
                   </button>
                 )
@@ -610,7 +610,7 @@ export function OnboardingWizard() {
               placeholder="Or type a custom role title..."
               value={customRole}
               onChange={(e) => setCustomRole(e.target.value)}
-              className="flex-1 px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className="flex-1 px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
             />
             <button
               type="submit"
@@ -632,7 +632,7 @@ export function OnboardingWizard() {
                 {selectedRoles.map((role) => (
                   <span
                     key={role}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fff3df] border border-[#eadcc9] text-[#d97706] text-xs font-bold"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] text-xs font-bold"
                   >
                     {role}
                     <button
@@ -675,7 +675,7 @@ export function OnboardingWizard() {
       {step === 3 && (
         <div className="space-y-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#fff3df] text-xs font-bold text-[#d97706] mb-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#eff6ff] text-xs font-bold text-[#2563eb] mb-3">
               <Wrench className="w-3.5 h-3.5" />
               <span>Placement Core Skills</span>
             </div>
@@ -701,11 +701,11 @@ export function OnboardingWizard() {
                     onClick={() => toggleSkill(skill)}
                     className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                       isSelected
-                        ? 'border-[#d97706] bg-[#fff3df] text-[#d97706] shadow-xs'
-                        : 'border-[#eadcc9] bg-[#fffaf3] text-[#635b52] hover:text-[#572d12] hover:border-[#d97706]'
+                        ? 'border-[#2563eb] bg-[#eff6ff] text-[#2563eb] shadow-xs'
+                        : 'border-[#eadcc9] bg-[#fffaf3] text-[#635b52] hover:text-[#572d12] hover:border-[#2563eb]'
                     }`}
                   >
-                    {isSelected && <Check className="w-3.5 h-3.5 inline mr-1 text-[#d97706]" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 inline mr-1 text-[#2563eb]" />}
                     {skill}
                   </button>
                 )
@@ -719,7 +719,7 @@ export function OnboardingWizard() {
               placeholder="Or add custom skill (e.g. PyTorch, Microservices)..."
               value={customSkill}
               onChange={(e) => setCustomSkill(e.target.value)}
-              className="flex-1 px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+              className="flex-1 px-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
             />
             <button
               type="submit"
@@ -740,7 +740,7 @@ export function OnboardingWizard() {
                 {selectedSkills.map((skill) => (
                   <span
                     key={skill}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fff3df] border border-[#eadcc9] text-[#d97706] text-xs font-bold"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] text-xs font-bold"
                   >
                     {skill}
                     <button
@@ -783,7 +783,7 @@ export function OnboardingWizard() {
       {step === 4 && (
         <div className="space-y-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#fff3df] text-xs font-bold text-[#d97706] mb-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#eff6ff] text-xs font-bold text-[#2563eb] mb-3">
               <FileUp className="w-3.5 h-3.5" />
               <span>ATS Telemetry Check</span>
             </div>
@@ -815,7 +815,7 @@ export function OnboardingWizard() {
                       placeholder="https://drive.google.com/file/d/..."
                       value={driveUrl}
                       onChange={(e) => setDriveUrl(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706]"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
                     />
                   </div>
                   <button

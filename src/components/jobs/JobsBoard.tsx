@@ -306,10 +306,10 @@ export function JobsBoard({
     <div className="space-y-6 max-w-6xl mx-auto text-[#29231e]">
       {/* Top Search & Filter Bar (Matching Pavitra Foundation Editorial Theme) */}
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-5 sm:p-6 shadow-xs space-y-4">
-        {/* Internshala-Style Category Tabs */}
-        <div className="flex flex-wrap items-center gap-2 pb-3 border-b border-[#eadcc9]">
-          <span className="text-[11px] font-bold text-[#572d12] mr-1 flex items-center gap-1">
-            <Zap className="w-3.5 h-3.5 text-[#d97706]" />
+        {/* Internshala-Style Category Tabs with smooth mobile swipe */}
+        <div className="flex items-center gap-2 pb-3 border-b border-[#eadcc9] overflow-x-auto no-scrollbar scroll-smooth">
+          <span className="text-[11px] font-bold text-[#572d12] mr-1 flex items-center gap-1 shrink-0">
+            <Zap className="w-3.5 h-3.5 text-[#2563eb]" />
             <span>Opportunities:</span>
           </span>
           {[
@@ -323,9 +323,9 @@ export function JobsBoard({
               key={id}
               type="button"
               onClick={() => setOpportunityType(id as typeof opportunityType)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                 opportunityType === id
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
                   : 'bg-[#fffaf3] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
               }`}
             >
@@ -342,7 +342,7 @@ export function JobsBoard({
               placeholder="Search by role, company, or skills (e.g. React Developer Intern, Python, Zomato, BEL)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#9b9186] focus:outline-hidden focus:border-[#d97706]"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#9b9186] focus:outline-hidden focus:border-[#2563eb]"
             />
           </div>
 
@@ -352,7 +352,7 @@ export function JobsBoard({
               onClick={() => setRemoteOnly(!remoteOnly)}
               className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
                 remoteOnly
-                  ? 'border-[#d97706] bg-[#fff3df] text-[#d97706]'
+                  ? 'border-[#2563eb] bg-[#eff6ff] text-[#2563eb]'
                   : 'border-[#eadcc9] bg-white text-[#635b52] hover:text-[#572d12]'
               }`}
             >
@@ -367,7 +367,7 @@ export function JobsBoard({
               className="pavitra-btn pavitra-btn-light pavitra-btn-sm font-bold inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               title="Sync latest live feeds from Google Jobs, Adzuna India, AICTE & NCS"
             >
-              <RefreshCw className={`w-3.5 h-3.5 text-[#d97706] ${syncing ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 text-[#2563eb] ${syncing ? 'animate-spin' : ''}`} />
               <span>{syncing ? 'Syncing...' : 'Sync Live Feeds'}</span>
             </button>
           </div>
@@ -403,7 +403,7 @@ export function JobsBoard({
         {/* Source Channels Filter Pills */}
         <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#eadcc9]">
           <span className="text-[11px] font-bold text-[#572d12] mr-1 flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#d97706]" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#2563eb]" />
             <span>Channel:</span>
           </span>
 
@@ -412,8 +412,8 @@ export function JobsBoard({
             onClick={() => setSourceFilter('all')}
             className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
               sourceFilter === 'all'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
+                : 'bg-[#eff6ff] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
             }`}
           >
             All Channels ({jobs.length})
@@ -424,7 +424,7 @@ export function JobsBoard({
             onClick={() => setSourceFilter('google_jobs')}
             className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1 ${
               sourceFilter === 'google_jobs'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
                 : 'bg-sky-50 border border-sky-200 text-sky-800 hover:bg-sky-100'
             }`}
           >
@@ -436,8 +436,8 @@ export function JobsBoard({
             onClick={() => setSourceFilter('adzuna')}
             className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1 ${
               sourceFilter === 'adzuna'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                : 'bg-amber-50 border border-amber-200 text-amber-900 hover:bg-amber-100'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
+                : 'bg-blue-50 border border-blue-200 text-blue-900 hover:bg-blue-100'
             }`}
           >
             <span>⚡ Adzuna India ({adzunaCount})</span>
@@ -448,7 +448,7 @@ export function JobsBoard({
             onClick={() => setSourceFilter('aicte')}
             className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1 ${
               sourceFilter === 'aicte'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
                 : 'bg-[#f0fdf4] border border-[#bbf7d0] text-[#166534] hover:bg-[#dcfce7]'
             }`}
           >
@@ -460,8 +460,8 @@ export function JobsBoard({
             onClick={() => setSourceFilter('ncs')}
             className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1 ${
               sourceFilter === 'ncs'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                : 'bg-[#fff3df] border border-[#eadcc9] text-[#b45309] hover:bg-[#ffe8c4]'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
+                : 'bg-[#eff6ff] border border-[#eadcc9] text-[#1d4ed8] hover:bg-[#ffe8c4]'
             }`}
           >
             <span>🇮🇳 NCS Govt ({ncsCount})</span>
@@ -480,7 +480,7 @@ export function JobsBoard({
       {/* Results Count Banner */}
       <div className="flex items-center justify-between text-xs text-[#635b52] px-1 font-medium">
         <span>Showing {filteredJobs.length} opportunities</span>
-        <span className="text-[#d97706] font-bold flex items-center gap-1">
+        <span className="text-[#2563eb] font-bold flex items-center gap-1">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Live ATS Scored &amp; Matched</span>
         </span>
@@ -502,15 +502,15 @@ export function JobsBoard({
                   setSourceFilter('all')
                   setRemoteOnly(false)
                 }}
-                className="text-xs font-bold text-[#d97706] hover:underline cursor-pointer"
+                className="text-xs font-bold text-[#2563eb] hover:underline cursor-pointer"
               >
                 Clear all filters
               </button>
               <button
                 type="button"
                 onClick={handleSyncAllFeeds}
-                className="pavitra-btn pavitra-btn-sm font-bold cursor-pointer !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white"
-                style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                className="pavitra-btn pavitra-btn-sm font-bold cursor-pointer !bg-gradient-to-r !from-[#2563eb] !to-[#1d4ed8] !text-white"
+                style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
               >
                 Sync Live Feeds
               </button>
@@ -533,26 +533,26 @@ export function JobsBoard({
             return (
               <div
                 key={job.id}
-                className="rounded-2xl border border-[#eadcc9] bg-white p-6 shadow-xs hover:border-[#d97706] transition-all duration-200 group flex flex-col md:flex-row md:items-center justify-between gap-6"
+                className="rounded-2xl border border-[#eadcc9] bg-white p-6 shadow-xs hover:border-[#2563eb] transition-all duration-200 group flex flex-col md:flex-row md:items-center justify-between gap-6"
               >
                 <div className="space-y-3 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <h3
                       onClick={() => handleOpenApplyModal(job)}
-                      className="text-base font-extrabold text-[#572d12] hover:text-[#d97706] transition-colors cursor-pointer"
+                      className="text-base font-extrabold text-[#572d12] hover:text-[#2563eb] transition-colors cursor-pointer"
                       title="Click to view full job description and requirements"
                     >
                       {job.title}
                     </h3>
 
                     {/* Internshala Badges */}
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fff3df] border border-[#eadcc9] text-[#b45309]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#d97706] animate-pulse" />
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#eff6ff] border border-[#eadcc9] text-[#1d4ed8]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] animate-pulse" />
                       Actively Hiring
                     </span>
 
                     {isIntern && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fef3c7] text-[#92400e] border border-[#fde68a]">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fef3c7] text-[#1e40af] border border-[#bfdbfe]">
                         🎓 Internship
                       </span>
                     )}
@@ -565,7 +565,7 @@ export function JobsBoard({
                     )}
 
                     {isAdzuna && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-200">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-900 border border-blue-200">
                         ⚡ Adzuna India
                       </span>
                     )}
@@ -577,7 +577,7 @@ export function JobsBoard({
                     )}
 
                     {isNCS && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#fff3df] text-[#b45309] border border-[#eadcc9]">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#eff6ff] text-[#1d4ed8] border border-[#eadcc9]">
                         🇮🇳 NCS Govt
                       </span>
                     )}
@@ -588,7 +588,7 @@ export function JobsBoard({
                     </span>
 
                     {job.is_remote && (
-                      <span className="text-[10px] font-bold text-[#d97706] bg-[#fff3df] border border-[#eadcc9] px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold text-[#2563eb] bg-[#eff6ff] border border-[#eadcc9] px-2 py-0.5 rounded-full">
                         Remote
                       </span>
                     )}
@@ -596,7 +596,7 @@ export function JobsBoard({
 
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-[#635b52]">
                     <span className="inline-flex items-center gap-1.5 font-bold text-[#572d12]">
-                      <Building2 className="w-3.5 h-3.5 text-[#d97706]" />
+                      <Building2 className="w-3.5 h-3.5 text-[#2563eb]" />
                       {job.company}
                     </span>
                     <span className="inline-flex items-center gap-1.5">
@@ -622,7 +622,7 @@ export function JobsBoard({
                             key={skill}
                             className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border ${
                               isMatched
-                                ? 'bg-[#fff3df] border-[#eadcc9] text-[#572d12]'
+                                ? 'bg-[#eff6ff] border-[#eadcc9] text-[#572d12]'
                                 : 'bg-[#fffaf3] border-[#eadcc9] text-[#635b52]'
                             }`}
                           >
@@ -635,14 +635,14 @@ export function JobsBoard({
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2.5 shrink-0">
+                <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-between sm:justify-start pt-2 sm:pt-0 border-t sm:border-t-0 border-[#eadcc9]/60">
                   <button
                     type="button"
                     onClick={() => handleSave(job.id)}
                     className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
                       isSaved
-                        ? 'border-[#d97706] bg-[#fff3df] text-[#d97706]'
-                        : 'border-[#eadcc9] bg-white text-[#635b52] hover:text-[#d97706] hover:border-[#d97706]'
+                        ? 'border-[#2563eb] bg-[#eff6ff] text-[#2563eb]'
+                        : 'border-[#eadcc9] bg-white text-[#635b52] hover:text-[#2563eb] hover:border-[#2563eb]'
                     }`}
                     title={isSaved ? 'Opportunity Saved' : 'Save Opportunity'}
                   >
@@ -656,7 +656,7 @@ export function JobsBoard({
                       e.stopPropagation()
                       handleOpenApplyModal(job)
                     }}
-                    className="px-3.5 py-1.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] hover:bg-[#fff3df] text-xs font-bold text-[#572d12] hover:text-[#d97706] transition-colors cursor-pointer"
+                    className="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] hover:bg-[#eff6ff] text-xs font-bold text-[#572d12] hover:text-[#2563eb] transition-colors cursor-pointer text-center"
                   >
                     View Details
                   </button>
@@ -669,7 +669,7 @@ export function JobsBoard({
                       </span>
                       <a
                         href="/applications"
-                        className="px-3 py-1.5 rounded-xl border border-[#eadcc9] bg-white hover:bg-[#fffaf3] text-xs font-bold text-[#d97706] hover:underline transition-colors flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-xl border border-[#eadcc9] bg-white hover:bg-[#fffaf3] text-xs font-bold text-[#2563eb] hover:underline transition-colors flex items-center gap-1"
                         title="View status in your Applications Pipeline"
                       >
                         <span>Track</span>
@@ -685,8 +685,8 @@ export function JobsBoard({
                         e.stopPropagation()
                         handleMarkApplied(job)
                       }}
-                      className="pavitra-btn pavitra-btn-sm inline-flex items-center gap-1.5 font-bold !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer no-underline"
-                      style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                      className="pavitra-btn pavitra-btn-sm inline-flex items-center justify-center gap-1.5 font-bold !bg-gradient-to-r !from-[#2563eb] !to-[#1d4ed8] !text-white cursor-pointer no-underline flex-1 sm:flex-initial text-center"
+                      style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
                       title={`Apply directly on ${job.company} official portal`}
                     >
                       <span>Apply Now</span>
@@ -721,7 +721,7 @@ export function JobsBoard({
             <div className="p-5 sm:p-6 border-b border-[#eadcc9] bg-[#fffaf3] flex items-start justify-between gap-4 shrink-0">
               <div className="space-y-1.5 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] font-bold text-[#b45309] uppercase tracking-wider bg-[#fff3df] border border-[#eadcc9] px-2.5 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold text-[#1d4ed8] uppercase tracking-wider bg-[#eff6ff] border border-[#eadcc9] px-2.5 py-0.5 rounded-full">
                     {selectedJobForApply.source_url?.includes('internshala.com')
                       ? '🎓 Internshala Verified Opening'
                       : selectedJobForApply.source === 'aicte'
@@ -743,7 +743,7 @@ export function JobsBoard({
 
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#635b52]">
                   <span className="font-bold text-[#572d12] flex items-center gap-1">
-                    <Building2 className="w-3.5 h-3.5 text-[#d97706]" />
+                    <Building2 className="w-3.5 h-3.5 text-[#2563eb]" />
                     {selectedJobForApply.company}
                   </span>
                   <span className="flex items-center gap-1">
@@ -777,7 +777,7 @@ export function JobsBoard({
             <div className="p-5 sm:p-6 space-y-6 overflow-y-auto flex-1 text-xs sm:text-sm">
               {/* About the Role / Description */}
               <div className="space-y-2">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#d97706]">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#2563eb]">
                   About the Role &amp; Responsibilities
                 </h4>
                 <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] text-[#29231e] leading-relaxed whitespace-pre-line text-xs sm:text-[13px]">
@@ -788,7 +788,7 @@ export function JobsBoard({
               {/* Requirements & Eligibility */}
               {selectedJobForApply.requirements && (
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#d97706]">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#2563eb]">
                     Candidate Requirements &amp; Eligibility
                   </h4>
                   <div className="p-4 rounded-2xl border border-[#eadcc9] bg-white text-[#29231e] leading-relaxed whitespace-pre-line text-xs sm:text-[13px]">
@@ -800,7 +800,7 @@ export function JobsBoard({
               {/* Required Skills Matrix */}
               {selectedJobForApply.skills_required && selectedJobForApply.skills_required.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#d97706]">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#2563eb]">
                     Key Skills Required
                   </h4>
                   <div className="flex flex-wrap gap-2">
@@ -826,13 +826,13 @@ export function JobsBoard({
               )}
 
               {/* Original Website Source Link Box */}
-              <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#fff3df] space-y-2.5">
+              <div className="p-4 rounded-2xl border border-[#eadcc9] bg-[#eff6ff] space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <Globe className="w-4 h-4 text-[#d97706]" />
+                    <Globe className="w-4 h-4 text-[#2563eb]" />
                     Original Posting Website &amp; Application Path
                   </span>
-                  <span className="text-[10px] font-bold text-[#b45309] uppercase">Verified URL</span>
+                  <span className="text-[10px] font-bold text-[#1d4ed8] uppercase">Verified URL</span>
                 </div>
                 <a
                   href={getJobDestinationUrl(selectedJobForApply)}
@@ -842,13 +842,13 @@ export function JobsBoard({
                     handleMarkApplied(selectedJobForApply)
                     setApplySuccess(true)
                   }}
-                  className="bg-white hover:bg-[#fffaf3] p-3 rounded-xl border border-[#eadcc9] hover:border-[#d97706] flex items-center justify-between gap-3 text-xs transition-colors group/link cursor-pointer block no-underline"
+                  className="bg-white hover:bg-[#fffaf3] p-3 rounded-xl border border-[#eadcc9] hover:border-[#2563eb] flex items-center justify-between gap-3 text-xs transition-colors group/link cursor-pointer block no-underline"
                   title="Open direct job URL in new tab"
                 >
-                  <span className="text-[#635b52] group-hover/link:text-[#d97706] font-mono text-[11px] truncate block">
+                  <span className="text-[#635b52] group-hover/link:text-[#2563eb] font-mono text-[11px] truncate block">
                     {getJobDestinationUrl(selectedJobForApply)}
                   </span>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#d97706] shrink-0" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[#2563eb] shrink-0" />
                 </a>
                 <p className="text-[11px] text-[#78716c]">
                   Clicking <strong>&quot;Apply on Official Website&quot;</strong> below opens this exact verified posting in a new tab and automatically logs your application in your pipeline tracker.
@@ -881,8 +881,8 @@ export function JobsBoard({
                   handleMarkApplied(selectedJobForApply)
                   setApplySuccess(true)
                 }}
-                className="pavitra-btn pavitra-btn-sm font-bold inline-flex items-center gap-2 !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white cursor-pointer no-underline shadow-xs hover:opacity-95"
-                style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                className="pavitra-btn pavitra-btn-sm font-bold inline-flex items-center gap-2 !bg-gradient-to-r !from-[#2563eb] !to-[#1d4ed8] !text-white cursor-pointer no-underline shadow-xs hover:opacity-95"
+                style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
               >
                 <span>
                   {selectedJobForApply.source_url?.includes('internshala.com')

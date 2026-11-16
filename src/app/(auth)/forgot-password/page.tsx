@@ -52,11 +52,11 @@ export default function ForgotPasswordPage() {
             <CheckCircle2 className="w-7 h-7" />
           </div>
           <p className="text-xs text-[#572d12]">
-            Password reset instructions sent to <span className="text-[#d97706] font-semibold">{email}</span>. Check your inbox.
+            Password reset instructions sent to <span className="text-[#2563eb] font-semibold">{email}</span>. Check your inbox.
           </p>
           <Link
             href="/login"
-            className="inline-flex items-center gap-1.5 text-xs text-[#d97706] hover:underline font-semibold"
+            className="inline-flex items-center gap-1.5 text-xs text-[#2563eb] hover:underline font-semibold"
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back to sign in
           </Link>
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
                 placeholder="alex@company.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:border-[#d97706] focus:ring-1 focus:ring-[#d97706]/20 transition-all"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]/20 transition-all"
               />
             </div>
           </div>

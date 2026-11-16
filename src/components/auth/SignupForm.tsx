@@ -208,9 +208,9 @@ export function SignupForm() {
         <button
           type="button"
           onClick={fillDemoData}
-          className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#fff3df] hover:bg-[#ffe8c2] text-[11px] font-semibold text-[#b45309] transition-all cursor-pointer"
+          className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#eadcc9] bg-[#eff6ff] hover:bg-[#ffe8c2] text-[11px] font-semibold text-[#1d4ed8] transition-all cursor-pointer"
         >
-          <Sparkles className="w-3 h-3 text-[#d97706]" />
+          <Sparkles className="w-3 h-3 text-[#2563eb]" />
           <span>Auto-fill Demo Data</span>
         </button>
       </div>
@@ -239,7 +239,7 @@ export function SignupForm() {
         {/* Full Name */}
         <div>
           <label className="block text-xs font-semibold text-[#572d12] mb-1.5">
-            Full Name <span className="text-[#d97706]">*</span>
+            Full Name <span className="text-[#2563eb]">*</span>
           </label>
           <div className="relative">
             <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
@@ -252,7 +252,7 @@ export function SignupForm() {
               className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                 errors.name
                   ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-                  : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
+                  : 'border-[#eadcc9] focus:border-[#2563eb] focus:ring-[#2563eb]/20'
               }`}
             />
           </div>
@@ -262,7 +262,7 @@ export function SignupForm() {
         {/* Email Address */}
         <div>
           <label className="block text-xs font-semibold text-[#572d12] mb-1.5">
-            Email Address <span className="text-[#d97706]">*</span>
+            Email Address <span className="text-[#2563eb]">*</span>
           </label>
           <div className="relative">
             <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
@@ -275,7 +275,7 @@ export function SignupForm() {
               className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                 errors.email
                   ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-                  : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
+                  : 'border-[#eadcc9] focus:border-[#2563eb] focus:ring-[#2563eb]/20'
               }`}
             />
           </div>
@@ -285,7 +285,7 @@ export function SignupForm() {
         {/* Password */}
         <div>
           <label className="block text-xs font-semibold text-[#572d12] mb-1.5">
-            Password <span className="text-[#d97706]">*</span>
+            Password <span className="text-[#2563eb]">*</span>
           </label>
           <div className="relative">
             <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
@@ -298,7 +298,7 @@ export function SignupForm() {
               className={`w-full pl-10 pr-10 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                 errors.password
                   ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-                  : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
+                  : 'border-[#eadcc9] focus:border-[#2563eb] focus:ring-[#2563eb]/20'
               }`}
             />
             <button
@@ -319,7 +319,7 @@ export function SignupForm() {
           {/* City */}
           <div>
             <label className="block text-xs font-semibold text-[#572d12] mb-1.5">
-              City <span className="text-[#d97706]">*</span>
+              City <span className="text-[#2563eb]">*</span>
             </label>
             <div className="relative">
               <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
@@ -331,7 +331,7 @@ export function SignupForm() {
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                   errors.city
                     ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-                    : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
+                    : 'border-[#eadcc9] focus:border-[#2563eb] focus:ring-[#2563eb]/20'
                 }`}
               />
             </div>
@@ -341,7 +341,7 @@ export function SignupForm() {
           {/* User Type with Dropdown Chevron */}
           <div>
             <label className="block text-xs font-semibold text-[#572d12] mb-1.5">
-              I am a <span className="text-[#d97706]">*</span>
+              I am a <span className="text-[#2563eb]">*</span>
             </label>
             <div className="relative">
               <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
@@ -351,7 +351,7 @@ export function SignupForm() {
                 className={`w-full pl-10 pr-9 py-2.5 rounded-xl border bg-[#fffaf3] text-[#29231e] text-xs sm:text-sm focus:outline-none focus:ring-1 transition-all appearance-none cursor-pointer ${
                   errors.userType
                     ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-                    : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
+                    : 'border-[#eadcc9] focus:border-[#2563eb] focus:ring-[#2563eb]/20'
                 }`}
               >
                 <option value="" disabled className="text-[#a89f91]">
@@ -374,11 +374,11 @@ export function SignupForm() {
         {/* Terms */}
         <p className="text-[11px] text-[#635b52] leading-relaxed pt-1">
           By signing up, you agree to our{' '}
-          <Link href="/terms" className="text-[#d97706] hover:underline font-medium">
+          <Link href="/terms" className="text-[#2563eb] hover:underline font-medium">
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" className="text-[#d97706] hover:underline font-medium">
+          <Link href="/privacy" className="text-[#2563eb] hover:underline font-medium">
             Privacy Policy
           </Link>.
         </p>
@@ -406,7 +406,7 @@ export function SignupForm() {
       {/* Switch to Login */}
       <p className="text-center text-xs text-[#635b52]">
         Already have an account?{' '}
-        <Link href="/login" className="text-[#d97706] font-bold hover:underline">
+        <Link href="/login" className="text-[#2563eb] font-bold hover:underline">
           Sign in
         </Link>
       </p>

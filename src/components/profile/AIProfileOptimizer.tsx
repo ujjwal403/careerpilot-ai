@@ -83,13 +83,13 @@ export function AIProfileOptimizer({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#eadcc9] pb-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#d97706] to-[#b45309] text-white flex items-center justify-center shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2563eb] to-[#1d4ed8] text-white flex items-center justify-center shadow-xs">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-extrabold text-[#572d12]">Gemini AI Profile Coach</h3>
-              <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-[#fff3df] border border-[#eadcc9] text-[#b45309]">
+              <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-[#eff6ff] border border-[#eadcc9] text-[#1d4ed8]">
                 Internshala Ready
               </span>
             </div>
@@ -103,8 +103,8 @@ export function AIProfileOptimizer({
           type="button"
           onClick={handleRunOptimization}
           disabled={analyzing}
-          className="pavitra-btn pavitra-btn-sm font-bold inline-flex items-center justify-center gap-2 shrink-0 cursor-pointer disabled:opacity-50 !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white"
-          style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+          className="pavitra-btn pavitra-btn-sm font-bold inline-flex items-center justify-center gap-2 shrink-0 cursor-pointer disabled:opacity-50 !bg-gradient-to-r !from-[#2563eb] !to-[#1d4ed8] !text-white"
+          style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
         >
           {analyzing ? (
             <>
@@ -122,7 +122,7 @@ export function AIProfileOptimizer({
 
       {!result && !analyzing && (
         <div className="rounded-xl border border-[#eadcc9] bg-[#fffaf3] p-5 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-          <div className="w-12 h-12 rounded-2xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] flex items-center justify-center shrink-0">
             <TrendingUp className="w-6 h-6" />
           </div>
           <div className="space-y-1 flex-1">
@@ -139,9 +139,9 @@ export function AIProfileOptimizer({
         <div className="space-y-6 pt-1 animate-in fade-in duration-300">
           {/* Top Score Banner */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="rounded-xl border border-[#eadcc9] bg-[#fff3df] p-4 flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-white border-2 border-[#d97706] flex flex-col items-center justify-center text-center shadow-xs shrink-0">
-                <span className="text-lg font-black text-[#d97706] leading-none">
+            <div className="rounded-xl border border-[#eadcc9] bg-[#eff6ff] p-4 flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-white border-2 border-[#2563eb] flex flex-col items-center justify-center text-center shadow-xs shrink-0">
+                <span className="text-lg font-black text-[#2563eb] leading-none">
                   {result.profileStrengthScore}
                 </span>
                 <span className="text-[9px] font-bold text-[#78716c] uppercase">/ 100</span>
@@ -161,7 +161,7 @@ export function AIProfileOptimizer({
             <div className="md:col-span-2 rounded-xl border border-[#eadcc9] bg-[#fffaf3] p-4 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                  <Award className="w-3.5 h-3.5 text-[#d97706]" />
+                  <Award className="w-3.5 h-3.5 text-[#2563eb]" />
                   Recommended Headline
                 </span>
                 <button
@@ -171,7 +171,7 @@ export function AIProfileOptimizer({
                     setAppliedHeadline(true)
                   }}
                   disabled={appliedHeadline}
-                  className="text-[11px] font-bold text-[#d97706] hover:text-[#b45309] hover:underline cursor-pointer disabled:opacity-50 inline-flex items-center gap-1"
+                  className="text-[11px] font-bold text-[#2563eb] hover:text-[#1d4ed8] hover:underline cursor-pointer disabled:opacity-50 inline-flex items-center gap-1"
                 >
                   {appliedHeadline ? (
                     <>
@@ -196,10 +196,10 @@ export function AIProfileOptimizer({
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <BookOpen className="w-3.5 h-3.5 text-[#d97706]" />
+                    <BookOpen className="w-3.5 h-3.5 text-[#2563eb]" />
                     Campus &amp; Internship Bio
                   </span>
-                  <span className="text-[10px] font-bold text-[#b45309] bg-[#fff3df] px-2 py-0.5 rounded-full border border-[#eadcc9]">
+                  <span className="text-[10px] font-bold text-[#1d4ed8] bg-[#eff6ff] px-2 py-0.5 rounded-full border border-[#eadcc9]">
                     Internshala Focus
                   </span>
                 </div>
@@ -215,7 +215,7 @@ export function AIProfileOptimizer({
                   setAppliedBioType('fresher')
                 }}
                 disabled={appliedBioType === 'fresher'}
-                className="w-full py-2 px-3 rounded-lg border border-[#eadcc9] bg-white hover:bg-[#fff3df] text-xs font-bold text-[#572d12] transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="w-full py-2 px-3 rounded-lg border border-[#eadcc9] bg-white hover:bg-[#eff6ff] text-xs font-bold text-[#572d12] transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 {appliedBioType === 'fresher' ? (
                   <>
@@ -225,7 +225,7 @@ export function AIProfileOptimizer({
                 ) : (
                   <>
                     <span>Use this Summary</span>
-                    <ArrowRight className="w-3 h-3 text-[#d97706]" />
+                    <ArrowRight className="w-3 h-3 text-[#2563eb]" />
                   </>
                 )}
               </button>
@@ -236,10 +236,10 @@ export function AIProfileOptimizer({
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                    <Compass className="w-3.5 h-3.5 text-[#d97706]" />
+                    <Compass className="w-3.5 h-3.5 text-[#2563eb]" />
                     Product &amp; Technical Bio
                   </span>
-                  <span className="text-[10px] font-bold text-[#b45309] bg-[#fff3df] px-2 py-0.5 rounded-full border border-[#eadcc9]">
+                  <span className="text-[10px] font-bold text-[#1d4ed8] bg-[#eff6ff] px-2 py-0.5 rounded-full border border-[#eadcc9]">
                     Tech Startups Focus
                   </span>
                 </div>
@@ -255,7 +255,7 @@ export function AIProfileOptimizer({
                   setAppliedBioType('tech')
                 }}
                 disabled={appliedBioType === 'tech'}
-                className="w-full py-2 px-3 rounded-lg border border-[#eadcc9] bg-white hover:bg-[#fff3df] text-xs font-bold text-[#572d12] transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="w-full py-2 px-3 rounded-lg border border-[#eadcc9] bg-white hover:bg-[#eff6ff] text-xs font-bold text-[#572d12] transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 {appliedBioType === 'tech' ? (
                   <>
@@ -265,7 +265,7 @@ export function AIProfileOptimizer({
                 ) : (
                   <>
                     <span>Use this Summary</span>
-                    <ArrowRight className="w-3 h-3 text-[#d97706]" />
+                    <ArrowRight className="w-3 h-3 text-[#2563eb]" />
                   </>
                 )}
               </button>
@@ -277,7 +277,7 @@ export function AIProfileOptimizer({
             <div className="rounded-xl border border-[#eadcc9] bg-white p-4 space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5 text-[#d97706]" />
+                  <Zap className="w-3.5 h-3.5 text-[#2563eb]" />
                   High-Priority In-Demand Skills (Click to add to Profile)
                 </span>
                 <span className="text-[11px] text-[#78716c]">1-Click Add</span>
@@ -298,7 +298,7 @@ export function AIProfileOptimizer({
                       className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                         isAdded
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-300'
-                          : 'bg-[#fffaf3] hover:bg-[#fff3df] border border-[#eadcc9] text-[#572d12] hover:border-[#d97706]'
+                          : 'bg-[#fffaf3] hover:bg-[#eff6ff] border border-[#eadcc9] text-[#572d12] hover:border-[#2563eb]'
                       }`}
                     >
                       {isAdded ? (
@@ -308,7 +308,7 @@ export function AIProfileOptimizer({
                         </>
                       ) : (
                         <>
-                          <Plus className="w-3 h-3 text-[#d97706]" />
+                          <Plus className="w-3 h-3 text-[#2563eb]" />
                           <span>{skill}</span>
                         </>
                       )}
@@ -324,14 +324,14 @@ export function AIProfileOptimizer({
             {/* Suggested Projects */}
             <div className="rounded-xl border border-[#eadcc9] bg-[#fffaf3] p-4 space-y-3">
               <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                <Lightbulb className="w-3.5 h-3.5 text-[#d97706]" />
+                <Lightbulb className="w-3.5 h-3.5 text-[#2563eb]" />
                 Standout Project Ideas to Build
               </span>
               <div className="space-y-2.5">
                 {result.suggestedProjects?.map((proj, idx) => (
                   <div key={idx} className="bg-white p-3 rounded-lg border border-[#eadcc9] space-y-1">
                     <p className="text-xs font-bold text-[#572d12]">{proj.title}</p>
-                    <p className="text-[11px] font-semibold text-[#d97706]">{proj.techStack}</p>
+                    <p className="text-[11px] font-semibold text-[#2563eb]">{proj.techStack}</p>
                     <p className="text-[11px] text-[#635b52] leading-relaxed">{proj.description}</p>
                   </div>
                 ))}
@@ -341,13 +341,13 @@ export function AIProfileOptimizer({
             {/* Tactical Internship Strategy */}
             <div className="rounded-xl border border-[#eadcc9] bg-[#fffaf3] p-4 space-y-3">
               <span className="text-xs font-bold text-[#572d12] flex items-center gap-1.5">
-                <Compass className="w-3.5 h-3.5 text-[#d97706]" />
+                <Compass className="w-3.5 h-3.5 text-[#2563eb]" />
                 Internship Application Strategy
               </span>
               <div className="space-y-2">
                 {result.internshipStrategy?.map((tip, idx) => (
                   <div key={idx} className="flex items-start gap-2 bg-white p-2.5 rounded-lg border border-[#eadcc9]">
-                    <span className="w-5 h-5 rounded-full bg-[#fff3df] text-[#d97706] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#eff6ff] text-[#2563eb] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                       {idx + 1}
                     </span>
                     <p className="text-xs text-[#635b52] leading-relaxed">{tip}</p>

@@ -23,8 +23,8 @@ export function Hero() {
 
             <div className="flex flex-wrap items-center gap-3.5 my-7">
               <Link
-                className="pavitra-btn !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white !font-bold shadow-md shadow-[#d97706]/25 hover:!from-[#b45309] hover:!to-[#92400e]"
-                style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+                className="pavitra-btn !bg-gradient-to-r !from-[#2563eb] !to-[#1d4ed8] !text-white !font-bold shadow-md shadow-[#2563eb]/25 hover:!from-[#1d4ed8] hover:!to-[#1e40af]"
+                style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
                 href="/signup"
               >
                 Start Free ATS Audit
@@ -43,7 +43,7 @@ export function Hero() {
 
           {/* Right Column (.hero-card directly inspired by Pavitra Foundation) */}
           <div className="pavitra-hero-card">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#d97706] to-[#b45309] text-white shadow-md shadow-[#d97706]/20 mb-3">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#2563eb] to-[#1d4ed8] text-white shadow-md shadow-[#2563eb]/20 mb-3">
               <Compass className="w-8 h-8" />
             </div>
             <h3 className="text-2xl font-extrabold text-[#572d12] mt-2 mb-2">
@@ -54,8 +54,8 @@ export function Hero() {
             </p>
 
             <Link
-              className="pavitra-btn pavitra-btn-full text-center !bg-gradient-to-r !from-[#d97706] !to-[#b45309] !text-white !font-bold shadow-md shadow-[#d97706]/25 hover:!from-[#b45309] hover:!to-[#92400e]"
-              style={{ backgroundColor: '#d97706', color: '#ffffff' }}
+              className="pavitra-btn pavitra-btn-full text-center !bg-gradient-to-r !from-[#2563eb] !to-[#1d4ed8] !text-white !font-bold shadow-md shadow-[#2563eb]/25 hover:!from-[#1d4ed8] hover:!to-[#1e40af]"
+              style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
               href="/resume"
             >
               📍 Start 60-Second Resume Audit
@@ -68,7 +68,7 @@ export function Hero() {
               <p className="text-xs text-[#78716c] mt-1">Benchmarked against Fortune 500 ATS Algorithms</p>
               <Link
                 href="/jobs"
-                className="inline-block text-xs font-bold text-[#d97706] hover:underline mt-2"
+                className="inline-block text-xs font-bold text-[#2563eb] hover:underline mt-2"
               >
                 View verified engineering radar on CareerPilot ↗
               </Link>

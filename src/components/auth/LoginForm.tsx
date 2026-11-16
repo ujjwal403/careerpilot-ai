@@ -135,7 +135,7 @@ export function LoginForm() {
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                     errors.email
                       ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-                      : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
+                      : 'border-[#eadcc9] focus:border-[#2563eb] focus:ring-[#2563eb]/20'
                   }`}
                 />
               </div>
@@ -145,7 +145,7 @@ export function LoginForm() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-xs font-semibold text-[#572d12]">Password</label>
-                <Link href="/forgot-password" className="text-[11px] font-semibold text-[#d97706] hover:underline">
+                <Link href="/forgot-password" className="text-[11px] font-semibold text-[#2563eb] hover:underline">
                   Forgot password?
                 </Link>
               </div>
@@ -161,7 +161,7 @@ export function LoginForm() {
                   className={`w-full pl-10 pr-10 py-2.5 rounded-xl border bg-white text-[#29231e] text-xs sm:text-sm placeholder:text-[#a89f91] focus:outline-none focus:ring-1 transition-all ${
                     errors.password
                       ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20'
-                      : 'border-[#eadcc9] focus:border-[#d97706] focus:ring-[#d97706]/20'
+                      : 'border-[#eadcc9] focus:border-[#2563eb] focus:ring-[#2563eb]/20'
                   }`}
                 />
                 <button
@@ -198,7 +198,7 @@ export function LoginForm() {
 
       <p className="text-center text-xs text-[#635b52]">
         Don&apos;t have an account?{' '}
-        <Link href="/signup" className="text-[#d97706] font-bold hover:underline">
+        <Link href="/signup" className="text-[#2563eb] font-bold hover:underline">
           Create account
         </Link>
       </p>

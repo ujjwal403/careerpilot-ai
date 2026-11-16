@@ -67,9 +67,9 @@ interface QuickRecommendationsProps {
 
 function MatchBar({ score }: { score: number }) {
   return (
-    <div className="w-16 sm:w-20 h-1.5 rounded-full bg-[#fff3df] border border-[#eadcc9] overflow-hidden shrink-0">
+    <div className="w-16 sm:w-20 h-1.5 rounded-full bg-[#eff6ff] border border-[#eadcc9] overflow-hidden shrink-0">
       <div
-        className="h-full rounded-full bg-gradient-to-r from-[#d97706] to-[#b45309] transition-all duration-500"
+        className="h-full rounded-full bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] transition-all duration-500"
         style={{ width: `${score}%` }}
       />
     </div>
@@ -110,7 +110,7 @@ export function QuickRecommendations({ jobs, userSkills = [] }: QuickRecommendat
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="text-sm font-bold text-[#572d12] flex items-center gap-2">
-              <Zap className="w-4 h-4 text-[#d97706]" />
+              <Zap className="w-4 h-4 text-[#2563eb]" />
               Top Verified Openings &amp; Internships
             </h3>
             <p className="text-xs text-[#78716c] mt-0.5">
@@ -119,7 +119,7 @@ export function QuickRecommendations({ jobs, userSkills = [] }: QuickRecommendat
           </div>
           <Link
             href="/jobs"
-            className="text-xs font-bold text-[#d97706] hover:text-[#b45309] flex items-center gap-1 transition-colors"
+            className="text-xs font-bold text-[#2563eb] hover:text-[#1d4ed8] flex items-center gap-1 transition-colors"
           >
             <span>View All</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -135,11 +135,11 @@ export function QuickRecommendations({ jobs, userSkills = [] }: QuickRecommendat
               {/* Role info */}
               <div className="space-y-1 min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <p className="text-sm font-bold text-[#572d12] group-hover:text-[#d97706] transition-colors leading-snug">
+                  <p className="text-sm font-bold text-[#572d12] group-hover:text-[#2563eb] transition-colors leading-snug">
                     {job.title}
                   </p>
                   {job.isIntern && (
-                    <span className="text-[10px] font-bold text-[#92400e] bg-[#fef3c7] border border-[#fde68a] px-1.5 py-0.2 rounded-md">
+                    <span className="text-[10px] font-bold text-[#1e40af] bg-[#fef3c7] border border-[#bfdbfe] px-1.5 py-0.2 rounded-md">
                       Internship
                     </span>
                   )}
@@ -165,7 +165,7 @@ export function QuickRecommendations({ jobs, userSkills = [] }: QuickRecommendat
               {/* Match score & Action */}
               <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-1 sm:pt-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-[#d97706] font-mono">{job.matchScore}% Fit</span>
+                  <span className="text-xs font-bold text-[#2563eb] font-mono">{job.matchScore}% Fit</span>
                   <MatchBar score={job.matchScore} />
                 </div>
 
@@ -174,7 +174,7 @@ export function QuickRecommendations({ jobs, userSkills = [] }: QuickRecommendat
                   className="pavitra-btn pavitra-btn-light pavitra-btn-sm inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5"
                 >
                   <span>Apply</span>
-                  <ArrowRight className="w-3 h-3 text-[#d97706]" />
+                  <ArrowRight className="w-3 h-3 text-[#2563eb]" />
                 </Link>
               </div>
             </div>
@@ -186,7 +186,7 @@ export function QuickRecommendations({ jobs, userSkills = [] }: QuickRecommendat
         <span>Verified from Internshala, Google Jobs, AICTE &amp; NCS</span>
         <Link
           href="/jobs"
-          className="font-bold text-[#d97706] hover:underline flex items-center gap-1"
+          className="font-bold text-[#2563eb] hover:underline flex items-center gap-1"
         >
           Explore All 40+ Opportunities →
         </Link>

@@ -14,10 +14,10 @@ interface ApplicationFunnelProps {
 }
 
 const STAGES = [
-  { key: 'saved', label: 'Saved', icon: Bookmark, badgeColor: 'bg-[#fff3df] text-[#635b52]' },
-  { key: 'applied', label: 'Applied', icon: Send, badgeColor: 'bg-[#fff3df] text-[#d97706]' },
-  { key: 'screening', label: 'Screening', icon: Eye, badgeColor: 'bg-[#fff3df] text-[#b45309]' },
-  { key: 'interview', label: 'Interview', icon: Calendar, badgeColor: 'bg-[#fff3df] text-[#572d12]' },
+  { key: 'saved', label: 'Saved', icon: Bookmark, badgeColor: 'bg-[#eff6ff] text-[#635b52]' },
+  { key: 'applied', label: 'Applied', icon: Send, badgeColor: 'bg-[#eff6ff] text-[#2563eb]' },
+  { key: 'screening', label: 'Screening', icon: Eye, badgeColor: 'bg-[#eff6ff] text-[#1d4ed8]' },
+  { key: 'interview', label: 'Interview', icon: Calendar, badgeColor: 'bg-[#eff6ff] text-[#572d12]' },
   { key: 'offer', label: 'Offer', icon: Award, badgeColor: 'bg-[#f0fdf4] text-[#166534]' },
 ] as const
 
@@ -36,7 +36,7 @@ export function ApplicationFunnel({ counts = {} }: ApplicationFunnelProps) {
           </div>
           <Link
             href="/applications"
-            className="text-xs font-bold text-[#d97706] hover:text-[#b45309] flex items-center gap-1 transition-colors"
+            className="text-xs font-bold text-[#2563eb] hover:text-[#1d4ed8] flex items-center gap-1 transition-colors"
           >
             <span>View All</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -50,7 +50,7 @@ export function ApplicationFunnel({ counts = {} }: ApplicationFunnelProps) {
             return (
               <div
                 key={key}
-                className="flex items-center justify-between p-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] hover:bg-[#fff3df]/50 transition-colors"
+                className="flex items-center justify-between p-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] hover:bg-[#eff6ff]/50 transition-colors"
               >
                 <div className="flex items-center gap-2.5">
                   <div className={`w-7 h-7 rounded-lg flex items-center justify-center border border-[#eadcc9] ${badgeColor}`}>
@@ -61,7 +61,7 @@ export function ApplicationFunnel({ counts = {} }: ApplicationFunnelProps) {
                 <div className="flex items-center gap-2">
                   <span
                     className={`text-xs font-extrabold font-mono px-2.5 py-0.5 rounded-md border border-[#eadcc9] bg-white ${
-                      stageCount > 0 ? 'text-[#d97706] font-black' : 'text-[#78716c]'
+                      stageCount > 0 ? 'text-[#2563eb] font-black' : 'text-[#78716c]'
                     }`}
                   >
                     {stageCount}
@@ -78,7 +78,7 @@ export function ApplicationFunnel({ counts = {} }: ApplicationFunnelProps) {
           <span className="text-[#78716c]">Ready to apply?</span>
           <Link
             href="/jobs"
-            className="font-bold text-[#d97706] hover:underline flex items-center gap-1"
+            className="font-bold text-[#2563eb] hover:underline flex items-center gap-1"
           >
             Find Openings →
           </Link>

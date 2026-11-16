@@ -36,7 +36,7 @@ export default function ResumePage() {
       <Suspense
         fallback={
           <div className="flex flex-col items-center justify-center py-24 text-zinc-500">
-            <Loader2 className="w-6 h-6 animate-spin text-amber-500 mb-3" />
+            <Loader2 className="w-6 h-6 animate-spin text-blue-600 mb-3" />
             <p className="text-xs">Loading resume audit...</p>
           </div>
         }

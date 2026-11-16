@@ -178,10 +178,10 @@ export function SimpleATSScanner({
 
   // Score styling
   const scoreBadgeColor = useMemo(() => {
-    if (!customReport) return { bg: 'bg-[#fff3df]', text: 'text-[#d97706]', border: 'border-[#eadcc9]' }
+    if (!customReport) return { bg: 'bg-[#eff6ff]', text: 'text-[#2563eb]', border: 'border-[#eadcc9]' }
     const s = customReport.totalScore
     if (s >= 85) return { bg: 'bg-[#f0fdf4]', text: 'text-[#166534]', border: 'border-[#bbf7d0]' }
-    if (s >= 60) return { bg: 'bg-[#fff3df]', text: 'text-[#d97706]', border: 'border-[#eadcc9]' }
+    if (s >= 60) return { bg: 'bg-[#eff6ff]', text: 'text-[#2563eb]', border: 'border-[#eadcc9]' }
     return { bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-200' }
   }, [customReport])
 
@@ -190,7 +190,7 @@ export function SimpleATSScanner({
       {/* Top Hero Section */}
       <div className="rounded-3xl border border-[#eadcc9] bg-white p-6 sm:p-10 shadow-xs space-y-6">
         <div className="max-w-3xl space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#fff3df] border border-[#eadcc9] text-[#d97706]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb]">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Instant ATS Audit & Job Profile Matcher</span>
           </div>
@@ -210,11 +210,11 @@ export function SimpleATSScanner({
               onClick={() => setInputMode('drive')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
                 inputMode === 'drive'
-                  ? 'bg-white text-[#d97706] shadow-xs border border-[#eadcc9]'
+                  ? 'bg-white text-[#2563eb] shadow-xs border border-[#eadcc9]'
                   : 'text-[#78716c] hover:text-[#572d12]'
               }`}
             >
-              <Link2 className="w-4 h-4 text-[#d97706]" />
+              <Link2 className="w-4 h-4 text-[#2563eb]" />
               <span>Google Drive Link</span>
             </button>
             <button
@@ -222,7 +222,7 @@ export function SimpleATSScanner({
               onClick={() => setInputMode('paste')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
                 inputMode === 'paste'
-                  ? 'bg-white text-[#d97706] shadow-xs border border-[#eadcc9]'
+                  ? 'bg-white text-[#2563eb] shadow-xs border border-[#eadcc9]'
                   : 'text-[#78716c] hover:text-[#572d12]'
               }`}
             >
@@ -242,7 +242,7 @@ export function SimpleATSScanner({
           <form onSubmit={handleDriveImport} className="space-y-4">
             <div className="p-6 sm:p-8 rounded-3xl border border-[#eadcc9] bg-[#fffaf3] space-y-4">
               <div className="flex items-start gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] flex items-center justify-center shrink-0">
                   <Link2 className="w-6 h-6" />
                 </div>
                 <div>
@@ -262,12 +262,12 @@ export function SimpleATSScanner({
                   value={driveUrl}
                   onChange={(e) => setDriveUrl(e.target.value)}
                   disabled={analyzing}
-                  className="w-full pl-4 pr-32 py-3 rounded-xl border border-[#eadcc9] bg-white text-xs sm:text-sm text-[#29231e] placeholder:text-[#9b9186] focus:outline-hidden focus:border-[#d97706]"
+                  className="w-full pl-4 pr-32 py-3 rounded-xl border border-[#eadcc9] bg-white text-xs sm:text-sm text-[#29231e] placeholder:text-[#9b9186] focus:outline-hidden focus:border-[#2563eb]"
                 />
                 <button
                   type="submit"
                   disabled={analyzing || !driveUrl.trim()}
-                  className="absolute right-1.5 top-1.5 bottom-1.5 px-4 rounded-lg bg-gradient-to-r from-[#d97706] to-[#b45309] text-white text-xs font-bold transition-all shadow-xs hover:shadow-md disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+                  className="absolute right-1.5 top-1.5 bottom-1.5 px-4 rounded-lg bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white text-xs font-bold transition-all shadow-xs hover:shadow-md disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
                 >
                   {analyzing ? (
                     <>
@@ -285,15 +285,15 @@ export function SimpleATSScanner({
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-[11px] text-[#78716c]">
                 <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-[#eadcc9]">
-                  <span className="w-4 h-4 rounded-full bg-[#fff3df] text-[#d97706] font-bold text-[10px] flex items-center justify-center shrink-0">1</span>
+                  <span className="w-4 h-4 rounded-full bg-[#eff6ff] text-[#2563eb] font-bold text-[10px] flex items-center justify-center shrink-0">1</span>
                   <span>Open CV in Google Drive</span>
                 </div>
                 <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-[#eadcc9]">
-                  <span className="w-4 h-4 rounded-full bg-[#fff3df] text-[#d97706] font-bold text-[10px] flex items-center justify-center shrink-0">2</span>
+                  <span className="w-4 h-4 rounded-full bg-[#eff6ff] text-[#2563eb] font-bold text-[10px] flex items-center justify-center shrink-0">2</span>
                   <span>Share → Anyone with the link</span>
                 </div>
                 <div className="flex items-center gap-2 p-2 rounded-xl bg-white border border-[#eadcc9]">
-                  <span className="w-4 h-4 rounded-full bg-[#fff3df] text-[#d97706] font-bold text-[10px] flex items-center justify-center shrink-0">3</span>
+                  <span className="w-4 h-4 rounded-full bg-[#eff6ff] text-[#2563eb] font-bold text-[10px] flex items-center justify-center shrink-0">3</span>
                   <span>Paste link & get ATS score</span>
                 </div>
               </div>
@@ -310,7 +310,7 @@ export function SimpleATSScanner({
                 value={resumeText}
                 onChange={(e) => setResumeText(e.target.value)}
                 placeholder="Paste your CV text here (e.g. Rahul Sharma, B.Tech CSE, Skills: React, Node.js, Experience...)"
-                className="w-full p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#d97706] placeholder:text-[#9b9186]"
+                className="w-full p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb] placeholder:text-[#9b9186]"
               />
               <div className="absolute right-3 bottom-3 text-[11px] font-mono font-bold text-[#78716c]">
                 {resumeText.length} characters
@@ -376,7 +376,7 @@ export function SimpleATSScanner({
       {/* Empty State when no resume uploaded yet */}
       {!customReport && (
         <div className="rounded-3xl border border-dashed border-[#eadcc9] bg-white p-8 sm:p-12 text-center shadow-xs space-y-3">
-          <div className="w-14 h-14 rounded-2xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center mx-auto">
+          <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] flex items-center justify-center mx-auto">
             <FileText className="w-7 h-7" />
           </div>
           <h3 className="text-lg font-bold text-[#572d12]">
@@ -405,7 +405,7 @@ export function SimpleATSScanner({
                 setImportedFileName(null)
                 setResumeText('')
               }}
-              className="text-xs font-bold text-[#d97706] hover:text-[#b45309] hover:underline cursor-pointer flex items-center gap-1.5"
+              className="text-xs font-bold text-[#2563eb] hover:text-[#1d4ed8] hover:underline cursor-pointer flex items-center gap-1.5"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Audit Another Resume Link</span>
@@ -417,7 +417,7 @@ export function SimpleATSScanner({
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-[#eadcc9]">
               <div className="space-y-2 max-w-xl">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#fff3df] border border-[#eadcc9] text-[#d97706]">
+                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb]">
                     Deterministic 10-Rule Audit
                   </span>
                   <span className={`text-xs font-bold px-3 py-0.5 rounded-full border ${scoreBadgeColor.bg} ${scoreBadgeColor.text} ${scoreBadgeColor.border}`}>
@@ -431,7 +431,7 @@ export function SimpleATSScanner({
                   {customReport.ratingSummary}
                 </p>
                 <div className="flex items-center gap-2 text-xs font-bold text-[#572d12] pt-1">
-                  <Award className="w-4 h-4 text-[#d97706]" />
+                  <Award className="w-4 h-4 text-[#2563eb]" />
                   <span>{customReport.targetReadiness}</span>
                 </div>
               </div>
@@ -455,7 +455,7 @@ export function SimpleATSScanner({
                     <CheckCircle2 className="w-4 h-4" />
                     <span>{customReport.rules.filter((r) => r.status === 'passed').length} Rules Passed</span>
                   </div>
-                  <div className="flex items-center gap-2 text-[#b45309] font-bold">
+                  <div className="flex items-center gap-2 text-[#1d4ed8] font-bold">
                     <AlertTriangle className="w-4 h-4" />
                     <span>{missingAnalysis.warnings.length} Improvements</span>
                   </div>
@@ -496,14 +496,14 @@ export function SimpleATSScanner({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#eadcc9] pb-4">
               <div>
                 <h3 className="text-xl font-extrabold text-[#572d12] flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-[#d97706]" />
+                  <AlertTriangle className="w-5 h-5 text-[#2563eb]" />
                   <span>What is Missing in Your CV & How to Fix It</span>
                 </h3>
                 <p className="text-xs text-[#78716c] mt-0.5">
                   Address these specific items to immediately boost your ATS compatibility score and pass recruiter filters.
                 </p>
               </div>
-              <span className="text-xs font-bold text-[#d97706] bg-[#fff3df] px-3 py-1 rounded-full border border-[#eadcc9] self-start sm:self-auto">
+              <span className="text-xs font-bold text-[#2563eb] bg-[#eff6ff] px-3 py-1 rounded-full border border-[#eadcc9] self-start sm:self-auto">
                 {missingAnalysis.critical.length + missingAnalysis.warnings.length} Items to Optimize
               </span>
             </div>
@@ -543,8 +543,8 @@ export function SimpleATSScanner({
             {/* Warnings & Improvements (Medium Priority) */}
             {missingAnalysis.warnings.length > 0 && (
               <div className="space-y-3 pt-2">
-                <h4 className="text-xs font-bold text-[#b45309] uppercase tracking-wider flex items-center gap-1.5">
-                  <AlertTriangle className="w-4 h-4 text-[#d97706]" />
+                <h4 className="text-xs font-bold text-[#1d4ed8] uppercase tracking-wider flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-[#2563eb]" />
                   <span>Recommended Improvements</span>
                 </h4>
                 <div className="space-y-3">
@@ -555,13 +555,13 @@ export function SimpleATSScanner({
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-sm text-[#572d12]">{item.title}</span>
-                        <span className="text-[10px] font-bold uppercase tracking-wider bg-[#fff3df] text-[#d97706] px-2.5 py-0.5 rounded-full border border-[#eadcc9]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-[#eff6ff] text-[#2563eb] px-2.5 py-0.5 rounded-full border border-[#eadcc9]">
                           Improvement
                         </span>
                       </div>
                       <p className="text-xs text-[#635b52]">{item.desc}</p>
                       <div className="p-3 rounded-xl bg-white border border-[#eadcc9] text-xs text-[#29231e] space-y-1">
-                        <span className="font-bold text-[#d97706] block text-[11px] uppercase tracking-wider">
+                        <span className="font-bold text-[#2563eb] block text-[11px] uppercase tracking-wider">
                           💡 Recommended Fix:
                         </span>
                         <p>{item.fix}</p>
@@ -588,7 +588,7 @@ export function SimpleATSScanner({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#eadcc9] pb-4">
               <div>
                 <h3 className="text-xl font-extrabold text-[#572d12] flex items-center gap-2">
-                  <Briefcase className="w-5 h-5 text-[#d97706]" />
+                  <Briefcase className="w-5 h-5 text-[#2563eb]" />
                   <span>Job Profiles Matching Your CV</span>
                 </h3>
                 <p className="text-xs text-[#78716c] mt-0.5">
@@ -614,7 +614,7 @@ export function SimpleATSScanner({
                 return (
                   <div
                     key={jm.profile.id}
-                    className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-5 sm:p-6 space-y-4 flex flex-col justify-between hover:border-[#d97706] transition-colors shadow-2xs"
+                    className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-5 sm:p-6 space-y-4 flex flex-col justify-between hover:border-[#2563eb] transition-colors shadow-2xs"
                   >
                     <div className="space-y-3">
                       {/* Top Header */}
@@ -626,7 +626,7 @@ export function SimpleATSScanner({
                           <h4 className="text-base font-extrabold text-[#572d12]">
                             {jm.profile.title}
                           </h4>
-                          <span className="text-[11px] font-bold text-[#d97706]">
+                          <span className="text-[11px] font-bold text-[#2563eb]">
                             Expected CTC: {jm.profile.salaryRangeINR}
                           </span>
                         </div>
@@ -638,7 +638,7 @@ export function SimpleATSScanner({
                               isHighMatch
                                 ? 'bg-[#f0fdf4] text-[#166534] border-[#bbf7d0]'
                                 : isModerateMatch
-                                ? 'bg-[#fff3df] text-[#d97706] border-[#eadcc9]'
+                                ? 'bg-[#eff6ff] text-[#2563eb] border-[#eadcc9]'
                                 : 'bg-zinc-100 text-zinc-700 border-zinc-200'
                             }`}
                           >
@@ -654,7 +654,7 @@ export function SimpleATSScanner({
                             isHighMatch
                               ? 'bg-gradient-to-r from-emerald-500 to-[#166534]'
                               : isModerateMatch
-                              ? 'bg-gradient-to-r from-amber-400 to-[#d97706]'
+                              ? 'bg-gradient-to-r from-blue-400 to-[#2563eb]'
                               : 'bg-zinc-400'
                           }`}
                           style={{ width: `${jm.matchScore}%` }}
@@ -689,7 +689,7 @@ export function SimpleATSScanner({
                       {/* Missing Skills for this profile */}
                       {jm.missingSkills.length > 0 && (
                         <div>
-                          <span className="text-[11px] font-bold text-[#b45309] uppercase tracking-wider block mb-1.5">
+                          <span className="text-[11px] font-bold text-[#1d4ed8] uppercase tracking-wider block mb-1.5">
                             ✗ Missing for this Role ({jm.missingSkills.length}):
                           </span>
                           <div className="flex flex-wrap gap-1">
@@ -723,7 +723,7 @@ export function SimpleATSScanner({
                       </span>
                       <Link
                         href={`/jobs`}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-[#d97706] hover:text-[#b45309] hover:underline cursor-pointer"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#2563eb] hover:text-[#1d4ed8] hover:underline cursor-pointer"
                       >
                         <span>Find {jm.profile.title} Jobs</span>
                         <ExternalLink className="w-3.5 h-3.5" />

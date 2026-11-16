@@ -114,7 +114,7 @@ export function CollegeCombobox({
           className={`w-full pl-10 pr-20 py-2.5 rounded-xl border border-[#eadcc9] text-xs sm:text-sm transition-colors ${
             disabled
               ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
-              : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#d97706]'
+              : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
           }`}
         />
 
@@ -130,7 +130,7 @@ export function CollegeCombobox({
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="p-1 text-[#78716c] hover:text-[#572d12] rounded-lg hover:bg-[#fff3df] transition-colors cursor-pointer"
+                  className="p-1 text-[#78716c] hover:text-[#572d12] rounded-lg hover:bg-[#eff6ff] transition-colors cursor-pointer"
                   title="Clear input"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -143,10 +143,10 @@ export function CollegeCombobox({
                   setIsOpen(!isOpen)
                   if (!isOpen) inputRef.current?.focus()
                 }}
-                className="p-1 text-[#78716c] hover:text-[#d97706] rounded-lg transition-colors cursor-pointer"
+                className="p-1 text-[#78716c] hover:text-[#2563eb] rounded-lg transition-colors cursor-pointer"
                 title="Toggle college list"
               >
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#d97706]' : ''}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#2563eb]' : ''}`} />
               </button>
             </>
           )}
@@ -159,10 +159,10 @@ export function CollegeCombobox({
           {/* Header count info */}
           <div className="px-4 py-2 bg-[#fffaf3] border-b border-[#eadcc9] flex items-center justify-between text-[11px] font-bold text-[#78716c]">
             <span className="flex items-center gap-1.5">
-              <School className="w-3.5 h-3.5 text-[#d97706]" />
+              <School className="w-3.5 h-3.5 text-[#2563eb]" />
               {selectedState ? `${selectedState} Institutions` : 'All Accredited Colleges'}
             </span>
-            <span className="bg-[#fff3df] text-[#d97706] px-2 py-0.5 rounded-full border border-[#eadcc9]">
+            <span className="bg-[#eff6ff] text-[#2563eb] px-2 py-0.5 rounded-full border border-[#eadcc9]">
               {filteredColleges.length} listed
             </span>
           </div>
@@ -179,12 +179,12 @@ export function CollegeCombobox({
                     onClick={() => handleSelect(college)}
                     className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-colors flex items-center justify-between gap-3 cursor-pointer ${
                       isSelected
-                        ? 'bg-[#fff3df] text-[#d97706] font-bold'
+                        ? 'bg-[#eff6ff] text-[#2563eb] font-bold'
                         : 'text-[#29231e] hover:bg-[#fffaf3] hover:text-[#572d12]'
                     }`}
                   >
                     <span className="truncate">{college}</span>
-                    {isSelected && <Check className="w-4 h-4 text-[#d97706] shrink-0" />}
+                    {isSelected && <Check className="w-4 h-4 text-[#2563eb] shrink-0" />}
                   </button>
                 )
               })
@@ -201,9 +201,9 @@ export function CollegeCombobox({
               <button
                 type="button"
                 onClick={handleUseCustom}
-                className="w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold text-[#d97706] hover:bg-[#fff3df] border border-dashed border-[#d97706]/40 flex items-center gap-2 cursor-pointer transition-colors"
+                className="w-full text-left px-3.5 py-2 rounded-xl text-xs font-bold text-[#2563eb] hover:bg-[#eff6ff] border border-dashed border-[#2563eb]/40 flex items-center gap-2 cursor-pointer transition-colors"
               >
-                <Plus className="w-4 h-4 text-[#d97706] shrink-0" />
+                <Plus className="w-4 h-4 text-[#2563eb] shrink-0" />
                 <span className="truncate">Use custom: &ldquo;{searchQuery.trim()}&rdquo;</span>
               </button>
             </div>

@@ -53,10 +53,10 @@ export function ATSCompatibilityReport({
     }
     if (score >= 60) {
       return {
-        text: 'text-[#d97706]',
-        bg: 'bg-[#fff3df]',
+        text: 'text-[#2563eb]',
+        bg: 'bg-[#eff6ff]',
         border: 'border-[#eadcc9]',
-        badge: 'bg-[#fff3df] text-[#d97706] border-[#eadcc9]',
+        badge: 'bg-[#eff6ff] text-[#2563eb] border-[#eadcc9]',
       }
     }
     return {
@@ -75,8 +75,8 @@ export function ATSCompatibilityReport({
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-[#eadcc9]">
         <div className="space-y-2 max-w-xl">
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-[#eadcc9] bg-[#fff3df] text-[#d97706]">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#d97706]" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-[#eadcc9] bg-[#eff6ff] text-[#2563eb]">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#2563eb]" />
               <span>ATS Compatibility Benchmark (0–100)</span>
             </span>
             <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${theme.badge}`}>
@@ -93,7 +93,7 @@ export function ATSCompatibilityReport({
           </p>
 
           <div className="pt-1 flex items-center gap-2 text-xs text-[#572d12]">
-            <Award className="w-4 h-4 text-[#d97706] shrink-0" />
+            <Award className="w-4 h-4 text-[#2563eb] shrink-0" />
             <span className="font-semibold">{targetReadiness}</span>
           </div>
         </div>
@@ -117,7 +117,7 @@ export function ATSCompatibilityReport({
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>{passedCount} Passed</span>
             </div>
-            <div className="flex items-center gap-2 text-[#b45309] font-bold">
+            <div className="flex items-center gap-2 text-[#1d4ed8] font-bold">
               <AlertTriangle className="w-3.5 h-3.5" />
               <span>{warningCount} Warnings</span>
             </div>
@@ -134,13 +134,13 @@ export function ATSCompatibilityReport({
       {/* Filter Tabs & Quick Action Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Segmented Filter Pills */}
-        <div className="inline-flex items-center gap-1.5 p-1 rounded-xl border border-[#eadcc9] bg-[#fff3df] text-xs">
+        <div className="inline-flex items-center gap-1.5 p-1 rounded-xl border border-[#eadcc9] bg-[#eff6ff] text-xs">
           <button
             type="button"
             onClick={() => setFilter('all')}
             className={`px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
               filter === 'all'
-                ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
                 : 'text-[#635b52] hover:text-[#572d12]'
             }`}
           >
@@ -162,8 +162,8 @@ export function ATSCompatibilityReport({
             onClick={() => setFilter('warning')}
             className={`px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
               filter === 'warning'
-                ? 'bg-white text-[#b45309] border border-[#eadcc9] shadow-xs'
-                : 'text-[#635b52] hover:text-[#b45309]'
+                ? 'bg-white text-[#1d4ed8] border border-[#eadcc9] shadow-xs'
+                : 'text-[#635b52] hover:text-[#1d4ed8]'
             }`}
           >
             Action Needed ({warningCount + failedCount})
@@ -179,7 +179,7 @@ export function ATSCompatibilityReport({
               disabled={isAnalyzing}
               className="pavitra-btn pavitra-btn-light pavitra-btn-sm inline-flex items-center gap-1.5 font-bold cursor-pointer"
             >
-              <RefreshCw className={`w-3.5 h-3.5 text-[#d97706] ${isAnalyzing ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 text-[#2563eb] ${isAnalyzing ? 'animate-spin' : ''}`} />
               <span>{isAnalyzing ? 'Scanning...' : 'Re-scan CV'}</span>
             </button>
           )}
@@ -202,7 +202,7 @@ export function ATSCompatibilityReport({
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
-              <tr className="bg-[#fff3df] border-b border-[#eadcc9] text-xs font-bold uppercase tracking-wider text-[#572d12]">
+              <tr className="bg-[#eff6ff] border-b border-[#eadcc9] text-xs font-bold uppercase tracking-wider text-[#572d12]">
                 <th className="py-3.5 px-5">Rule Dimension</th>
                 <th className="py-3.5 px-5">Category</th>
                 <th className="py-3.5 px-5">Evaluation Findings</th>
@@ -227,7 +227,7 @@ export function ATSCompatibilityReport({
                         {isPassed ? (
                           <CheckCircle2 className="w-4 h-4 text-[#166534] shrink-0" />
                         ) : isWarning ? (
-                          <AlertTriangle className="w-4 h-4 text-[#b45309] shrink-0" />
+                          <AlertTriangle className="w-4 h-4 text-[#1d4ed8] shrink-0" />
                         ) : (
                           <XCircle className="w-4 h-4 text-rose-600 shrink-0" />
                         )}
@@ -247,8 +247,8 @@ export function ATSCompatibilityReport({
                         <div className="mt-2 pt-2 border-t border-[#eadcc9] space-y-1.5 animate-in fade-in duration-150">
                           <p className="text-[11px] text-[#78716c]">{rule.description}</p>
                           {rule.suggestion && (
-                            <div className="p-2.5 rounded-lg bg-[#fff3df] border border-[#eadcc9] text-[#572d12] font-medium text-[11px] flex items-start gap-1.5">
-                              <span className="text-[#d97706] font-bold">💡 Fix:</span>
+                            <div className="p-2.5 rounded-lg bg-[#eff6ff] border border-[#eadcc9] text-[#572d12] font-medium text-[11px] flex items-start gap-1.5">
+                              <span className="text-[#2563eb] font-bold">💡 Fix:</span>
                               <span>{rule.suggestion}</span>
                             </div>
                           )}
@@ -262,7 +262,7 @@ export function ATSCompatibilityReport({
                           isPassed
                             ? 'bg-[#f0fdf4] text-[#166534] border-[#bbf7d0]'
                             : isWarning
-                            ? 'bg-[#fff3df] text-[#b45309] border-[#eadcc9]'
+                            ? 'bg-[#eff6ff] text-[#1d4ed8] border-[#eadcc9]'
                             : 'bg-rose-50 text-rose-700 border-rose-200'
                         }`}
                       >
@@ -273,7 +273,7 @@ export function ATSCompatibilityReport({
                     <td className="py-4 px-5 text-right whitespace-nowrap">
                       <button
                         type="button"
-                        className="text-[#635b52] hover:text-[#d97706] inline-flex items-center gap-1 font-semibold"
+                        className="text-[#635b52] hover:text-[#2563eb] inline-flex items-center gap-1 font-semibold"
                       >
                         <span>{isExpanded ? 'Less' : 'Review'}</span>
                         {isExpanded ? (

@@ -375,7 +375,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
       <div className="rounded-2xl border border-[#eadcc9] bg-white p-6 sm:p-7 shadow-xs space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-xl bg-[#fff3df] border border-[#eadcc9] text-[#d97706] flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-[#eff6ff] border border-[#eadcc9] text-[#2563eb] flex items-center justify-center shrink-0">
               <FileText className="w-6 h-6" />
             </div>
             <div>
@@ -406,7 +406,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
                 className="pavitra-btn pavitra-btn-light pavitra-btn-sm inline-flex items-center gap-1.5 font-bold cursor-pointer"
                 title="Verify and edit AI-extracted information"
               >
-                <Edit3 className="w-3.5 h-3.5 text-[#d97706]" />
+                <Edit3 className="w-3.5 h-3.5 text-[#2563eb]" />
                 <span>Verify AI Data</span>
               </button>
             )}
@@ -418,7 +418,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               className="pavitra-btn pavitra-btn-light pavitra-btn-sm inline-flex items-center gap-1.5 font-bold cursor-pointer"
               title="Update your resume details directly from your Profile (College, Degree, CGPA, Branch, Skills)"
             >
-              <RefreshCw className={`w-3.5 h-3.5 text-[#d97706] ${syncingProfile ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 text-[#2563eb] ${syncingProfile ? 'animate-spin' : ''}`} />
               <span>{syncingProfile ? 'Syncing...' : 'Update from Profile'}</span>
             </button>
 
@@ -430,7 +430,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
                 className="pavitra-btn pavitra-btn-light pavitra-btn-sm inline-flex items-center gap-1.5 font-bold cursor-pointer"
               >
                 {downloading ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#d97706]" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#2563eb]" />
                 ) : (
                   <Download className="w-3.5 h-3.5" />
                 )}
@@ -453,13 +453,13 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
 
         {/* Dedicated Section Tabs - No huge vertical clutter */}
         <div className="pt-4 border-t border-[#eadcc9] flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-1.5 p-1 rounded-xl border border-[#eadcc9] bg-[#fff3df] text-xs">
+          <div className="inline-flex items-center gap-1.5 p-1 rounded-xl border border-[#eadcc9] bg-[#eff6ff] text-xs">
             <button
               type="button"
               onClick={() => setActiveTab('scanner')}
               className={`px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 ${
                 activeTab === 'scanner'
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
                   : 'text-[#635b52] hover:text-[#572d12]'
               }`}
             >
@@ -472,7 +472,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               onClick={() => setActiveTab('ats')}
               className={`px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 ${
                 activeTab === 'ats'
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
                   : 'text-[#635b52] hover:text-[#572d12]'
               }`}
             >
@@ -485,7 +485,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               onClick={() => setActiveTab('extracted')}
               className={`px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 ${
                 activeTab === 'extracted'
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
                   : 'text-[#635b52] hover:text-[#572d12]'
               }`}
             >
@@ -498,7 +498,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               onClick={() => setActiveTab('upload')}
               className={`px-3.5 py-1.5 rounded-lg font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 ${
                 activeTab === 'upload'
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
                   : 'text-[#635b52] hover:text-[#572d12]'
               }`}
             >
@@ -547,7 +547,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
                   {keywords.map((kw) => (
                     <span
                       key={kw}
-                      className="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-[#fff3df] border border-[#eadcc9] text-[#572d12]"
+                      className="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-[#eff6ff] border border-[#eadcc9] text-[#572d12]"
                     >
                       #{kw}
                     </span>
@@ -557,7 +557,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
             </>
           ) : resume && !atsReport ? (
             <div className="rounded-2xl border border-[#eadcc9] bg-white p-8 text-center space-y-4 shadow-xs">
-              <TrendingUp className="w-10 h-10 text-[#d97706] mx-auto" />
+              <TrendingUp className="w-10 h-10 text-[#2563eb] mx-auto" />
               <div>
                 <h3 className="text-lg font-extrabold text-[#572d12]">ATS Scoring Engine Ready</h3>
                 <p className="text-xs text-[#635b52] mt-1 max-w-md mx-auto">
@@ -576,7 +576,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
             </div>
           ) : (
             <div className="rounded-2xl border border-[#eadcc9] bg-white p-10 text-center space-y-4 shadow-xs">
-              <FileUp className="w-10 h-10 text-[#d97706] mx-auto" />
+              <FileUp className="w-10 h-10 text-[#2563eb] mx-auto" />
               <div>
                 <h3 className="text-lg font-extrabold text-[#572d12]">No Resume Uploaded</h3>
                 <p className="text-xs text-[#635b52] mt-1 max-w-md mx-auto">
@@ -601,7 +601,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
           {extracting && (
             <div className="rounded-2xl border border-[#eadcc9] bg-[#fffaf3] p-6 flex items-center justify-between gap-4 shadow-xs">
               <div className="flex items-center gap-3">
-                <Loader2 className="w-5 h-5 text-[#d97706] animate-spin shrink-0" />
+                <Loader2 className="w-5 h-5 text-[#2563eb] animate-spin shrink-0" />
                 <div>
                   <h4 className="text-sm font-bold text-[#572d12]">AI Extracting Resume Details...</h4>
                   <p className="text-xs text-[#635b52]">
@@ -630,7 +630,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
 
           {!extracting && !extractedData && resume && (
             <div className="rounded-2xl border border-[#eadcc9] bg-white p-8 text-center space-y-4 shadow-xs">
-              <Sparkles className="w-10 h-10 text-[#d97706] mx-auto" />
+              <Sparkles className="w-10 h-10 text-[#2563eb] mx-auto" />
               <div>
                 <h4 className="text-base font-bold text-[#572d12]">AI Information Extraction Ready</h4>
                 <p className="text-xs text-[#635b52] mt-1 max-w-md mx-auto">
@@ -649,7 +649,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
 
           {!resume && (
             <div className="rounded-2xl border border-[#eadcc9] bg-white p-10 text-center space-y-4 shadow-xs">
-              <FileUp className="w-10 h-10 text-[#d97706] mx-auto" />
+              <FileUp className="w-10 h-10 text-[#2563eb] mx-auto" />
               <div>
                 <h3 className="text-lg font-extrabold text-[#572d12]">Upload Required</h3>
                 <p className="text-xs text-[#635b52] mt-1 max-w-md mx-auto">
@@ -687,8 +687,8 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               onClick={() => setUploadMethod('drive')}
               className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 uploadMethod === 'drive'
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                  : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
+                  ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
+                  : 'bg-[#eff6ff] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
               }`}
             >
               <Globe className="w-3.5 h-3.5" />
@@ -699,8 +699,8 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               onClick={() => setUploadMethod('profile')}
               className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 uploadMethod === 'profile'
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                  : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
+                  ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
+                  : 'bg-[#eff6ff] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -720,7 +720,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
                     onChange={(e) => setDriveUrl(e.target.value)}
                     placeholder="Paste public Google Drive link (e.g. https://drive.google.com/file/d/.../view)"
                     disabled={importingDrive}
-                    className="w-full pl-10 pr-32 py-3 rounded-xl border border-[#eadcc9] bg-white text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#d97706]"
+                    className="w-full pl-10 pr-32 py-3 rounded-xl border border-[#eadcc9] bg-white text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb]"
                   />
                   <button
                     type="submit"
@@ -742,7 +742,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               <div className="text-xs text-[#635b52] space-y-1 bg-white p-4 rounded-xl border border-[#eadcc9]">
                 <p className="font-bold text-[#572d12]">How to import via Google Drive:</p>
                 <p>1. In Google Drive, right click your resume → click <strong className="text-[#572d12]">Share</strong>.</p>
-                <p>2. Under General access, select <strong className="text-[#d97706]">&quot;Anyone with the link&quot;</strong> (Viewer).</p>
+                <p>2. Under General access, select <strong className="text-[#2563eb]">&quot;Anyone with the link&quot;</strong> (Viewer).</p>
                 <p>3. Click <strong className="text-[#572d12]">Copy link</strong> and paste it above.</p>
               </div>
             </div>
@@ -754,7 +754,7 @@ export function ResumeManager({ initialResume, userId }: ResumeManagerProps) {
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <h4 className="text-base font-bold text-[#572d12]">Generate or Update Resume from Profile</h4>
-                  <span className="text-[10px] font-bold text-[#d97706] bg-[#fff3df] border border-[#eadcc9] px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold text-[#2563eb] bg-[#eff6ff] border border-[#eadcc9] px-2 py-0.5 rounded-full">
                     Instant ATS Sync
                   </span>
                 </div>

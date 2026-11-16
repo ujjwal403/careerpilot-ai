@@ -23,8 +23,8 @@ interface ApplicationsPipelineProps {
 
 const STATUS_OPTIONS = [
   { value: 'saved', label: 'Saved', color: 'text-[#635b52] bg-[#fffaf3] border-[#eadcc9]' },
-  { value: 'applied', label: 'Applied', color: 'text-[#d97706] bg-[#fff3df] border-[#eadcc9]' },
-  { value: 'screening', label: 'Screening', color: 'text-[#b45309] bg-[#fff3df] border-[#eadcc9]' },
+  { value: 'applied', label: 'Applied', color: 'text-[#2563eb] bg-[#eff6ff] border-[#eadcc9]' },
+  { value: 'screening', label: 'Screening', color: 'text-[#1d4ed8] bg-[#eff6ff] border-[#eadcc9]' },
   { value: 'interview', label: 'Interview', color: 'text-sky-800 bg-sky-50 border-sky-200' },
   { value: 'offer', label: 'Offer', color: 'text-[#166534] bg-[#f0fdf4] border-[#bbf7d0]' },
   { value: 'rejected', label: 'Rejected', color: 'text-rose-700 bg-rose-50 border-rose-200' },
@@ -64,8 +64,8 @@ export function ApplicationsPipeline({ initialApplications }: ApplicationsPipeli
           onClick={() => setFilter('all')}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             filter === 'all'
-              ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-              : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
+              ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
+              : 'bg-[#eff6ff] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
           }`}
         >
           All ({applications.length})
@@ -81,8 +81,8 @@ export function ApplicationsPipeline({ initialApplications }: ApplicationsPipeli
               onClick={() => setFilter(value)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-gradient-to-r from-[#d97706] to-[#b45309] text-white shadow-xs'
-                  : 'bg-[#fff3df] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
+                  ? 'bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] text-white shadow-xs'
+                  : 'bg-[#eff6ff] border border-[#eadcc9] text-[#635b52] hover:text-[#572d12]'
               }`}
             >
               {label} ({count})
@@ -95,7 +95,7 @@ export function ApplicationsPipeline({ initialApplications }: ApplicationsPipeli
       <div className="space-y-4">
         {filtered.length === 0 ? (
           <div className="rounded-2xl border border-[#eadcc9] bg-white p-12 text-center shadow-xs">
-            <Layers className="w-10 h-10 text-[#d97706] mx-auto mb-3" />
+            <Layers className="w-10 h-10 text-[#2563eb] mx-auto mb-3" />
             <p className="text-sm font-bold text-[#572d12]">No applications found in this stage.</p>
             <p className="text-xs text-[#635b52] mt-1">Browse the Job Radar and apply to populate your career pipeline.</p>
           </div>
@@ -105,7 +105,7 @@ export function ApplicationsPipeline({ initialApplications }: ApplicationsPipeli
             return (
               <div
                 key={app.id}
-                className="rounded-2xl border border-[#eadcc9] bg-white p-6 shadow-xs hover:border-[#d97706] transition-all flex flex-col md:flex-row md:items-center justify-between gap-6"
+                className="rounded-2xl border border-[#eadcc9] bg-white p-6 shadow-xs hover:border-[#2563eb] transition-all flex flex-col md:flex-row md:items-center justify-between gap-6"
               >
                 <div className="space-y-2 flex-1">
                   <div className="flex flex-wrap items-center gap-3">
@@ -120,7 +120,7 @@ export function ApplicationsPipeline({ initialApplications }: ApplicationsPipeli
 
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-[#635b52]">
                     <span className="inline-flex items-center gap-1.5 font-bold text-[#572d12]">
-                      <Building2 className="w-3.5 h-3.5 text-[#d97706]" />
+                      <Building2 className="w-3.5 h-3.5 text-[#2563eb]" />
                       {app.job?.company || 'Partner Company'}
                     </span>
                     <span className="inline-flex items-center gap-1.5">

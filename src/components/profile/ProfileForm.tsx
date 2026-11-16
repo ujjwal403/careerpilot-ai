@@ -486,7 +486,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                   ? 'bg-[#f7f2eb] text-[#635b52] cursor-not-allowed select-none'
                   : 'bg-[#fffaf3] text-[#29231e] focus:outline-hidden focus:border-[#2563eb]'
               }`}
-              placeholder="e.g. Rahul Sharma"
+              placeholder="e.g. Candidate Full Name"
             />
           </div>
 
@@ -510,7 +510,7 @@ export function ProfileForm({ initialUser, initialProfile }: ProfileFormProps) {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb]"
-                placeholder="+91 98765 43210"
+                placeholder="+91 XXXXX XXXXX"
               />
             </div>
           </div>

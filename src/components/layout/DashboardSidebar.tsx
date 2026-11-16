@@ -32,6 +32,14 @@ export const NAV_ITEMS: NavItem[] = [
   { href: '/profile', label: 'Career Profile', shortLabel: 'Profile', icon: User },
 ]
 
+function maskEmail(email?: string | null) {
+  if (!email) return 'Active Candidate'
+  const [userPart, domain] = email.split('@')
+  if (!domain) return email
+  const masked = userPart.length > 2 ? `${userPart.slice(0, 2)}***` : `${userPart.charAt(0)}***`
+  return `${masked}@${domain}`
+}
+
 export function DashboardSidebar() {
   const pathname = usePathname()
   const { user } = useUser()
@@ -108,7 +116,9 @@ export function DashboardSidebar() {
               <p className="text-xs font-bold text-[#572d12] truncate">
                 {user.user_metadata?.full_name || 'My Account'}
               </p>
-              <p className="text-[11px] text-[#78716c] truncate">{user.email}</p>
+              <p className="text-[11px] text-[#78716c] truncate" title={user.email}>
+                {maskEmail(user.email)}
+              </p>
             </div>
           </Link>
         )}

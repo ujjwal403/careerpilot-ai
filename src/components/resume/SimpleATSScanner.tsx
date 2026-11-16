@@ -309,7 +309,7 @@ export function SimpleATSScanner({
                 rows={7}
                 value={resumeText}
                 onChange={(e) => setResumeText(e.target.value)}
-                placeholder="Paste your CV text here (e.g. Rahul Sharma, B.Tech CSE, Skills: React, Node.js, Experience...)"
+                placeholder="Paste your CV text here (e.g. Candidate Name, B.Tech CSE, Skills: React, Node.js, Experience...)"
                 className="w-full p-4 rounded-2xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] focus:outline-hidden focus:border-[#2563eb] placeholder:text-[#9b9186]"
               />
               <div className="absolute right-3 bottom-3 text-[11px] font-mono font-bold text-[#78716c]">

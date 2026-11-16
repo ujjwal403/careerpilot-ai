@@ -430,7 +430,7 @@ export function DataVerificationModal({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="alex@gmail.com"
+                    placeholder="candidate@example.com"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
@@ -444,7 +444,7 @@ export function DataVerificationModal({
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 98765 43210"
+                    placeholder="+91 XXXXX XXXXX"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
@@ -472,7 +472,7 @@ export function DataVerificationModal({
                     type="url"
                     value={linkedinUrl}
                     onChange={(e) => setLinkedinUrl(e.target.value)}
-                    placeholder="https://linkedin.com/in/username"
+                    placeholder="https://linkedin.com/in/your-profile"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>
@@ -486,7 +486,7 @@ export function DataVerificationModal({
                     type="url"
                     value={githubUrl}
                     onChange={(e) => setGithubUrl(e.target.value)}
-                    placeholder="https://github.com/username"
+                    placeholder="https://github.com/your-username"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[#eadcc9] bg-[#fffaf3] text-xs sm:text-sm text-[#29231e] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#2563eb] focus:bg-white"
                   />
                 </div>

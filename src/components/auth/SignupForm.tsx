@@ -89,10 +89,10 @@ export function SignupForm() {
   const fillDemoData = () => {
     const randomSuffix = Math.floor(1000 + Math.random() * 9000)
     setForm({
-      name: 'Alex Rivera',
-      email: `alex.demo${randomSuffix}@gmail.com`,
+      name: 'Demo Candidate',
+      email: `candidate.demo${randomSuffix}@example.com`,
       password: 'DemoPassword123!',
-      city: 'San Francisco, CA',
+      city: 'Bangalore, India',
       userType: 'job_seeker',
     })
     setErrors({})
@@ -245,7 +245,7 @@ export function SignupForm() {
             <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
             <input
               type="text"
-              placeholder="e.g. Alex Rivera"
+              placeholder="e.g. Candidate Full Name"
               value={form.name}
               onChange={(e) => handleChange('name', e.target.value)}
               style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}
@@ -268,7 +268,7 @@ export function SignupForm() {
             <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#78716c] pointer-events-none" />
             <input
               type="email"
-              placeholder="alex@company.com"
+              placeholder="candidate@example.com"
               value={form.email}
               onChange={(e) => handleChange('email', e.target.value)}
               style={{ backgroundColor: '#ffffff', color: '#29231e', colorScheme: 'light' }}

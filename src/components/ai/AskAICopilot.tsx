@@ -128,10 +128,13 @@ export function AskAICopilot({ initialOpen = false, userProfile }: AskAICopilotP
 
       const data = await res.json()
 
-      const replyText =
-        data.reply ||
-        data.error ||
-        "I'm sorry, I couldn't process your request right now. Please try again!"
+      let replyText = data.reply
+      if (!replyText && data.error) {
+        replyText = `⚠️ **${data.error}**`
+      }
+      if (!replyText) {
+        replyText = "I'm sorry, I couldn't process your request right now. Please try again in a moment."
+      }
 
       const botMsg: ChatMessage = {
         id: `bot-${Date.now()}`,

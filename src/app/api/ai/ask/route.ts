@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 
 interface Message {
   role: 'user' | 'model' | 'assistant'
@@ -18,9 +19,65 @@ interface AskAIRequest {
   }
 }
 
-// In-memory concurrency tracker: exactly 1 question at a time per user / client
+// In-memory rate limiting & concurrency structures
+// 1. Concurrency lock (Strict 1 question at a time per user)
 const activeQuestions = new Set<string>()
+
+// 2. Sliding window request history per client: timestamps array
+const requestHistory = new Map<string, number[]>()
+
+// 3. Cooldown between questions: minimum 1.5 seconds
 const lastQuestionTimestamps = new Map<string, number>()
+
+// Rate limit configuration:
+const RATE_LIMITS = {
+  maxPerMinute: 6, // max 6 questions per minute
+  maxPerHour: 30, // max 30 questions per hour
+  maxPerDay: 80, // max 80 questions per 24 hours
+}
+
+function checkRateLimit(clientId: string): { allowed: boolean; reason?: string; retryAfter?: number } {
+  const now = Date.now()
+  const timestamps = (requestHistory.get(clientId) || []).filter((t) => now - t < 24 * 60 * 60 * 1000)
+
+  // Check 1-minute window
+  const inLastMinute = timestamps.filter((t) => now - t < 60 * 1000).length
+  if (inLastMinute >= RATE_LIMITS.maxPerMinute) {
+    return {
+      allowed: false,
+      reason: 'Rate limit reached: Maximum 6 questions per minute. Please pause for a moment before asking another question.',
+      retryAfter: 30,
+    }
+  }
+
+  // Check 1-hour window
+  const inLastHour = timestamps.filter((t) => now - t < 60 * 60 * 1000).length
+  if (inLastHour >= RATE_LIMITS.maxPerHour) {
+    return {
+      allowed: false,
+      reason: 'Hourly rate limit reached: Maximum 30 questions per hour. Please take a break and return shortly.',
+      retryAfter: 300,
+    }
+  }
+
+  // Check 24-hour window
+  if (timestamps.length >= RATE_LIMITS.maxPerDay) {
+    return {
+      allowed: false,
+      reason: 'Daily quota reached: Maximum 80 questions per day. Your quota will refresh tomorrow.',
+      retryAfter: 3600,
+    }
+  }
+
+  return { allowed: true }
+}
+
+function recordRequest(clientId: string) {
+  const now = Date.now()
+  const timestamps = (requestHistory.get(clientId) || []).filter((t) => now - t < 24 * 60 * 60 * 1000)
+  timestamps.push(now)
+  requestHistory.set(clientId, timestamps)
+}
 
 export async function POST(req: Request) {
   let clientId = 'client-session'
@@ -32,23 +89,37 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 })
     }
 
-    // Determine unique client identifier from headers or profile
-    const forwardedFor = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    const clientIp = forwardedFor || req.headers.get('x-real-ip') || 'local'
-    clientId = userProfile?.headline || userProfile?.college_name || clientIp
+    // Identify user: check authenticated Supabase session first, then fallback to IP
+    try {
+      const supabase = await createClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (user?.id) {
+        clientId = `user:${user.id}`
+      }
+    } catch {
+      // Unauthenticated or auth error fallback
+    }
 
-    // Strict Rule: Every user only gets 1 question at a time
+    if (clientId === 'client-session') {
+      const forwardedFor = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      const clientIp = forwardedFor || req.headers.get('x-real-ip') || 'local-user'
+      clientId = `ip:${clientIp}`
+    }
+
+    // 1. Strict Concurrency Rule: Exactly 1 question at a time per user
     if (activeQuestions.has(clientId)) {
       return NextResponse.json(
         {
           error:
-            '1 Question at a Time Limit: CareerPilot AI is already generating an answer for your previous question. Please wait for it to complete.',
+            '1 Question at a Time: CareerPilot AI is already answering your previous question. Please wait for it to finish.',
         },
         { status: 429 }
       )
     }
 
-    // Throttling: Must be at least 1.5s since the last question completed
+    // 2. Throttling: Minimum 1.5s cooldown after the previous question completed
     const lastTimestamp = lastQuestionTimestamps.get(clientId) || 0
     const now = Date.now()
     if (now - lastTimestamp < 1500) {
@@ -61,8 +132,23 @@ export async function POST(req: Request) {
       )
     }
 
-    // Mark user as actively processing
+    // 3. Rate Limit Protection: Ensure fair access and prevent abuse
+    const rateCheck = checkRateLimit(clientId)
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: rateCheck.reason },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateCheck.retryAfter || 60),
+          },
+        }
+      )
+    }
+
+    // Mark user as actively processing & record query timestamp
     activeQuestions.add(clientId)
+    recordRequest(clientId)
 
     const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY
 
@@ -91,9 +177,17 @@ CRITICAL RULES:
    - Use short, digestible paragraphs (max 2-3 sentences).
    - If providing code or email templates, format them inside clean code blocks.
    - Keep answers practical, encouraging, and easy to read.
-3. If asked about resume tips, emphasize action verbs, measurable impact (Google's X-Y-Z formula: "Accomplished [X] as measured by [Y], by doing [Z]"), and clean single-column ATS formatting.
-4. If asked about projects, recommend realistic, modern full-stack / AI capstone projects with clear architecture and why recruiters love them.
-5. If asked about cold emails/LinkedIn outreach, provide short, polite, high-converting templates.`
+3. PORTAL NAVIGATION & ACTIONABLE LINKS:
+   Always actively connect your answers to CareerPilot AI's internal portal pages so the candidate can take immediate action. Include clean markdown links [Portal Name](/path) wherever relevant:
+   - For Resumes, ATS score checks, bullet points, Google Drive CV auditing: [Resume Scorer](/resume) or [Audit Your CV →](/resume)
+   - For Job search, software internships, live startup openings (Blinkit, Swiggy, Zepto, Razorpay), stipends: [Job Radar](/jobs) or [Explore Openings →](/jobs)
+   - For Application tracking, interview stages, follow-up status: [Application Pipeline](/applications) or [Track Pipeline →](/applications)
+   - For Headline rewrite, skills audit, career bio editing: [Career Profile](/profile) or [Update Profile →](/profile)
+   - For Career overview, pipeline metrics, telemetry: [Dashboard](/dashboard)
+   Always format internal portal links with a leading slash, e.g. [Explore Openings →](/jobs) or [Audit Your CV →](/resume).
+4. If asked about resume tips, emphasize action verbs, measurable impact (Google's X-Y-Z formula: "Accomplished [X] as measured by [Y], by doing [Z]"), and clean single-column ATS formatting.
+5. If asked about projects, recommend realistic, modern full-stack / AI capstone projects with clear architecture and why recruiters love them.
+6. If asked about cold emails/LinkedIn outreach, provide short, polite, high-converting templates.`
 
     if (apiKey) {
       try {
@@ -183,7 +277,11 @@ CRITICAL RULES:
 **Pro-Tips:**
 - Send between 8:30 AM – 9:30 AM on Tuesday or Wednesday for highest open rates.
 - Keep the message under 120 words.
-- Always link directly to deployed live projects.`
+- Always link directly to deployed live projects.
+
+**Next Steps in Portal:**
+- Discover live founder & engineering openings: [Browse Job Radar →](/jobs)
+- Track your outreach and responses: [Open Applications Pipeline →](/applications)`
     } else if (lower.includes('ats') || lower.includes('resume') || lower.includes('score')) {
       fallbackReply = `### How to Achieve a 90+ ATS Score
 
@@ -198,7 +296,11 @@ CRITICAL RULES:
    - If job descriptions mention *Next.js*, *TypeScript*, *REST APIs*, and *Tailwind CSS*, ensure these exact terms appear in both your **Skills** section and inside your **Project descriptions**.
 
 4. **Google Drive Link Verification**:
-   - Ensure your resume sharing permission is set to **"Anyone with the link can view"** so recruiters and automated screeners can access it with one click.`
+   - Ensure your resume sharing permission is set to **"Anyone with the link can view"** so recruiters and automated screeners can access it with one click.
+
+**Next Steps in Portal:**
+- Run a live 10-point audit on your CV: [Open Resume Scorer →](/resume)
+- Add missing technical keywords: [Update Career Profile →](/profile)`
     } else if (lower.includes('project') || lower.includes('build')) {
       fallbackReply = `### Top 3 Standout Projects to Land Tech Internships
 
@@ -212,22 +314,31 @@ CRITICAL RULES:
 
 3. **Distributed E-Commerce / Quick-Commerce Checkout Squad (Backend)**
    - **Tech Stack:** Node.js / Go, PostgreSQL, Redis Rate Limiting, BullMQ.
-   - **Why Recruiters Love It:** Shows knowledge of caching, idempotency keys for payment gateways, and queue processing under load.`
-    } else {
-      fallbackReply = `### CareerPilot AI Advice
+   - **Why Recruiters Love It:** Shows knowledge of caching, idempotency keys for payment gateways, and queue processing under load.
 
-Here are the 3 highest-ROI steps you can take today to secure verified tech internships:
+**Next Steps in Portal:**
+- Showcase your projects and skills to recruiters: [Edit Career Profile →](/profile)
+- Match your tech stack with live internship roles: [Browse Job Radar →](/jobs)`
+    } else {
+      fallbackReply = `### CareerPilot AI Strategic Advice
+
+Here are the 4 highest-ROI steps you can take today to secure verified tech internships:
 
 1. **Audit Your Profile Skills**:
-   - Ensure your profile lists at least 6 core hard skills (languages, frameworks, databases, tools).
-   - Use the **AI Profile Coach** in your Profile tab to rewrite your headline and professional bio.
+   - Ensure your profile lists at least 6 core hard skills.
+   - Action: [Edit Career Profile →](/profile)
 
 2. **Target Verified Openings on Job Radar**:
-   - Explore verified openings from **Blinkit, Swiggy Labs, Zepto, and Razorpay** in the **Job Radar** tab.
-   - Check your ATS Match score before applying.
+   - Explore verified openings from **Blinkit, Swiggy Labs, Zepto, and Razorpay**.
+   - Action: [Browse Job Radar →](/jobs)
 
-3. **Deploy 2 Production-Grade Projects**:
-   - Make sure your GitHub projects have a clear \`README.md\`, architecture diagram, and live deployed URL (e.g. on Vercel). Recruiters click live links within 10 seconds!
+3. **Test Resume ATS Compatibility**:
+   - Run your Google Drive CV link against 10 strict ATS parsing rules.
+   - Action: [Open Resume Scorer →](/resume)
+
+4. **Monitor Interview Progress**:
+   - Keep track of every screening, interview, and offer round in real-time.
+   - Action: [View Applications Pipeline →](/applications)
 
 Feel free to ask me for cold outreach templates, resume bullet rewrites, or interview preparation tips!`
     }

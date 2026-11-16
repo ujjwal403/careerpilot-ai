@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Copy, Check, Terminal, Lightbulb, AlertCircle } from 'lucide-react'
+import Link from 'next/link'
+import { Copy, Check, Terminal, Lightbulb, AlertCircle, ArrowUpRight } from 'lucide-react'
 
 interface ChatMessageContentProps {
   content: string
@@ -10,9 +11,9 @@ interface ChatMessageContentProps {
 
 // Helper to format inline markdown (bold, code, links)
 function renderInline(text: string, isUser = false) {
-  // Regex to match **bold**, `code`, and plain text
+  // Regex to match **bold**, `code`, *italic*, and [markdown links](url)
   const parts: React.ReactNode[] = []
-  const tokenRegex = /(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g
+  const tokenRegex = /(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g
   let lastIndex = 0
   let match: RegExpExecArray | null
 
@@ -46,6 +47,46 @@ function renderInline(text: string, isUser = false) {
           {codeText}
         </code>
       )
+    } else if (token.startsWith('[') && token.endsWith(')')) {
+      // Markdown link: [label](url)
+      const splitIndex = token.indexOf('](')
+      if (splitIndex !== -1) {
+        const label = token.slice(1, splitIndex)
+        const url = token.slice(splitIndex + 2, -1).trim()
+        const isInternal = url.startsWith('/')
+
+        if (isInternal) {
+          parts.push(
+            <Link
+              key={`${match.index}-link`}
+              href={url}
+              className={`inline-flex items-center gap-1 font-extrabold px-2 py-0.5 rounded-lg text-xs transition-all my-0.5 no-underline shadow-2xs group ${
+                isUser
+                  ? 'bg-white text-[#572d12] hover:bg-white/90'
+                  : 'bg-[#eff6ff] hover:bg-[#dbeafe] text-[#2563eb] hover:text-[#1d4ed8] border border-[#bfdbfe]'
+              }`}
+            >
+              <span>{label}</span>
+              <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          )
+        } else {
+          parts.push(
+            <a
+              key={`${match.index}-link`}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-bold text-[#2563eb] hover:text-[#1d4ed8] underline underline-offset-2 transition-colors"
+            >
+              <span>{label}</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </a>
+          )
+        }
+      } else {
+        parts.push(token)
+      }
     } else if (token.startsWith('*') && token.endsWith('*')) {
       const italicText = token.slice(1, -1)
       parts.push(

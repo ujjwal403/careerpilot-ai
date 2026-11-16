@@ -39,12 +39,20 @@
 - **Salary Benchmarks in LPA:** CTC expectations formatted in Lakhs Per Annum (₹ LPA).
 
 ### 💼 Application Pipeline & Job Radar
-- **Kanban-Style Application Funnel:** Track application lifecycles from *Saved* $\rightarrow$ *Applied* $\rightarrow$ *Interviewing* $\rightarrow$ *Offered* $\rightarrow$ *Rejected*.
-- **Integrated Job Board:** Search and filter active job opportunities with profile-matched compatibility scores.
+- **Kanban-Style Application Funnel:** Track application lifecycles from *Saved* $\rightarrow$ *Applied* $\rightarrow$ *Screening* $\rightarrow$ *Interviewing* $\rightarrow$ *Offered*.
+- **Integrated Job Radar:** Search and filter active job opportunities with profile-matched compatibility scores and verified application links.
 
-### 🎨 Editorial Aesthetic
-- **Warm Theme:** Warm alabaster, soft amber accents, rich terracotta buttons, deep espresso typography, and subtle linen borders.
-- **Clean Accessibility:** High-contrast readability with zero noisy glassmorphism or distracting UI gimmicks.
+### 🤖 Ask AI Career Copilot & Mentor
+- **Personalized Career Advice:** Real-time interview roadmaps, cold email outreach templates, standout project recommendations, and resume bullet rewriting.
+- **Strict 1-Question-at-a-Time Rule:** Client-side input lock and server-side concurrency guard ensuring focused, high-agency guidance.
+- **Anti-Abuse Rate Limiting:** Multi-tier sliding window rate limits (max 6/min, 30/hour, 80/day) with client IP and Supabase user identification.
+- **Interactive Portal Link Navigation:** Chatbot responses actively link directly into internal portal tabs (`[Job Radar](/jobs)`, `[Resume Scorer](/resume)`, `[Career Profile](/profile)`, `[Applications](/applications)`) rendered as clickable button chips.
+- **Formatted Markdown & 1-Click Copy:** Beautiful subheadings, styled bullet dots, callout tip boxes, and 1-click response copying.
+
+### 🎨 Editorial Aesthetic & Design System
+- **Balanced Dashboard:** Clean 4-KPI horizontal metrics row paired with a 2-column layout for top recommendations and live application pipeline telemetry.
+- **Warm & Crisp Palette:** Warm linen canvas (`#fffaf3`), crisp white cards (`#ffffff`), sand borders (`#eadcc9`), deep bronze/umber headings (`#572d12`), and vibrant royal blue accents (`#2563eb`).
+- **Dynamic Mobile Experience:** Responsive bottom navigation bar, swipeable category pills, and thumb-friendly touch targets.
 
 ---
 
@@ -56,7 +64,8 @@
 | **Language** | TypeScript (Strict mode, zero errors) |
 | **Styling** | Tailwind CSS v4 with custom compiled editorial typography & themes |
 | **Icons** | Lucide React |
-| **PDF Extraction** | Client-side & server-side regex extraction heuristics |
+| **Database & Auth** | Supabase PostgreSQL with Row Level Security (RLS) |
+| **AI Engine** | CareerPilot Intelligence Engine (LLM API with sliding-window rate limiting) |
 
 ---
 

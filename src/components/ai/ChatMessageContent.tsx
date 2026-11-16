@@ -295,3 +295,4 @@ export function ChatMessageContent({ content, isUser = false }: ChatMessageConte
 
   return <div className="space-y-2">{blocks}</div>
 }
+
